@@ -6,7 +6,8 @@ import frc.team5735.constants.RobotConstants;
 
 public class DrivetrainIntake implements Subsystem {
 
-    private static DrivetrainIntake instance = null;
+    // ===== Singleton =====
+    private static DrivetrainIntake instance = new DrivetrainIntake();
 
     public static DrivetrainIntake getInstance() {
         if (instance == null) {
@@ -15,10 +16,17 @@ public class DrivetrainIntake implements Subsystem {
         return instance;
     }
 
+    // ===== Constants =====
+    private static final double OUTPUT_LIMIT = 0.8;
+
+    // ===== Instance Fields =====
+    // Motor Controllers
     private VictorSPX drivetrainIntakeMotorLeft, drivetrainIntakeMotorRight;
 
+    // Target Outputs
     private double leftTargetSpeed, rightTargetSpeed;
 
+    // ===== Methods =====
     private DrivetrainIntake() {
         initMotors();
         leftTargetSpeed = 0;
@@ -28,12 +36,10 @@ public class DrivetrainIntake implements Subsystem {
     private void initMotors() {
         // ===== LEFT MOTOR SETUP =====
         drivetrainIntakeMotorLeft = new VictorSPX(RobotConstants.VICTOR_INTAKE_DT_LEFT_ID);
-        drivetrainIntakeMotorLeft.set(ControlMode.PercentOutput,leftTargetSpeed);                // Default control mode
-        drivetrainIntakeMotorLeft.setInverted(true);                              // In is positive (green led) TODO Check/change inversion to match
+        drivetrainIntakeMotorLeft.set(ControlMode.PercentOutput,leftTargetSpeed); // Default control mode
+        drivetrainIntakeMotorLeft.setInverted(true);                              // In is positive (green led)
 
-        //TODO Maybe add limit switch
-
-        // Configure voltage limits TODO Check if these limits are desired
+        // Configure voltage limits
         drivetrainIntakeMotorLeft.configNominalOutputForward(+0.0f, 0);
         drivetrainIntakeMotorLeft.configNominalOutputReverse(-0.0f, 0);
         drivetrainIntakeMotorLeft.configPeakOutputForward(+12.0f, 0);
@@ -41,12 +47,10 @@ public class DrivetrainIntake implements Subsystem {
 
         // ===== LEFT MOTOR SETUP =====
         drivetrainIntakeMotorRight = new VictorSPX(RobotConstants.VICTOR_INTAKE_DT_RIGHT_ID);
-        drivetrainIntakeMotorRight.set(ControlMode.PercentOutput,rightTargetSpeed);                // Default control mode
-        drivetrainIntakeMotorRight.setInverted(false);                              // In is positive (green led) TODO Check/change inversion to match
+        drivetrainIntakeMotorRight.set(ControlMode.PercentOutput,rightTargetSpeed); // Default control mode
+        drivetrainIntakeMotorRight.setInverted(false);                              // In is positive (green led)
 
-        //TODO Maybe add limit switch
-
-        // Configure voltage limits TODO Check if these limits are desired
+        // Configure voltage limits
         drivetrainIntakeMotorRight.configNominalOutputForward(+0.0f, 0);
         drivetrainIntakeMotorRight.configNominalOutputReverse(-0.0f, 0);
         drivetrainIntakeMotorRight.configPeakOutputForward(+12.0f, 0);
@@ -76,15 +80,12 @@ public class DrivetrainIntake implements Subsystem {
 
     @Override
     public void runPeriodic() {
-        drivetrainIntakeMotorRight.set(ControlMode.PercentOutput,rightTargetSpeed*0.6);
-        drivetrainIntakeMotorLeft.set(ControlMode.PercentOutput,leftTargetSpeed*0.6);
+        drivetrainIntakeMotorRight.set(ControlMode.PercentOutput,rightTargetSpeed*OUTPUT_LIMIT);
+        drivetrainIntakeMotorLeft.set(ControlMode.PercentOutput,leftTargetSpeed*OUTPUT_LIMIT);
     }
 
     @Override
     public void disabledInit() {
-        leftTargetSpeed = 0;
-        rightTargetSpeed = 0;
-        drivetrainIntakeMotorRight.set(ControlMode.PercentOutput,rightTargetSpeed);
-        drivetrainIntakeMotorLeft.set(ControlMode.PercentOutput,leftTargetSpeed);
+        runInit();
     }
 }

@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Notifier;
+import frc.team5735.constants.RobotConstants;
 
 public class MotionProfile {
     private MotionProfileStatus status = new MotionProfileStatus();
@@ -140,7 +141,7 @@ public class MotionProfile {
                  * something is wrong. Talon is not present, unplugged, breaker
                  * tripped
                  */
-                Instrumentation.OnNoProgress();
+//                Instrumentation.OnNoProgress();
             } else {
                 --loopTimeout;
             }
@@ -230,7 +231,7 @@ public class MotionProfile {
             pos = talon.getActiveTrajectoryPosition();
             vel = talon.getActiveTrajectoryVelocity();
             /* printfs and/or logging */
-            Instrumentation.process(status, pos, vel, heading);
+//            Instrumentation.process(status, pos, vel, heading);
         }
     }
     /**
@@ -260,7 +261,7 @@ public class MotionProfile {
         /* did we get an underrun condition since last time we checked ? */
         if (status.hasUnderrun) {
             /* better log it so we know about it */
-            Instrumentation.OnUnderrun();
+//            Instrumentation.OnUnderrun();
             /*
              * clear the error. This flag does not auto clear, this way
              * we never miss logging it.
@@ -278,15 +279,15 @@ public class MotionProfile {
 
         /* This is fast since it's just into our TOP buffer */
         for (int i = startPoint; i < totalCnt + startPoint; i++) {
-            double lPositionRot = profile[i][0];
-            double lVelocityRPM = profile[i][1];
+            double position = profile[i][0];    // IN Ft
+            double velocity = profile[i][1];    // IN Ft/S
             /* for each point, fill our structure and pass it to API */
 
 //            point.position = positionRot * Constants.kSensorUnitsPerRotation; //Convert Revolutions to Units
 //            point.velocity = velocityRPM * Constants.kSensorUnitsPerRotation / 600.0; //Convert RPM to Units/100ms
 
-            point.position = lPositionRot * 4096; //Convert Revolutions to Units
-            point.velocity = lVelocityRPM / 600 * 4096; //Convert RPM to Units/100ms
+            point.position = (position * 12 / (Math.PI * RobotConstants.WHEEL_DIAMETER)) * 4096; //Convert Feet to Units
+            point.velocity = (velocity * 12 / (Math.PI * RobotConstants.WHEEL_DIAMETER)) * 4096 / 10; //Convert RPM to Units/100ms
 
 
             point.headingDeg = 0; /* future feature - not used in this example*/

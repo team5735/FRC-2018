@@ -6,8 +6,6 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team5735.constants.PidConstants;
 import frc.team5735.constants.RobotConstants;
-import frc.team5735.utils.UnitConversion;
-import frc.team5735.utils.units.Degrees;
 import frc.team5735.utils.units.Inches;
 
 /**
@@ -16,7 +14,7 @@ import frc.team5735.utils.units.Inches;
 public class Elevator implements Subsystem {
 
     // ===== Singleton =====
-    private static Elevator instance = null;   // Singleton Instance
+    private static Elevator instance = new Elevator();   // Singleton Instance
 
     public static Elevator getInstance() {
         if (instance == null) {
@@ -30,7 +28,7 @@ public class Elevator implements Subsystem {
             BACKLASH_MARGIN = new Inches(1);         // Margin of error to determine states
     private static final Inches
             LOWER_BOUND = new Inches(0),             // Lowest position of the Elevator
-            UPPER_BOUND = new Inches(44);            // Highest position of the Elevator
+            UPPER_BOUND = new Inches(43);            // Highest position of the Elevator
 
     private static final double GEAR_RATIO = 4.0 / 3.0;           // Gear ratio between motor and Elevator
     private static final int SPROCKET_TOOTH_COUNT = 22;
@@ -43,12 +41,13 @@ public class Elevator implements Subsystem {
     private static final ElevatorState DEFAULT_ENABLE_STATE = ElevatorState.POSITION_HOLDING;
 
     // ===== Instance Fields =====
-    private TalonSRX elevatorMotor;    // Main elevator motor
+    private TalonSRX elevatorMotor;                 // Main elevator motor
 
-    private ElevatorState state;    // State of the Elevator
-    private Inches targetHeight;    // Height to move to in POSITION states
-    private double targetSpeed;     // Motor output in DEFAULT state
-    private boolean hasZeroed;      // Flag to notify if limit switch has been zeroed for this switch interaction
+    private ElevatorState state;                    // State of the Elevator
+    private Inches targetHeight;                    // Height to move to    (POSITION states)
+    private double targetSpeed;                     // Motor output         (DEFAULT state)
+    private boolean isLowerLimitSwitchPressed;      // Used to prevent motor from continuously "zeroing"
+    private boolean hasZeroed;                      // Check if elevator has been zeroed
 
     // ===== Methods =====
 
@@ -58,6 +57,7 @@ public class Elevator implements Subsystem {
     private Elevator() {
         state = ElevatorState.IDLE;
         initMotors();
+        isLowerLimitSwitchPressed = false;
         hasZeroed = false;
     }
 
@@ -70,8 +70,8 @@ public class Elevator implements Subsystem {
         elevatorMotor.set(ControlMode.PercentOutput,0);                // Percent Output in DEFAULT state
         elevatorMotor.setInverted(true);                              // Up is positive (green led)
 
-        // Configure Sensors    //TODO Add soft limits ??
-        elevatorMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,0,10); //TODO Check encoder error codes
+        // Configure Sensors
+        elevatorMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,0,10);
         elevatorMotor.setSensorPhase(true);
         elevatorMotor.overrideLimitSwitchesEnable(true);
 
@@ -82,7 +82,7 @@ public class Elevator implements Subsystem {
         elevatorMotor.configPeakOutputReverse(-12.0f, 0);
 
         // Configure PID constants TODO Continue to tune pid
-        elevatorMotor.config_kF(PidConstants.ELEVATOR_POS_SLOT_ID, PidConstants.ELEVATOR_POS_KF, 100);        // Not needed for position mode
+        elevatorMotor.config_kF(PidConstants.ELEVATOR_POS_SLOT_ID, PidConstants.ELEVATOR_POS_KF, 100);    // Not needed for position mode
         elevatorMotor.config_kP(PidConstants.ELEVATOR_POS_SLOT_ID, PidConstants.ELEVATOR_POS_KP, 100);    // Tested with 0.2 (too weak)
         elevatorMotor.config_kI(PidConstants.ELEVATOR_POS_SLOT_ID, PidConstants.ELEVATOR_POS_KI, 100);
         elevatorMotor.config_kD(PidConstants.ELEVATOR_POS_SLOT_ID, PidConstants.ELEVATOR_POS_KD, 100);
@@ -94,15 +94,16 @@ public class Elevator implements Subsystem {
     @Override
     public void runInit() {
         // Set target height to be the current sensor position so it won't move/jump when motor output updates
-        targetHeight = new Inches(0);
-        elevatorMotor.setSelectedSensorPosition(0, 0, 0);
+        targetHeight = encoderTicksToElevatorInches(elevatorMotor.getSelectedSensorPosition(0));
 
         // Set target speed to be 0
         targetSpeed = 0;
 
         state = DEFAULT_ENABLE_STATE;
-//        // Runs periodic code once TODO Check if needed
-        runPeriodic();
+
+        if(!hasZeroed && state == ElevatorState.POSITION_HOLDING) {
+//            zeroSensor();
+        }
     }
 
     /**
@@ -111,25 +112,25 @@ public class Elevator implements Subsystem {
     @Override
     public void runPeriodic() {
         if (state == ElevatorState.ZEROING) {                                                          // ZEROING STATE
+            // UPDATE MOTOR OUTPUT !!!
             elevatorMotor.set(ControlMode.PercentOutput,ZEROING_SPEED);
             if(checkLowerLimitSwitch()){
                 state = ElevatorState.POSITION_HOLDING;
-                setTargetHeight(new Inches(5));
+                hasZeroed = true;
+                setTargetHeight(new Inches(0));
             }
         } else if (state == ElevatorState.POSITION_HOLDING || state == ElevatorState.POSITION_BUSY){      // POSITION STATES
-            // Check if lower limit switch is hit
-            checkLowerLimitSwitch();
-
             // UPDATE MOTOR OUTPUT !!!
             elevatorMotor.set(ControlMode.Position, elevatorInchesToEncoderTicks(targetHeight));
+
+            // Check if lower limit switch is hit
+            checkLowerLimitSwitch();
 
             updateState();
 
         } else {
             elevatorMotor.set(ControlMode.PercentOutput, targetSpeed * DEFAULT_SPEED_LIMIT);
         }
-
-        printInformation();
     }
 
     /**
@@ -150,24 +151,15 @@ public class Elevator implements Subsystem {
         // Check if switch is pressed
         if (elevatorMotor.getSensorCollection().isRevLimitSwitchClosed()) {
             // Check if sensor has been zeroed in this instance of sensor being pressed
-            if(!hasZeroed) {
+            if(!isLowerLimitSwitchPressed) {
                 elevatorMotor.setSelectedSensorPosition(0, 0, 0);  //TODO Set timeout
                 targetHeight = LOWER_BOUND;  // Set height to lowest position
-                hasZeroed = true;           // Indicate that sensor has been zeroed in this instance
+                isLowerLimitSwitchPressed = true;           // Indicate that sensor has been zeroed in this instance
             }
-            return true;        // Switch IS pressed
         } else {
-            hasZeroed = false;  // Resets flag
-            return false;       // Switch is NOT pressed
+            isLowerLimitSwitchPressed = false;  // Resets flag
         }
-    }
-
-    /**
-     * Gets the current target height
-     * @return Current target height
-     */
-    public Inches getTargetHeight() {
-        return targetHeight;
+        return isLowerLimitSwitchPressed;
     }
 
     public void updateState () {
@@ -177,6 +169,14 @@ public class Elevator implements Subsystem {
         } else {
             state = ElevatorState.POSITION_BUSY;
         }
+    }
+
+    /**
+     * Gets the current target height
+     * @return Current target height
+     */
+    public Inches getTargetHeight() {
+        return targetHeight;
     }
 
     /**

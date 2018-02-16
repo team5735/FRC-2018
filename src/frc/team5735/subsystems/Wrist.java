@@ -5,7 +5,6 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import frc.team5735.constants.PidConstants;
 import frc.team5735.constants.RobotConstants;
-import frc.team5735.utils.UnitConversion;
 import frc.team5735.utils.units.Degrees;
 
 /**
@@ -14,7 +13,7 @@ import frc.team5735.utils.units.Degrees;
 public class Wrist implements Subsystem {
 
     // ===== Singleton =====
-    private static Wrist instance = null;   // Singleton Instance
+    private static Wrist instance = new Wrist();   // Singleton Instance
 
     public static Wrist getInstance() {
         if (instance == null) {
@@ -25,23 +24,25 @@ public class Wrist implements Subsystem {
 
     // ===== Constants =====
     private static final Degrees
-            BACKLASH_MARGIN = new Degrees(5);         // Margin of error to determine states
+            BACKLASH_MARGIN = new Degrees(3);             // Margin of error to determine POSITION states
     private static final Degrees
-            LOWER_BOUND = new Degrees(0),             // Lowest position of the Wrist
-            UPPER_BOUND = new Degrees(110);            // Highest position of the Wrist
+            LOWER_BOUND = new Degrees(-110),              // Lowest position of the Wrist
+            UPPER_BOUND = new Degrees(0);                 // Highest position of the Wrist
 
-    private static final double GEAR_RATIO = 3.5;           // Gear ratio between motor and Wrist
-    private static final double ZEROING_SPEED = -0.15;      // Percent output value for zeroing
-    private static final double DEFAULT_SPEED_LIMIT = 0.4;  // Factor to limit speed when in DEFAULT state
-    private static final WristState DEFAULT_ENABLE_STATE = WristState.POSITION_HOLDING;
+    private static final double GEAR_RATIO = 3.5;               // Gear ratio between motor and Wrist
+    private static final double ZEROING_SPEED = 0.35;           // Percent output value for zeroing
+    private static final double DEFAULT_SPEED_LIMIT = 0.4;      // Speed limit when in DEFAULT (percentOutput) state
+    private static final WristState
+            DEFAULT_ENABLE_STATE = WristState.POSITION_HOLDING; // Default state when robot is enabled
 
     // ===== Instance Fields =====
-    private TalonSRX wristMotor;    // Main wrist motor
+    private TalonSRX wristMotor;                    // Main wrist motor
 
-    private WristState state;       // State of the Wrist
-    private Degrees targetAngle;    // Angle to move to in POSITION states
-    private double targetSpeed;     // Motor output in DEFAULT state
-    private boolean hasZeroed;      // Flag to notify if limit switch has been zeroed for this switch interaction
+    private WristState state;                       // State of the Wrist
+    private Degrees targetAngle;                    // Angle to move to     (POSITION states)
+    private double targetSpeed;                     // Motor output         (DEFAULT state)
+    private boolean isUpperLimitSwitchPressed;      // Used to prevent motor from continuously "zeroing"
+    private boolean hasZeroed;                      // Check if wrist has been zeroed
 
     // ===== Methods =====
 
@@ -52,6 +53,7 @@ public class Wrist implements Subsystem {
         state = WristState.IDLE;
         initMotors();
         hasZeroed = false;
+        isUpperLimitSwitchPressed = false;
     }
 
     /**
@@ -64,7 +66,7 @@ public class Wrist implements Subsystem {
         wristMotor.setInverted(false);                              // Up is positive (green led)
 
         // Configure Sensors    //TODO Add soft limits ??
-        wristMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute,0,10); //TODO Check encoder error codes
+        wristMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,0,10); //TODO Check encoder error codes
         wristMotor.setSensorPhase(false);
         wristMotor.overrideLimitSwitchesEnable(true);
 
@@ -75,7 +77,7 @@ public class Wrist implements Subsystem {
         wristMotor.configPeakOutputReverse(-12.0f, 0);
 
         // Configure PID constants TODO Continue to tune pid
-//        wristMotor.config_kF(PidConstants.WRIST_POS_SLOT_ID, 1023/(218./0.5), 100);        // Not needed for position mode
+        wristMotor.config_kF(PidConstants.WRIST_POS_SLOT_ID, PidConstants.WRIST_POS_KF, 100);
         wristMotor.config_kP(PidConstants.WRIST_POS_SLOT_ID, PidConstants.WRIST_POS_KP, 100);    // Tested with 0.2 (too weak)
         wristMotor.config_kI(PidConstants.WRIST_POS_SLOT_ID, PidConstants.WRIST_POS_KI, 100);
         wristMotor.config_kD(PidConstants.WRIST_POS_SLOT_ID, PidConstants.WRIST_POS_KD, 100);
@@ -87,14 +89,16 @@ public class Wrist implements Subsystem {
     @Override
     public void runInit() {
         // Set target angle to be the current sensor position so it won't move/jump when motor output updates
-        targetAngle = new Degrees(UnitConversion.nativeToDegree(wristMotor.getSelectedSensorPosition(PidConstants.WRIST_POS_SLOT_ID) / GEAR_RATIO));
+        targetAngle = new Degrees(nativeToDegree(wristMotor.getSelectedSensorPosition(PidConstants.WRIST_POS_SLOT_ID) / GEAR_RATIO));
 
         // Set target speed to be 0
         targetSpeed = 0;
 
         state = DEFAULT_ENABLE_STATE;
-//        // Runs periodic code once TODO Check if needed
-        runPeriodic();
+
+        if(!hasZeroed && state == WristState.POSITION_HOLDING) {
+            zeroSensor();
+        }
     }
 
     /**
@@ -103,32 +107,25 @@ public class Wrist implements Subsystem {
     @Override
     public void runPeriodic() {
         if (state == WristState.ZEROING) {                                                          // ZEROING STATE
+            // UPDATE MOTOR OUTPUT !!!
             wristMotor.set(ControlMode.PercentOutput,ZEROING_SPEED);
-            if(checkLowerLimitSwitch()){
+            if(checkUpperLimitSwitch()){
                 state = WristState.POSITION_HOLDING;
-                setTargetAngle(new Degrees(5));
+                hasZeroed = true;
+                setTargetAngle(new Degrees(0));
             }
         } else if (state == WristState.POSITION_HOLDING || state == WristState.POSITION_BUSY){      // POSITION STATES
-            // Check if lower limit switch is hit
-            checkLowerLimitSwitch();
-
             // UPDATE MOTOR OUTPUT !!!
             wristMotor.set(ControlMode.Position, targetAngle.toNativeUnits().getValue()/GEAR_RATIO);
 
-            // Update Wrist State depending on if current angle is within margin for target angle
-            if (new Degrees(wristMotor.getSelectedSensorPosition(PidConstants.WRIST_POS_SLOT_ID)).withinMargin(targetAngle, BACKLASH_MARGIN)) {
-                state = WristState.POSITION_HOLDING;
-            } else {
-                state = WristState.POSITION_BUSY;
-            }
+            // Check if upper limit switch is hit
+            checkUpperLimitSwitch();
+
+            updateState();
         } else {
+            // UPDATE MOTOR OUTPUT !!!
             wristMotor.set(ControlMode.PercentOutput, targetSpeed * DEFAULT_SPEED_LIMIT);
         }
-
-        // Dashboard Information
-//        SmartDashboard.putNumber("Wrist Motor Vel",wristMotor.getSelectedSensorVelocity(0));    //TODO Remove later
-//        SmartDashboard.putNumber("angle", targetAngle.getValue());
-//        SmartDashboard.putNumber("pos", UnitConversion.nativeToDegree(wristMotor.getSelectedSensorPosition(0))/GEAR_RATIO);
     }
 
     /**
@@ -145,19 +142,27 @@ public class Wrist implements Subsystem {
      * Method to check lower limit switch and reset sensor if needed
      * @return Lower limit switch is pressed
      */
-    public boolean checkLowerLimitSwitch() {
+    private boolean checkUpperLimitSwitch() {
         // Check if switch is pressed
-        if (wristMotor.getSensorCollection().isRevLimitSwitchClosed()) {
+        if (wristMotor.getSensorCollection().isFwdLimitSwitchClosed()) {
             // Check if sensor has been zeroed in this instance of sensor being pressed
-            if(!hasZeroed) {
+            if(!isUpperLimitSwitchPressed) {
                 wristMotor.setSelectedSensorPosition(0, 0, 0);  //TODO Set timeout
-                targetAngle = LOWER_BOUND;  // Set angle to lowest position
-                hasZeroed = true;           // Indicate that sensor has been zeroed in this instance
+                targetAngle = UPPER_BOUND;                          // Set angle to highest position
+                isUpperLimitSwitchPressed = true;                   // Update the limit switch state
             }
-            return true;        // Switch IS pressed
         } else {
-            hasZeroed = false;  // Resets flag
-            return false;       // Switch is NOT pressed
+            isUpperLimitSwitchPressed = false;
+        }
+        return isUpperLimitSwitchPressed;
+    }
+
+    private void updateState() {
+        // Update Wrist State depending on if current angle is within margin for target angle
+        if (new Degrees(wristMotor.getSelectedSensorPosition(PidConstants.WRIST_POS_SLOT_ID)).withinMargin(targetAngle, BACKLASH_MARGIN)) {
+            state = WristState.POSITION_HOLDING;
+        } else {
+            state = WristState.POSITION_BUSY;
         }
     }
 
@@ -173,7 +178,7 @@ public class Wrist implements Subsystem {
      * Sets target angle (limits it to the bounds of the wrist)
      * @param targetAngle New target angle
      */
-    public void setTargetAngle(Degrees targetAngle) {
+    public WristState setTargetAngle(Degrees targetAngle) {
         if (targetAngle.getValue() > UPPER_BOUND.getValue()) {          // UPPER_BOUND < targetAngle
             this.targetAngle = UPPER_BOUND;
         } else if (targetAngle.getValue() < LOWER_BOUND.getValue()) {   // targetAngle < LOWER_BOUND
@@ -181,6 +186,9 @@ public class Wrist implements Subsystem {
         } else {                                                        // LOWER_BOUND < targetAngle < UPPER_BOUND
             this.targetAngle = targetAngle;
         }
+
+        updateState();
+        return state;
     }
 
     /**
@@ -199,8 +207,12 @@ public class Wrist implements Subsystem {
 
     public void setState(WristState state) {
         // Set target angle to be the current sensor position so it won't move/jump when motor output updates
-        targetAngle = new Degrees(UnitConversion.nativeToDegree(wristMotor.getSelectedSensorPosition(PidConstants.WRIST_POS_SLOT_ID) / GEAR_RATIO));
+        targetAngle = new Degrees(nativeToDegree(wristMotor.getSelectedSensorPosition(PidConstants.WRIST_POS_SLOT_ID) / GEAR_RATIO));
         this.state = state;
+    }
+
+    public double nativeToDegree(double nativeUnits) {
+        return nativeUnits / 4096 * 360; //TODO check if this is correct
     }
 
     /**

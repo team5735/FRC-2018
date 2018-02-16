@@ -10,27 +10,23 @@ public class DrivetrainController implements Controller {
 
     private Drivetrain drivetrain;
 
-    public DrivetrainController(int joystickPort, Drivetrain drivetrain) {
-        this.drivetrain = drivetrain;
+    public DrivetrainController(int joystickPort) {
+        this.drivetrain = Drivetrain.getInstance();
         xboxController = new CustomXbox(joystickPort);
     }
 
 
     @Override
     public void runInit() {
-        drivetrain.runInit();
+
     }
 
     @Override
     public void runPeriodic() {
-
         drivetrain.curvatureDrive(0.5*xboxController.getY(GenericHID.Hand.kRight,0.1), 0.5*xboxController.getX(GenericHID.Hand.kLeft,0.1),true );
-
-        drivetrain.runPeriodic();
     }
 
     @Override
     public void disabledInit() {
-        drivetrain.disabledInit();
     }
 }

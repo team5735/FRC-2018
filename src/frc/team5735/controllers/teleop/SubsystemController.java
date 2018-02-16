@@ -15,21 +15,17 @@ public class SubsystemController implements Controller{
     private ElevatorIntake elevatorIntake;
     private DrivetrainIntake drivetrainIntake;
 
-    public SubsystemController(int joystickPort, Elevator elevator, Wrist wrist, ElevatorIntake elevatorIntake, DrivetrainIntake drivetrainIntake) {
-        this.elevator = elevator;
-        this.wrist = wrist;
-        this.elevatorIntake = elevatorIntake;
-        this.drivetrainIntake = drivetrainIntake;
+    public SubsystemController(int joystickPort) {
+        this.elevator = Elevator.getInstance();
+        this.wrist = Wrist.getInstance();
+        this.elevatorIntake = ElevatorIntake.getInstance();
+        this.drivetrainIntake = DrivetrainIntake.getInstance();
         xboxController = new CustomXbox(joystickPort);
     }
 
 
     @Override
     public void runInit() {
-        elevator.runInit();
-        wrist.runInit();
-        elevatorIntake.runInit();
-        drivetrainIntake.runInit();
     }
 
     @Override
@@ -71,18 +67,9 @@ public class SubsystemController implements Controller{
         } else {
             elevatorIntake.setTargetSpeed(0);
         }
-
-        elevator.runPeriodic();
-        wrist.runPeriodic();
-        elevatorIntake.runPeriodic();
-        drivetrainIntake.runPeriodic();
     }
 
     @Override
     public void disabledInit() {
-        elevator.disabledInit();
-        wrist.disabledInit();
-        elevatorIntake.disabledInit();
-        drivetrainIntake.disabledInit();
     }
 }

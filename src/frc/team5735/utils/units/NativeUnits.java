@@ -5,7 +5,7 @@ public class NativeUnits extends Unit {
         super(value);
     }
 
-    public Degrees toDegrees() {
-        return new Degrees(getValue() / 4096 * 360);
-    }
+//    public Degrees toDegrees() {
+//        return new Degrees(getValue() / 4096 * 360);
+//    }
 }

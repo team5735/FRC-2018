@@ -8,11 +8,11 @@ import frc.team5735.subsystems.*;
 
 public class Robot extends TimedRobot {
 
-    private Wrist wrist;
+    private Drivetrain drivetrain;
+    private DrivetrainIntake drivetrainIntake;
     private Elevator elevator;
     private ElevatorIntake elevatorIntake;
-    private DrivetrainIntake drivetrainIntake;
-    private Drivetrain drivetrain;
+    private Wrist wrist;
 
     private SubsystemController subsystemController;
 
@@ -20,15 +20,14 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotInit() {
-        wrist = Wrist.getInstance();
+        drivetrain = Drivetrain.getInstance();
+        drivetrainIntake = DrivetrainIntake.getInstance();
         elevator = Elevator.getInstance();
         elevatorIntake = ElevatorIntake.getInstance();
-        drivetrainIntake = DrivetrainIntake.getInstance();
-        subsystemController = new SubsystemController(RobotConstants.SUBSYSTEM_CONTROLLER_ID, elevator, wrist, elevatorIntake,drivetrainIntake);
+        wrist = Wrist.getInstance();
 
-        drivetrain = Drivetrain.getInstance();
-        drivetrainController = new DrivetrainController(RobotConstants.DRIVETRAIN_CONTROLLER_ID, drivetrain);
-
+        subsystemController = new SubsystemController(RobotConstants.SUBSYSTEM_CONTROLLER_ID);
+        drivetrainController = new DrivetrainController(RobotConstants.DRIVETRAIN_CONTROLLER_ID);
     }
 
     /**
@@ -36,7 +35,11 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
-
+        drivetrain.runInit();
+        drivetrainIntake.runInit();
+        elevator.runInit();
+        elevatorIntake.runInit();
+        wrist.runInit();
     }
 
     /**
@@ -44,7 +47,11 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousPeriodic() {
-
+        drivetrain.runPeriodic();
+        drivetrainIntake.runPeriodic();
+        elevator.runPeriodic();
+        elevatorIntake.runPeriodic();
+        wrist.runPeriodic();
     }
 
     /**
@@ -52,6 +59,12 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void teleopInit() {
+        drivetrain.runInit();
+        drivetrainIntake.runInit();
+        elevator.runInit();
+        elevatorIntake.runInit();
+        wrist.runInit();
+
         subsystemController.runInit();
         drivetrainController.runInit();
     }
@@ -75,6 +88,12 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledInit() {
+        drivetrain.disabledInit();
+        drivetrainIntake.disabledInit();
+        elevator.disabledInit();
+        elevatorIntake.disabledInit();
+        wrist.disabledInit();
+
         subsystemController.disabledInit();
         drivetrainController.disabledInit();
     }

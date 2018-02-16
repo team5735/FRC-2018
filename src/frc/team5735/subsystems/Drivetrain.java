@@ -10,11 +10,8 @@ import frc.team5735.constants.PidConstants;
 import frc.team5735.constants.RobotConstants;
 
 public class Drivetrain extends RobotDriveBase implements Subsystem {
-    private double m_quickStopThreshold = 0.2;
-    private double m_quickStopAlpha = 0.1;
-    private double m_quickStopAccumulator = 0.0;
-
-    private static Drivetrain instance = null;
+    // ===== Singleton =====
+    private static Drivetrain instance = new Drivetrain();
 
     public static Drivetrain getInstance() {
         if (instance == null) {
@@ -23,23 +20,22 @@ public class Drivetrain extends RobotDriveBase implements Subsystem {
         return instance;
     }
 
+    // ===== Instance Fields =====
+    // Curvature drive
+    private double m_quickStopThreshold = 0.2;
+    private double m_quickStopAlpha = 0.1;
+    private double m_quickStopAccumulator = 0.0;
+
+    // Motor Controllers
     private TalonSRX leftFrontMotor, rightFrontMotor, leftRearMotor;
     private VictorSPX rightRearMotor;
 
-    private double leftSideTargetSpeed = 0, rightSideTargetSpeed = 0;
+    // Output Values
+    private double leftSideTargetOutput = 0, rightSideTargetOutput = 0;
 
+    // ===== Methods =====
     private Drivetrain() {
         initMotors();
-    }
-
-    @Override
-    public void stopMotor() {
-
-    }
-
-    @Override
-    public String getDescription() {
-        return null;
     }
 
     private void initMotors() {
@@ -98,6 +94,22 @@ public class Drivetrain extends RobotDriveBase implements Subsystem {
         rightRearMotor.setInverted(true);
     }
 
+    @Override
+    public void runInit() {
+
+    }
+
+    @Override
+    public void runPeriodic() {
+        leftFrontMotor.set(ControlMode.PercentOutput, leftSideTargetOutput);
+        rightFrontMotor.set(ControlMode.PercentOutput, rightSideTargetOutput);
+    }
+
+    @Override
+    public void disabledInit() {
+
+    }
+
     public void curvatureDrive(double xSpeed, double zRotation, boolean isQuickTurn) {
         xSpeed = limit(xSpeed);
         xSpeed = applyDeadband(xSpeed, m_deadband);
@@ -148,39 +160,10 @@ public class Drivetrain extends RobotDriveBase implements Subsystem {
             }
         }
 
-        setLeftSideTargetSpeed(leftMotorOutput * m_maxOutput);
-        setRightSideTargetSpeed(rightMotorOutput * m_maxOutput);
+        leftSideTargetOutput = leftMotorOutput * m_maxOutput;
+        rightSideTargetOutput = rightMotorOutput * m_maxOutput;
 
         m_safetyHelper.feed();
-    }
-
-    @Override
-    public void runInit() {
-
-    }
-
-    private void setRightSideTargetSpeed(double rightSideTargetSpeed) {
-        this.rightSideTargetSpeed = rightSideTargetSpeed;
-    }
-
-    private void setLeftSideTargetSpeed(double leftSideTargetSpeed) {
-        this.leftSideTargetSpeed = leftSideTargetSpeed;
-    }
-
-    @Override
-    public void runPeriodic() {
-        leftFrontMotor.set(ControlMode.PercentOutput,leftSideTargetSpeed);
-        rightFrontMotor.set(ControlMode.PercentOutput,rightSideTargetSpeed);
-    }
-
-    @Override
-    public void disabledInit() {
-
-    }
-
-    @Override
-    public void initSendable(SendableBuilder builder) {
-
     }
 
     public TalonSRX getLeftMotor() {
@@ -191,4 +174,20 @@ public class Drivetrain extends RobotDriveBase implements Subsystem {
         return rightFrontMotor;
     }
 
+    // ===== Extending RobotDriveBase =====
+
+    @Override
+    public void initSendable(SendableBuilder builder) {
+
+    }
+
+    @Override
+    public String getDescription() {
+        return null;
+    }
+
+    @Override
+    public void stopMotor() {
+        rightFrontMotor.set(ControlMode.Disabled, 0);
+    }
 }

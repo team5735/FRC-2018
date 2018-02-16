@@ -7,7 +7,8 @@ import frc.team5735.constants.RobotConstants;
 
 public class ElevatorIntake implements Subsystem {
 
-    private static ElevatorIntake instance = null;
+    // ===== Singleton =====
+    private static ElevatorIntake instance = new ElevatorIntake();
 
     public static ElevatorIntake getInstance() {
         if (instance == null) {
@@ -16,10 +17,15 @@ public class ElevatorIntake implements Subsystem {
         return instance;
     }
 
+    // ===== Instance Fields =====
+    // Motor Controller
     private VictorSPX elevatorIntakeMotor;
 
+    // Target Outputs
     private double targetSpeed;
 
+
+    // ===== Methods =====
     private ElevatorIntake() {
         initMotors();
         targetSpeed = 0;
@@ -53,13 +59,10 @@ public class ElevatorIntake implements Subsystem {
     @Override
     public void runPeriodic() {
         elevatorIntakeMotor.set(ControlMode.PercentOutput,targetSpeed);
-//        System.out.println(elevatorIntakeMotor.getMotorOutputVoltage());
-//        System.out.println(elevatorIntakeMotor.getMotorOutputPercent());
     }
 
     @Override
     public void disabledInit() {
-        targetSpeed = 0;
-        elevatorIntakeMotor.set(ControlMode.PercentOutput,targetSpeed);
+        runInit();
     }
 }

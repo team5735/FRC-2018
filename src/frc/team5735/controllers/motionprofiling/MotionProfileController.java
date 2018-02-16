@@ -3,7 +3,7 @@ package frc.team5735.controllers.motionprofiling;
 import com.ctre.phoenix.motion.SetValueMotionProfile;
 import frc.team5735.controllers.Controller;
 import frc.team5735.subsystems.Drivetrain;
-import frc.team5735.trajectories.Trajectory;
+import frc.team5735.utils.Trajectory;
 
 public class MotionProfileController implements Controller {
 
@@ -12,9 +12,9 @@ public class MotionProfileController implements Controller {
 
     private Drivetrain drivetrain;
 
-    public MotionProfileController(Drivetrain drivetrain) {
+    public MotionProfileController() {
         state = MotionProfileControllerState.EMPTY;
-        this.drivetrain = drivetrain;
+        this.drivetrain = Drivetrain.getInstance();
 
     }
 
@@ -44,6 +44,10 @@ public class MotionProfileController implements Controller {
         if(leftMotionProfile.getSetValue() == SetValueMotionProfile.Hold && rightMotionProfile.getSetValue() == SetValueMotionProfile.Hold) {
             state = MotionProfileControllerState.FINISHED;
         }
+    }
+
+    public MotionProfileControllerState getState() {
+        return state;
     }
 
     @Override

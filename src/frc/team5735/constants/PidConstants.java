@@ -28,7 +28,7 @@ public class PidConstants {
 
     //Elevator - Closed Loop Position (Slot 0)
     public static final double
-            ELEVATOR_POS_KF = 0.212,
+            ELEVATOR_POS_KF = 0,
             ELEVATOR_POS_KP = 0.08,
             ELEVATOR_POS_KI = 0,
             ELEVATOR_POS_KD = 0.9;
