@@ -1,12 +1,14 @@
 package frc.team5735.controllers.auto;
 
 import frc.team5735.controllers.motionprofiling.MotionProfileController;
-import frc.team5735.subsystems.*;
 import frc.team5735.controllers.motionprofiling.Trajectory;
+import frc.team5735.subsystems.Elevator;
+import frc.team5735.subsystems.ElevatorIntake;
+import frc.team5735.subsystems.Wrist;
 import frc.team5735.utils.units.Degrees;
 import frc.team5735.utils.units.Inches;
 
-public class StraightSwitchController extends AutoController {
+public class RightDirectScaleController extends AutoController{
 
     private int step;
 
@@ -17,13 +19,13 @@ public class StraightSwitchController extends AutoController {
     private MotionProfileController motionProfileController;
     private Trajectory trajectory;
 
-    public StraightSwitchController() {
+    public RightDirectScaleController() {
         this.elevator = Elevator.getInstance();
         this.wrist = Wrist.getInstance();
         this.elevatorIntake = ElevatorIntake.getInstance();
 
         motionProfileController = new MotionProfileController();
-        trajectory = new Trajectory("straight-switch");
+        trajectory = new Trajectory("right-direct-scale");
         motionProfileController.loadProfile(trajectory);
     }
 
@@ -51,6 +53,8 @@ public class StraightSwitchController extends AutoController {
             isFinished = true;
 
             step ++;
+        } else if (step == 2 ) {
+//            StraightSwitchController();
         }
 
     }

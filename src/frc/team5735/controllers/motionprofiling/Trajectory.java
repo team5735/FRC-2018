@@ -1,15 +1,11 @@
-package frc.team5735.utils;
+package frc.team5735.controllers.motionprofiling;
 
 public class Trajectory {
     private double[][] leftPoints, rightPoints;  // Position (rotations), Velocity (RPM), Duration (ms)
 
-    public Trajectory(double[][] leftPoints, double[][] rightPoints) {
-        this.leftPoints = leftPoints;
-        this.rightPoints = rightPoints;
-    }
-
     public Trajectory(String fileName) {
-        
+        leftPoints = TrajectoryParser.getTrajectory(fileName + "_left.csv");
+        rightPoints = TrajectoryParser.getTrajectory(fileName + "_right.csv");
     }
 
     public double[][] getLeftPoints() {

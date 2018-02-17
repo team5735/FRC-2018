@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 import frc.team5735.constants.PidConstants;
 import frc.team5735.constants.RobotConstants;
 
-public class Drivetrain extends RobotDriveBase implements Subsystem {
+public class Drivetrain implements Subsystem {
     // ===== Singleton =====
     private static Drivetrain instance = new Drivetrain();
 
@@ -25,6 +25,8 @@ public class Drivetrain extends RobotDriveBase implements Subsystem {
     private double m_quickStopThreshold = 0.2;
     private double m_quickStopAlpha = 0.1;
     private double m_quickStopAccumulator = 0.0;
+    private double m_deadband = 0.02;
+    private double m_maxOutput = 1;
 
     // Motor Controllers
     private TalonSRX leftFrontMotor, rightFrontMotor, leftRearMotor;
@@ -162,8 +164,6 @@ public class Drivetrain extends RobotDriveBase implements Subsystem {
 
         leftSideTargetOutput = leftMotorOutput * m_maxOutput;
         rightSideTargetOutput = rightMotorOutput * m_maxOutput;
-
-        m_safetyHelper.feed();
     }
 
     public TalonSRX getLeftMotor() {
@@ -174,20 +174,51 @@ public class Drivetrain extends RobotDriveBase implements Subsystem {
         return rightFrontMotor;
     }
 
-    // ===== Extending RobotDriveBase =====
-
-    @Override
-    public void initSendable(SendableBuilder builder) {
-
+    public void clearMotionProfileTrajectories() {
+        leftFrontMotor.clearMotionProfileTrajectories();
+        leftRearMotor.clearMotionProfileTrajectories();
+        rightFrontMotor.clearMotionProfileTrajectories();
+        rightRearMotor.clearMotionProfileTrajectories();
     }
 
-    @Override
-    public String getDescription() {
-        return null;
+    // ===== RobotDriveBase Methods =====
+
+    /**
+     * Limit motor values to the -1.0 to +1.0 range.
+     */
+    protected double limit(double value) {
+        if (value > 1.0) {
+            return 1.0;
+        }
+        if (value < -1.0) {
+            return -1.0;
+        }
+        return value;
     }
 
-    @Override
-    public void stopMotor() {
-        rightFrontMotor.set(ControlMode.Disabled, 0);
+    /**
+     * Returns 0.0 if the given value is within the specified range around zero. The remaining range
+     * between the deadband and 1.0 is scaled from 0.0 to 1.0.
+     *
+     * @param value    value to clip
+     * @param deadband range around zero
+     */
+    protected double applyDeadband(double value, double deadband) {
+        if (Math.abs(value) > deadband) {
+            if (value > 0.0) {
+                return (value - deadband) / (1.0 - deadband);
+            } else {
+                return (value + deadband) / (1.0 - deadband);
+            }
+        } else {
+            return 0.0;
+        }
+    }
+
+    public void printStatus() {
+        System.out.println("===== Drivetrain =====");
+        System.out.println("Right Velocity: " + rightFrontMotor.getSelectedSensorVelocity(0));
+        System.out.println("Left Velocity: " + leftFrontMotor.getSelectedSensorVelocity(0));
+        System.out.println();
     }
 }

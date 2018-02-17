@@ -70,7 +70,7 @@ public class MotionProfile {
      * of your trajectory points.  So if they are firing every 20ms, you should call
      * every 10ms.
      */
-    public int pointsPushed = 0;
+    public int nextPointIndexToPush = 0;
 
 
     class PeriodicRunnable implements Runnable {
@@ -124,7 +124,7 @@ public class MotionProfile {
      * Called every loop.
      */
     public void control() {
-        System.out.println("loopTimeout: " + loopTimeout);
+//        System.out.println("loopTimeout: " + loopTimeout);
         /* Get the motion profile status every loop */
         talon.getMotionProfileStatus(status);
 
@@ -155,24 +155,24 @@ public class MotionProfile {
              */
             state = 0;
             loopTimeout = -1;
-            System.out.println("Get Control Mode: " + talon.getControlMode());
+//            System.out.println("Get Control Mode: " + talon.getControlMode());
         } else {
             /*
              * we are in MP control mode. That means: starting Mps, checking Mp
              * progress, and possibly interrupting MPs if thats what you want to
              * do.
              */
+            System.out.println(state);
             switch (state) {
                 case 0: /* wait for application to tell us to start an MP */
+
                     if (bStart) {
                         bStart = false;
 
                         setValue = SetValueMotionProfile.Disable;
-                        if ((profile.length - pointsPushed) < 512 && (profile.length - pointsPushed) > 0) {
-                            pointsPushed = startFilling(profile, pointsPushed, profile.length - pointsPushed) - 1;
-                        } else {
-                            pointsPushed = startFilling(profile, pointsPushed, 512);
-                        }
+
+                        fillBuffer();
+
                         /*
                          * MP is being sent to CAN bus, wait a small amount of time
                          */
@@ -220,10 +220,7 @@ public class MotionProfile {
                     break;
             }
 
-            //TODO VERY VERY VERY VERY SKETCHY CODE PLACEMENT
-            if (talon.getMotionProfileTopLevelBufferCount() == 0) {
-                refill();
-            }
+            fillBuffer();
 
             /* Get the motion profile status every loop */
             talon.getMotionProfileStatus(status);
@@ -231,7 +228,7 @@ public class MotionProfile {
             pos = talon.getActiveTrajectoryPosition();
             vel = talon.getActiveTrajectoryVelocity();
             /* printfs and/or logging */
-//            Instrumentation.process(status, pos, vel, heading);
+            Instrumentation.process(status, pos, vel, heading);
         }
     }
     /**
@@ -261,7 +258,7 @@ public class MotionProfile {
         /* did we get an underrun condition since last time we checked ? */
         if (status.hasUnderrun) {
             /* better log it so we know about it */
-//            Instrumentation.OnUnderrun();
+            Instrumentation.OnUnderrun();
             /*
              * clear the error. This flag does not auto clear, this way
              * we never miss logging it.
@@ -272,7 +269,7 @@ public class MotionProfile {
          * just in case we are interrupting another MP and there is still buffer
          * points in memory, clear it.
          */
-        talon.clearMotionProfileTrajectories();
+//        talon.clearMotionProfileTrajectories();
 
         /* set the base trajectory period to zero, use the individual trajectory period below */
         talon.configMotionProfileTrajectoryPeriod(0, (int) profile[0][2]);
@@ -313,11 +310,20 @@ public class MotionProfile {
      */
     public void startMotionProfile() {
         bStart = true;
-        pointsPushed = 0;
+        nextPointIndexToPush = 0;
     }
     
-    public void refill() {
-        bStart = true;
+    public void fillBuffer() {
+        int spaceAvailable = status.topBufferRem;
+        int pointsToPush;
+        if (spaceAvailable > profile.length - nextPointIndexToPush) {
+            pointsToPush = profile.length - nextPointIndexToPush;
+        }else{
+            pointsToPush = spaceAvailable;
+        }
+//        System.out.println(nextPointIndexToPush + " : " + pointsToPush);
+
+        nextPointIndexToPush = startFilling(profile, nextPointIndexToPush, pointsToPush);
     }
 
     /**

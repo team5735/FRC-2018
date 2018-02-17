@@ -24,13 +24,13 @@ public class Wrist implements Subsystem {
 
     // ===== Constants =====
     private static final Degrees
-            BACKLASH_MARGIN = new Degrees(3);             // Margin of error to determine POSITION states
+            BACKLASH_MARGIN = new Degrees(5);             // Margin of error to determine POSITION states
     private static final Degrees
             LOWER_BOUND = new Degrees(-110),              // Lowest position of the Wrist
             UPPER_BOUND = new Degrees(0);                 // Highest position of the Wrist
 
     private static final double GEAR_RATIO = 3.5;               // Gear ratio between motor and Wrist
-    private static final double ZEROING_SPEED = 0.35;           // Percent output value for zeroing
+    private static final double ZEROING_SPEED = 0.275;           // Percent output value for zeroing
     private static final double DEFAULT_SPEED_LIMIT = 0.4;      // Speed limit when in DEFAULT (percentOutput) state
     private static final WristState
             DEFAULT_ENABLE_STATE = WristState.POSITION_HOLDING; // Default state when robot is enabled
@@ -89,7 +89,7 @@ public class Wrist implements Subsystem {
     @Override
     public void runInit() {
         // Set target angle to be the current sensor position so it won't move/jump when motor output updates
-        targetAngle = new Degrees(nativeToDegree(wristMotor.getSelectedSensorPosition(PidConstants.WRIST_POS_SLOT_ID) / GEAR_RATIO));
+        targetAngle = getCurrentAngle();
 
         // Set target speed to be 0
         targetSpeed = 0;
@@ -106,6 +106,7 @@ public class Wrist implements Subsystem {
      */
     @Override
     public void runPeriodic() {
+        System.out.println("Target:" + targetAngle.getValue() + "Current:" + getCurrentAngle().getValue());
         if (state == WristState.ZEROING) {                                                          // ZEROING STATE
             // UPDATE MOTOR OUTPUT !!!
             wristMotor.set(ControlMode.PercentOutput,ZEROING_SPEED);
@@ -116,7 +117,8 @@ public class Wrist implements Subsystem {
             }
         } else if (state == WristState.POSITION_HOLDING || state == WristState.POSITION_BUSY){      // POSITION STATES
             // UPDATE MOTOR OUTPUT !!!
-            wristMotor.set(ControlMode.Position, targetAngle.toNativeUnits().getValue()/GEAR_RATIO);
+            double output = targetAngle.toNativeUnits().getValue() * GEAR_RATIO;
+            wristMotor.set(ControlMode.Position, output);
 
             // Check if upper limit switch is hit
             checkUpperLimitSwitch();
@@ -158,11 +160,13 @@ public class Wrist implements Subsystem {
     }
 
     private void updateState() {
-        // Update Wrist State depending on if current angle is within margin for target angle
-        if (new Degrees(wristMotor.getSelectedSensorPosition(PidConstants.WRIST_POS_SLOT_ID)).withinMargin(targetAngle, BACKLASH_MARGIN)) {
-            state = WristState.POSITION_HOLDING;
-        } else {
-            state = WristState.POSITION_BUSY;
+        if (state == WristState.POSITION_HOLDING || state == WristState.POSITION_BUSY) {
+            // Update Wrist State depending on if current angle is within margin for target angle
+            if (new Degrees(wristMotor.getSelectedSensorPosition(PidConstants.WRIST_POS_SLOT_ID)).withinMargin(targetAngle, BACKLASH_MARGIN)) {
+                state = WristState.POSITION_HOLDING;
+            } else {
+                state = WristState.POSITION_BUSY;
+            }
         }
     }
 
@@ -207,12 +211,23 @@ public class Wrist implements Subsystem {
 
     public void setState(WristState state) {
         // Set target angle to be the current sensor position so it won't move/jump when motor output updates
-        targetAngle = new Degrees(nativeToDegree(wristMotor.getSelectedSensorPosition(PidConstants.WRIST_POS_SLOT_ID) / GEAR_RATIO));
+        targetAngle = getCurrentAngle();
         this.state = state;
+    }
+
+    public Degrees getCurrentAngle() {
+        return new Degrees(nativeToDegree(wristMotor.getSelectedSensorPosition(PidConstants.WRIST_POS_SLOT_ID) / GEAR_RATIO));
     }
 
     public double nativeToDegree(double nativeUnits) {
         return nativeUnits / 4096 * 360; //TODO check if this is correct
+    }
+
+    public void printStatus() {
+        System.out.println("===== Drivetrain =====");
+        System.out.println("Target Angle: " + targetAngle);
+        System.out.println("Current Angle: " + getCurrentAngle());
+        System.out.println();
     }
 
     /**

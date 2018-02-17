@@ -6,6 +6,6 @@ public class Degrees extends Unit {
     }
 
     public NativeUnits toNativeUnits() {
-        return new NativeUnits(getValue() / 360 * 4096);
+        return new NativeUnits(getValue() / 360. * 4096.);
     }
 }

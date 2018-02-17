@@ -1,9 +1,9 @@
 package frc.team5735.controllers.motionprofiling;
 
 import com.ctre.phoenix.motion.SetValueMotionProfile;
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import frc.team5735.controllers.Controller;
 import frc.team5735.subsystems.Drivetrain;
-import frc.team5735.utils.Trajectory;
 
 public class MotionProfileController implements Controller {
 
@@ -25,6 +25,9 @@ public class MotionProfileController implements Controller {
     }
 
     public void startProfile () {
+        drivetrain.clearMotionProfileTrajectories();
+        leftMotionProfile.reset();
+        rightMotionProfile.reset();
         leftMotionProfile.startMotionProfile();
         rightMotionProfile.startMotionProfile();
         state = MotionProfileControllerState.RUNNING;
@@ -37,6 +40,11 @@ public class MotionProfileController implements Controller {
 
     @Override
     public void runPeriodic() {
+        SetValueMotionProfile leftSetOutput = leftMotionProfile.getSetValue();
+        SetValueMotionProfile rightSetOutput = rightMotionProfile.getSetValue();
+        drivetrain.getLeftMotor().set(ControlMode.MotionProfile, leftSetOutput.value);
+        drivetrain.getRightMotor().set(ControlMode.MotionProfile, rightSetOutput.value);
+
         leftMotionProfile.control();
         rightMotionProfile.control();
 

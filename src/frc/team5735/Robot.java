@@ -2,6 +2,8 @@ package frc.team5735;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import frc.team5735.constants.RobotConstants;
+import frc.team5735.controllers.auto.AutoController;
+import frc.team5735.controllers.auto.StraightSwitchController;
 import frc.team5735.controllers.teleop.DrivetrainController;
 import frc.team5735.controllers.teleop.SubsystemController;
 import frc.team5735.subsystems.*;
@@ -15,8 +17,9 @@ public class Robot extends TimedRobot {
     private Wrist wrist;
 
     private SubsystemController subsystemController;
-
     private DrivetrainController drivetrainController;
+
+    AutoController autoController;
 
     @Override
     public void robotInit() {
@@ -40,6 +43,9 @@ public class Robot extends TimedRobot {
         elevator.runInit();
         elevatorIntake.runInit();
         wrist.runInit();
+
+        autoController = new StraightSwitchController();
+        autoController.runInit();
     }
 
     /**
@@ -52,6 +58,8 @@ public class Robot extends TimedRobot {
         elevator.runPeriodic();
         elevatorIntake.runPeriodic();
         wrist.runPeriodic();
+
+        autoController.runPeriodic();
     }
 
     /**
@@ -74,6 +82,12 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void teleopPeriodic() {
+        drivetrain.runPeriodic();
+        drivetrainIntake.runPeriodic();
+        elevator.runPeriodic();
+        elevatorIntake.runPeriodic();
+        wrist.runPeriodic();
+
         subsystemController.runPeriodic();
         drivetrainController.runPeriodic();
     }
@@ -96,6 +110,10 @@ public class Robot extends TimedRobot {
 
         subsystemController.disabledInit();
         drivetrainController.disabledInit();
+
+        if(autoController != null) {
+            autoController.disabledInit();
+        }
     }
 
 }

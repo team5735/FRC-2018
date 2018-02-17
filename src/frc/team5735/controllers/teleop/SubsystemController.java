@@ -31,13 +31,17 @@ public class SubsystemController implements Controller{
     @Override
     public void runPeriodic() {
         //WRIST STUFF
-        if (xboxController.getStartButtonPressed()) {
+        if (xboxController.getBackButtonPressed()) {
             wrist.zeroSensor();
         } else {
             wrist.setTargetAngle(new Degrees(wrist.getTargetAngle().getValue() + xboxController.getY(GenericHID.Hand.kLeft,0.1)));
         }
 
-        elevator.setTargetHeight(new Inches(elevator.getTargetHeight().getValue() + xboxController.getY(GenericHID.Hand.kRight,0.1)));
+        if(xboxController.getStartButtonPressed()) {
+            elevator.zeroSensor();
+        } else {
+            elevator.setTargetHeight(new Inches(elevator.getTargetHeight().getValue() + xboxController.getY(GenericHID.Hand.kRight,0.1)));
+        }
 
         //Elevator Stuff
 //        elevator.setTargetSpeed(xboxController.getY(GenericHID.Hand.kLeft,0.1));
@@ -66,6 +70,10 @@ public class SubsystemController implements Controller{
             elevatorIntake.setTargetSpeed(0.3);
         } else {
             elevatorIntake.setTargetSpeed(0);
+        }
+
+        if(xboxController.getYButtonPressed()){
+            wrist.printStatus();
         }
     }
 
