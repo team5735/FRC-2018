@@ -1,6 +1,7 @@
 package frc.team5735.controllers.auto;
 
 import frc.team5735.controllers.Controller;
+import frc.team5735.controllers.auto.AutoCommands.ElevatorCommand;
 import frc.team5735.controllers.auto.AutoCommands.MotionProfileCommand;
 import frc.team5735.controllers.motionprofiling.MotionProfileController;
 import frc.team5735.subsystems.*;
@@ -39,7 +40,7 @@ public class AutoController implements Controller {
 
         motionProfileController = new MotionProfileController();
         trajectory = new Trajectory("Straight Switch");
-        motionProfileController.loadProfile(trajectory);
+//        motionProfileController.loadProfile(trajectory);
         this.sequenceIndex = sequenceIndex;
     }
 
@@ -50,6 +51,7 @@ public class AutoController implements Controller {
         wrist.runInit();
         elevatorIntake.runInit();
         drivetrain.runInit();
+        drivetrainIntake.runInit();
         steps = AutoSequences.Sequences[sequenceIndex].length;
     }
 
@@ -72,10 +74,9 @@ public class AutoController implements Controller {
 
             if (commandType == 'M') { //Motion Profile or Move
                 command = new MotionProfileCommand(new Trajectory(commandInput));
-            }/*
-            else if(commandType == 'E') { //Elevator
-                command = new ElevatorCommand...
-            } else if (commandType == 'W') { //Wrist
+            } else if(commandType == 'E') { //Elevator
+                command = new ElevatorCommand(Integer.parseInt(commandInput));
+            } /*else if (commandType == 'W') { //Wrist
             
             }
             */

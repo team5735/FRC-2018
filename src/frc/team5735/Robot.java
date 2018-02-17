@@ -2,6 +2,8 @@ package frc.team5735;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import frc.team5735.constants.RobotConstants;
+import frc.team5735.controllers.auto.AutoCommand;
+import frc.team5735.controllers.auto.AutoController;
 import frc.team5735.controllers.teleop.DrivetrainController;
 import frc.team5735.controllers.teleop.SubsystemController;
 import frc.team5735.subsystems.*;
@@ -17,6 +19,8 @@ public class Robot extends TimedRobot {
     private SubsystemController subsystemController;
 
     private DrivetrainController drivetrainController;
+
+    private AutoController autoController;
 
     @Override
     public void robotInit() {
@@ -35,11 +39,14 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
-        drivetrain.runInit();
-        drivetrainIntake.runInit();
-        elevator.runInit();
-        elevatorIntake.runInit();
-        wrist.runInit();
+//        drivetrain.runInit();
+//        drivetrainIntake.runInit();
+//        elevator.runInit();
+//        elevatorIntake.runInit();
+//        wrist.runInit();
+        // actually selecting a sequence
+        autoController = new AutoController(0);
+        autoController.runInit();
     }
 
     /**
@@ -47,11 +54,12 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousPeriodic() {
-        drivetrain.runPeriodic();
-        drivetrainIntake.runPeriodic();
-        elevator.runPeriodic();
-        elevatorIntake.runPeriodic();
-        wrist.runPeriodic();
+//        drivetrain.runPeriodic();
+//        drivetrainIntake.runPeriodic();
+//        elevator.runPeriodic();
+//        elevatorIntake.runPeriodic();
+//        wrist.runPeriodic();
+        autoController.runPeriodic();
     }
 
     /**

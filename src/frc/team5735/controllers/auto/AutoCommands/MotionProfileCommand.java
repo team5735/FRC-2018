@@ -36,7 +36,7 @@ public class MotionProfileCommand implements AutoCommand{
         leftMotionProfile.control();
         rightMotionProfile.control();
 
-        if (leftMotionProfile.done && rightMotionProfile.done) {
+        if (leftMotionProfile.completedProfile && rightMotionProfile.completedProfile) {
             return true;
         } else {
             return false;

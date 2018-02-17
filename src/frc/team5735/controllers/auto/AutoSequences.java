@@ -5,7 +5,7 @@ import frc.team5735.controllers.motionprofiling.MotionProfile;
 
 public class AutoSequences {
     public static String [][] Sequences = {
-        { "Straight Switch","M.trajectoryA", "M.trajectoryB,E.lift", "M.trajectoryF" },
+        { "Straight Switch","M.straight-switch", "E.10"},
         { "M.trajectoryC", "M.trajectoryD"}
     };
 }
