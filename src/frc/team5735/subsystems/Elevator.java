@@ -234,6 +234,10 @@ public class Elevator implements Subsystem {
         SmartDashboard.putNumber("Height", targetHeight.getValue());
     }
 
+    public ElevatorState getState() {
+        return state;
+    }
+
     /**
      * Enum for elevator states
      */

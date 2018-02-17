@@ -18,6 +18,7 @@ public class AutoController implements Controller {
 
     private MotionProfileController motionProfileController;
     private Trajectory trajectory;
+
     private int sequenceIndex;
     private int steps;
     private int sequenceStep = 0;
@@ -25,6 +26,9 @@ public class AutoController implements Controller {
     private char commandType;
     private String commandInput;
     private AutoCommand command;
+    private String commandString;
+
+    private String[] commands;
 
     public AutoController(int sequenceIndex) {
         this.elevator = Elevator.getInstance();
@@ -47,8 +51,6 @@ public class AutoController implements Controller {
         elevatorIntake.runInit();
         drivetrain.runInit();
         steps = AutoSequences.Sequences[sequenceIndex].length;
-        commandType = AutoSequences.Sequences[sequenceIndex][sequenceStep].charAt(0);
-        commandInput = AutoSequences.Sequences[sequenceIndex][sequenceStep].substring(2);
     }
 
     @Override //TODO skechty
@@ -57,7 +59,17 @@ public class AutoController implements Controller {
     }
 
     public void runPeriodic(int sequenceStep) {
-        if (!startedCommand){
+        if (!startedCommand) {
+            commandString = AutoSequences.Sequences[sequenceIndex][sequenceStep];
+            if (commandString.contains(",")) {
+                commands = commandString.split("\\,");
+                command = new AutoParallel(commands);
+            } else {
+                commandType = commandString.charAt(0);
+                commandInput = commandString.substring(2);
+                startedCommand = true;
+            }
+
             if (commandType == 'M') { //Motion Profile or Move
                 command = new MotionProfileCommand(new Trajectory(commandInput));
             }/*
@@ -67,7 +79,6 @@ public class AutoController implements Controller {
             
             }
             */
-            startedCommand = true;
         } else if(command.runPeriodic()) {
             sequenceStep++;
             startedCommand = false;
