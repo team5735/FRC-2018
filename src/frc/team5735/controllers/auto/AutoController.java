@@ -21,7 +21,7 @@ public class AutoController implements Controller {
 
     private int sequenceIndex;
     private int steps;
-    private int sequenceStep = 0;
+    private int sequenceStep = 1;
     private boolean startedCommand = false;
     private char commandType;
     private String commandInput;
@@ -45,7 +45,7 @@ public class AutoController implements Controller {
 
     @Override
     public void runInit() {
-        sequenceStep = 0;
+        sequenceStep = 1; // starts at index 1 because 0 is name
         elevator.runInit();
         wrist.runInit();
         elevatorIntake.runInit();
