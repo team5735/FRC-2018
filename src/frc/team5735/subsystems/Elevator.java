@@ -34,7 +34,7 @@ public class Elevator implements Subsystem {
     private static final int SPROCKET_TOOTH_COUNT = 22;
     private static final double LENGTH_OF_LINK = 0.25;
 
-    private static final int ENCODER_TICKS_PER_REVOLUTION = 2048;   //TODO CHECK this?
+    private static final int ENCODER_TICKS_PER_REVOLUTION = 4096;   //TODO CHECK this?
 
     private static final double ZEROING_SPEED = -0.1;      // Percent output value for zeroing
     private static final double DEFAULT_SPEED_LIMIT = 0.80;  // Factor to limit speed when in DEFAULT state
@@ -102,7 +102,7 @@ public class Elevator implements Subsystem {
         state = DEFAULT_ENABLE_STATE;
 
         if(!hasZeroed && state == ElevatorState.POSITION_HOLDING) {
-//            zeroSensor();
+            zeroSensor();
         }
     }
 
@@ -111,6 +111,7 @@ public class Elevator implements Subsystem {
      */
     @Override
     public void runPeriodic() {
+//        System.out.println("Target:" +targetHeight.getValue() + "Current:" + encoderTicksToElevatorInches(elevatorMotor.getSelectedSensorPosition(0)).getValue());
         if (state == ElevatorState.ZEROING) {                                                          // ZEROING STATE
             // UPDATE MOTOR OUTPUT !!!
             elevatorMotor.set(ControlMode.PercentOutput,ZEROING_SPEED);
@@ -163,11 +164,13 @@ public class Elevator implements Subsystem {
     }
 
     public void updateState () {
-        // Update Elevator State depending on if current height is within margin for target height
-        if (encoderTicksToElevatorInches(elevatorMotor.getSelectedSensorPosition(0)).withinMargin(targetHeight, BACKLASH_MARGIN)) {
-            state = ElevatorState.POSITION_HOLDING;
-        } else {
-            state = ElevatorState.POSITION_BUSY;
+        if (state == ElevatorState.POSITION_HOLDING || state == ElevatorState.POSITION_BUSY) {
+            // Update Elevator State depending on if current height is within margin for target height
+            if (encoderTicksToElevatorInches(elevatorMotor.getSelectedSensorPosition(0)).withinMargin(targetHeight, BACKLASH_MARGIN)) {
+                state = ElevatorState.POSITION_HOLDING;
+            } else {
+                state = ElevatorState.POSITION_BUSY;
+            }
         }
     }
 
