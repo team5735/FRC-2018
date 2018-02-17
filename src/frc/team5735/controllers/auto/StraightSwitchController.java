@@ -7,7 +7,7 @@ import frc.team5735.subsystems.*;
 import frc.team5735.utils.Trajectory;
 import frc.team5735.utils.units.Degrees;
 import frc.team5735.utils.units.Inches;
-
+/*
 public class StraightSwitchController extends AutoController {
 
     private int step;
@@ -42,22 +42,22 @@ public class StraightSwitchController extends AutoController {
 
     @Override
     public void runPeriodic() {
-        motionProfileController.startProfile();
-        if (step == 0 &&
-                motionProfileController.getState() == MotionProfileController.MotionProfileControllerState.FINISHED &&
-                elevator.setTargetHeight(new Inches(10)) == Elevator.ElevatorState.POSITION_HOLDING &&
-                wrist.setTargetAngle(new Degrees(-20)) == Wrist.WristState.POSITION_HOLDING) {
-            //Turn on intake motor to spit out cube
-            elevatorIntake.setTargetSpeed( -1);
-
-            step ++;
-        }else if (step == 1 && delay(1000)){
-            //Turn off intake motor
-            elevatorIntake.setTargetSpeed(0);
-            isFinished = true;
-
-            step ++;
-        }
+//        motionProfileController.startProfile();
+//        if (step == 0 &&
+//                motionProfileController.getState() == MotionProfileController.MotionProfileControllerState.FINISHED &&
+//                elevator.setTargetHeight(new Inches(10)) == Elevator.ElevatorState.POSITION_HOLDING &&
+//                wrist.setTargetAngle(new Degrees(-20)) == Wrist.WristState.POSITION_HOLDING) {
+//            //Turn on intake motor to spit out cube
+//            elevatorIntake.setTargetSpeed( -1);
+//
+//            step ++;
+//        }else if (step == 1 && delay(1000)){
+//            //Turn off intake motor
+//            elevatorIntake.setTargetSpeed(0);
+//            isFinished = true;
+//
+//            step ++;
+//        }
 
     }
 
@@ -65,4 +65,4 @@ public class StraightSwitchController extends AutoController {
     public void disabledInit() {
 
     }
-}
+}*/

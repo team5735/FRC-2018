@@ -71,6 +71,7 @@ public class MotionProfile {
      * every 10ms.
      */
     public int pointsPushed = 0;
+    public boolean done = false;
 
 
     class PeriodicRunnable implements Runnable {
@@ -170,6 +171,7 @@ public class MotionProfile {
                         setValue = SetValueMotionProfile.Disable;
                         if ((profile.length - pointsPushed) < 512 && (profile.length - pointsPushed) > 0) {
                             pointsPushed = startFilling(profile, pointsPushed, profile.length - pointsPushed) - 1;
+                            done = true;
                         } else {
                             pointsPushed = startFilling(profile, pointsPushed, 512);
                         }
