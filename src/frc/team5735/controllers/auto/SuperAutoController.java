@@ -42,27 +42,33 @@ public class SuperAutoController extends AutoController {
 
             boolean isStepFinished = true;
             for (AutoCommand command : stepCommands) {
-                if (command.getSubsystem() instanceof Wrist) {
-                    wrist.setTargetAngle((Degrees) command.getValue());
-                    isStepFinished = isStepFinished && wrist.getState() == Wrist.WristState.POSITION_HOLDING;
-                } else if (command.getSubsystem() instanceof Elevator) {
-                    elevator.setTargetHeight((Inches) command.getValue());
-                    isStepFinished = isStepFinished && elevator.getState() == Elevator.ElevatorState.POSITION_HOLDING;
-                } else if (command.getSubsystem() instanceof ElevatorIntake) {
-                    elevatorIntake.setTargetSpeed((Double) command.getValue());
-                } else if (command.getSubsystem() instanceof DrivetrainIntake) {
-                    drivetrainIntake.setTargetSpeed((Double) command.getValue());
-                } else if (command.getSubsystem() instanceof DrivetrainIntake) {
-                    drivetrainIntake.setTargetSpeed((Double) command.getValue());
-                } else if (command.getSubsystem() instanceof Drivetrain) {
-                    if (motionProfileController.getState() == MotionProfileController.MotionProfileControllerState.EMPTY) {
-                        motionProfileController.loadProfile((Trajectory) command.getValue());
-                        motionProfileController.startProfile();
-                    }
-                    motionProfileController.runPeriodic();
-                    isStepFinished = isStepFinished && motionProfileController.getState() == MotionProfileController.MotionProfileControllerState.FINISHED;
+                if(command.getSubsystem() == null) {
+                    isStepFinished = isStepFinished && delay((int)command.getValue()); //assuming command purely used for delay
                 } else {
-                    isStepFinished = isStepFinished && delay((int)command.getValue());
+                    switch (command.getSubsystem().getClass().getSimpleName()) {
+                        case "Wrist":
+                            wrist.setTargetAngle((Degrees) command.getValue());
+                            isStepFinished = isStepFinished && wrist.getState() == Wrist.WristState.POSITION_HOLDING;
+                            break;
+                        case "Elevator":
+                            elevator.setTargetHeight((Inches) command.getValue());
+                            isStepFinished = isStepFinished && elevator.getState() == Elevator.ElevatorState.POSITION_HOLDING;
+                            break;
+                        case "ElevatorIntake":
+                            elevatorIntake.setTargetSpeed((Double) command.getValue());
+                            break;
+                        case "DrivetrainIntake":
+                            drivetrainIntake.setTargetSpeed((Double) command.getValue());
+                            break;
+                        case "Drivetrain":
+                            if (motionProfileController.getState() == MotionProfileController.MotionProfileControllerState.EMPTY) {
+                                motionProfileController.loadProfile((Trajectory) command.getValue());
+                                motionProfileController.startProfile();
+                            }
+                            motionProfileController.runPeriodic();
+                            isStepFinished = isStepFinished && motionProfileController.getState() == MotionProfileController.MotionProfileControllerState.FINISHED;
+                            break;
+                    }
                 }
             }
 
