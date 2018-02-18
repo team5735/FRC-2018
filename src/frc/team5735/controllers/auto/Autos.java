@@ -66,7 +66,7 @@ public class Autos {
     public static AutoCommand[][] homeLeftToScaleLeft = {
             {
                     new AutoCommand(Drivetrain.getInstance(), new Trajectory("")),
-                    new AutoCommand(Wrist.getInstance(), new Degrees(-40)),
+                    new AutoCommand(Wrist.getInstance(), new Degrees(-80)),
                     new AutoCommand(Elevator.getInstance(), new Inches(78)),
                     new AutoCommand(ElevatorIntake.getInstance(), 0.42)
             },
@@ -84,7 +84,7 @@ public class Autos {
     public static AutoCommand[][] homeLeftToScaleRight = {
             {
                     new AutoCommand(Drivetrain.getInstance(), new Trajectory("")),
-                    new AutoCommand(Wrist.getInstance(), new Degrees(-40)),
+                    new AutoCommand(Wrist.getInstance(), new Degrees(-80)),
                     new AutoCommand(Elevator.getInstance(), new Inches(78)),
                     new AutoCommand(ElevatorIntake.getInstance(), 0.42)
             },
