@@ -47,7 +47,7 @@ public class Robot extends TimedRobot {
         elevatorIntake.runInit();
         wrist.runInit();
 
-        autoController = new SuperAutoController(Autos.straightSwitch);
+        autoController = new SuperAutoController(GameDataController.findAppropriateTrajectory());
         autoController.runInit();
     }
 
