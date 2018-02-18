@@ -33,7 +33,7 @@ public class SubsystemController implements Controller{
     public void runPeriodic() {
         //WRIST STUFF
         if (wrist.getState() == Wrist.WristState.DEFAULT) {
-            wrist.setTargetSpeed(xboxController.getY(GenericHID.Hand.kLeft,0.1));
+            wrist.setTargetSpeed(xboxController.getY(GenericHID.Hand.kLeft,0.2));
         }else {
             if (xboxController.getBackButtonPressed()) {
                 wrist.zeroSensor();
@@ -48,7 +48,7 @@ public class SubsystemController implements Controller{
 
         //ELEVATOR STUFF
         if (elevator.getState() == Elevator.ElevatorState.DEFAULT) {
-            elevator.setTargetSpeed(xboxController.getY(GenericHID.Hand.kRight,0.1));
+            elevator.setTargetSpeed(xboxController.getY(GenericHID.Hand.kRight,0.2));
         } else {
             if(xboxController.getStartButtonPressed()) {
                 elevator.zeroSensor();

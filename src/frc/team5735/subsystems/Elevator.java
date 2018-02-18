@@ -211,6 +211,7 @@ public class Elevator implements Subsystem {
 
     /**
      * Sets target speed
+     * @param targetSpeed Target speed as PercentOutput
      */
     public void setTargetSpeed(double targetSpeed) {
         this.targetSpeed = targetSpeed;
