@@ -15,7 +15,6 @@ public class MotionProfileController implements Controller {
     public MotionProfileController() {
         state = MotionProfileControllerState.EMPTY;
         this.drivetrain = Drivetrain.getInstance();
-
     }
 
     public void loadProfile(Trajectory trajectory) {
@@ -61,6 +60,13 @@ public class MotionProfileController implements Controller {
     @Override
     public void disabledInit() {
 
+    }
+
+    public void empty(){
+        drivetrain.clearMotionProfileTrajectories();
+        leftMotionProfile = null;
+        rightMotionProfile = null;
+        state = MotionProfileControllerState.EMPTY;
     }
 
     public enum MotionProfileControllerState {

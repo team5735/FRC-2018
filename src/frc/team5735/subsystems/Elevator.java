@@ -2,10 +2,12 @@ package frc.team5735.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team5735.constants.PidConstants;
 import frc.team5735.constants.RobotConstants;
+import frc.team5735.utils.SimpleNetworkTable;
 import frc.team5735.utils.units.Inches;
 
 /**
@@ -25,10 +27,10 @@ public class Elevator implements Subsystem {
 
     // ===== Constants =====
     private static final Inches
-            BACKLASH_MARGIN = new Inches(1);         // Margin of error to determine states
+            BACKLASH_MARGIN = new Inches(5);         // Margin of error to determine states
     private static final Inches
             LOWER_BOUND = new Inches(0),             // Lowest position of the Elevator
-            UPPER_BOUND = new Inches(43);            // Highest position of the Elevator
+            UPPER_BOUND = new Inches(62);            // Highest position of the Elevator
 
     private static final double GEAR_RATIO = 4.0 / 3.0;           // Gear ratio between motor and Elevator
     private static final int SPROCKET_TOOTH_COUNT = 22;
@@ -37,7 +39,7 @@ public class Elevator implements Subsystem {
     private static final int ENCODER_TICKS_PER_REVOLUTION = 4096;   //TODO CHECK this?
 
     private static final double ZEROING_SPEED = -0.1;      // Percent output value for zeroing
-    private static final double DEFAULT_SPEED_LIMIT = 0.80;  // Factor to limit speed when in DEFAULT state
+    private static final double DEFAULT_SPEED_LIMIT = 0.50;  // Factor to limit speed when in DEFAULT state
     private static final ElevatorState DEFAULT_ENABLE_STATE = ElevatorState.POSITION_HOLDING;
 
     // ===== Instance Fields =====
@@ -59,6 +61,9 @@ public class Elevator implements Subsystem {
         initMotors();
         isLowerLimitSwitchPressed = false;
         hasZeroed = false;
+        targetHeight = encoderTicksToElevatorInches(elevatorMotor.getSelectedSensorPosition(0));
+
+        putStatus();
     }
 
     /**
@@ -76,16 +81,22 @@ public class Elevator implements Subsystem {
         elevatorMotor.overrideLimitSwitchesEnable(true);
 
         // Configure voltage limits TODO Check over these limits
-        elevatorMotor.configNominalOutputForward(+0.0f, 0);
-        elevatorMotor.configNominalOutputReverse(-0.0f, 0);
-        elevatorMotor.configPeakOutputForward(+12.0f, 0);
-        elevatorMotor.configPeakOutputReverse(-12.0f, 0);
+        elevatorMotor.configNominalOutputForward(0, 0);
+        elevatorMotor.configNominalOutputReverse(0, 0);
+        elevatorMotor.configPeakOutputForward(1, 0);
+        elevatorMotor.configPeakOutputReverse(-1, 0);
+//        elevatorMotor.configClosedloopRamp(2,0);
 
         // Configure PID constants TODO Continue to tune pid
+        elevatorMotor.selectProfileSlot(PidConstants.ELEVATOR_POS_SLOT_ID, 0);
         elevatorMotor.config_kF(PidConstants.ELEVATOR_POS_SLOT_ID, PidConstants.ELEVATOR_POS_KF, 100);    // Not needed for position mode
         elevatorMotor.config_kP(PidConstants.ELEVATOR_POS_SLOT_ID, PidConstants.ELEVATOR_POS_KP, 100);    // Tested with 0.2 (too weak)
         elevatorMotor.config_kI(PidConstants.ELEVATOR_POS_SLOT_ID, PidConstants.ELEVATOR_POS_KI, 100);
         elevatorMotor.config_kD(PidConstants.ELEVATOR_POS_SLOT_ID, PidConstants.ELEVATOR_POS_KD, 100);
+
+        elevatorMotor.configMotionCruiseVelocity(800, 0);
+        elevatorMotor.configMotionAcceleration(350, 0);
+        elevatorMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, 0);
     }
 
     /**
@@ -111,7 +122,7 @@ public class Elevator implements Subsystem {
      */
     @Override
     public void runPeriodic() {
-//        System.out.println("Target:" +targetHeight.getValue() + "Current:" + encoderTicksToElevatorInches(elevatorMotor.getSelectedSensorPosition(0)).getValue());
+        putStatus();
         if (state == ElevatorState.ZEROING) {                                                          // ZEROING STATE
             // UPDATE MOTOR OUTPUT !!!
             elevatorMotor.set(ControlMode.PercentOutput,ZEROING_SPEED);
@@ -122,7 +133,7 @@ public class Elevator implements Subsystem {
             }
         } else if (state == ElevatorState.POSITION_HOLDING || state == ElevatorState.POSITION_BUSY){      // POSITION STATES
             // UPDATE MOTOR OUTPUT !!!
-            elevatorMotor.set(ControlMode.Position, elevatorInchesToEncoderTicks(targetHeight));
+            elevatorMotor.set(ControlMode.MotionMagic, elevatorInchesToEncoderTicks(targetHeight));
 
             // Check if lower limit switch is hit
             checkLowerLimitSwitch();
@@ -226,12 +237,32 @@ public class Elevator implements Subsystem {
         return new Inches((encoderTicks / ENCODER_TICKS_PER_REVOLUTION) * GEAR_RATIO * SPROCKET_TOOTH_COUNT * LENGTH_OF_LINK * 2);
     }
 
-    public void printInformation(){
-        SmartDashboard.putNumber("Voltage", elevatorMotor.getMotorOutputVoltage());
-        SmartDashboard.putNumber("Position: ", elevatorMotor.getSelectedSensorPosition(0));
-        SmartDashboard.putNumber("Velocity: ", elevatorMotor.getSelectedSensorVelocity(0));
-        SmartDashboard.putNumber("Output", elevatorMotor.getMotorOutputPercent());
-        SmartDashboard.putNumber("Height", targetHeight.getValue());
+    public Inches getCurrentHeight(){
+        return encoderTicksToElevatorInches(elevatorMotor.getSelectedSensorPosition(0));
+    }
+
+
+    public void printStatus() {
+        System.out.println("===== Elevator =====");
+        System.out.println("Target Height: " + targetHeight.getValue());
+        System.out.println("Current Height: " + getCurrentHeight().getValue());
+        System.out.println("State: " + getState());
+        System.out.println();
+    }
+
+    public void putStatus() {
+        SimpleNetworkTable.setDouble("eTargetHeight", targetHeight.getValue());
+        SimpleNetworkTable.setDouble("eCurrentHeight", getCurrentHeight().getValue());
+        SimpleNetworkTable.setDouble("eSensorPosition", elevatorMotor.getSelectedSensorPosition(0));
+        SimpleNetworkTable.setDouble("eSensorVelocity", elevatorMotor.getSelectedSensorVelocity(0));
+
+        SimpleNetworkTable.setDouble("ePercent", elevatorMotor.getMotorOutputPercent());
+        SimpleNetworkTable.setDouble("eVoltage", elevatorMotor.getMotorOutputVoltage());
+        SimpleNetworkTable.setDouble("eCurrent", elevatorMotor.getOutputCurrent());
+    }
+
+    public ElevatorState getState() {
+        return state;
     }
 
     /**

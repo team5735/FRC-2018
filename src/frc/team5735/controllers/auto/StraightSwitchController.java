@@ -37,21 +37,45 @@ public class StraightSwitchController extends AutoController {
     public void runPeriodic() {
         motionProfileController.runPeriodic();
 
-        if (step == 0 &&
-                motionProfileController.getState() == MotionProfileController.MotionProfileControllerState.FINISHED &&
-                elevator.setTargetHeight(new Inches(10)) == Elevator.ElevatorState.POSITION_HOLDING &&
-                wrist.setTargetAngle(new Degrees(-20)) == Wrist.WristState.POSITION_HOLDING) {
-            //Turn on intake motor to spit out cube
-            elevatorIntake.setTargetSpeed( -1);
+        boolean moveOn = true;
 
-            step ++;
-        }else if (step == 1 && delay(1000)){
+        if (step == 0) {
+            motionProfileController.runPeriodic();
+            elevator.setTargetHeight(new Inches(24));
+            wrist.setTargetAngle(new Degrees(-40));
+
+            if (motionProfileController.getState() == MotionProfileController.MotionProfileControllerState.FINISHED &&
+                    elevator.getState() == Elevator.ElevatorState.POSITION_HOLDING &&
+                    wrist.getState() == Wrist.WristState.POSITION_HOLDING) {
+                elevatorIntake.setTargetSpeed( -1);
+
+                step ++;
+            }
+        }else if (step == 1 && delay(1000)) {
             //Turn off intake motor
             elevatorIntake.setTargetSpeed(0);
             isFinished = true;
 
             step ++;
         }
+
+//        if (step == 0 &&
+//                motionProfileController.getState() == MotionProfileController.MotionProfileControllerState.FINISHED &&
+//                elevator.setTargetHeight(new Inches(24)) == Elevator.ElevatorState.POSITION_HOLDING &&
+//                wrist.setTargetAngle(new Degrees(-40)) == Wrist.WristState.POSITION_HOLDING) {
+//            //Turn on intake motor to spit out cube
+//            elevatorIntake.setTargetSpeed( -1);
+//
+//            step ++;
+//        }else if (step == 1 && delay(1000)){
+//            //Turn off intake motor
+//            elevatorIntake.setTargetSpeed(0);
+//            isFinished = true;
+//
+//            step ++;
+//        }
+
+//        if(moveOn)
 
     }
 

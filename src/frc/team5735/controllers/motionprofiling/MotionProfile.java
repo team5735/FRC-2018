@@ -162,7 +162,7 @@ public class MotionProfile {
              * progress, and possibly interrupting MPs if thats what you want to
              * do.
              */
-            System.out.println(state);
+//            System.out.println(state);
             switch (state) {
                 case 0: /* wait for application to tell us to start an MP */
 
@@ -228,7 +228,7 @@ public class MotionProfile {
             pos = talon.getActiveTrajectoryPosition();
             vel = talon.getActiveTrajectoryVelocity();
             /* printfs and/or logging */
-            Instrumentation.process(status, pos, vel, heading);
+//            Instrumentation.process(status, pos, vel, heading);
         }
     }
     /**
@@ -258,7 +258,7 @@ public class MotionProfile {
         /* did we get an underrun condition since last time we checked ? */
         if (status.hasUnderrun) {
             /* better log it so we know about it */
-            Instrumentation.OnUnderrun();
+//            Instrumentation.OnUnderrun();
             /*
              * clear the error. This flag does not auto clear, this way
              * we never miss logging it.

@@ -23,7 +23,7 @@ public class DrivetrainController implements Controller {
 
     @Override
     public void runPeriodic() {
-        drivetrain.curvatureDrive(0.5*xboxController.getY(GenericHID.Hand.kRight,0.1), 0.5*xboxController.getX(GenericHID.Hand.kLeft,0.1),true );
+        drivetrain.curvatureDrive(0.5*xboxController.getY(GenericHID.Hand.kRight,0.1), 0.5*xboxController.getX(GenericHID.Hand.kLeft,0.1),xboxController.getTriggerAxis(GenericHID.Hand.kLeft) > 0);
     }
 
     @Override

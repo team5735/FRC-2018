@@ -21,16 +21,16 @@ public class PidConstants {
     //Wrist - Closed Loop Position (Slot 0)
     public static final double
             WRIST_POS_KF = 0,
-            WRIST_POS_KP = 0.35,
+            WRIST_POS_KP = 0.15,
             WRIST_POS_KI = 0.0001,
-            WRIST_POS_KD = 0;
+            WRIST_POS_KD = 0.1;
     public static final int WRIST_POS_SLOT_ID = 0;
 
     //Elevator - Closed Loop Position (Slot 0)
     public static final double
-            ELEVATOR_POS_KF = 0,
-            ELEVATOR_POS_KP = 0.36,
-            ELEVATOR_POS_KI = 0.0001,
+            ELEVATOR_POS_KF = (0.5 * 1023) / 485, //
+            ELEVATOR_POS_KP = 0.09,
+            ELEVATOR_POS_KI = 0.00008,
             ELEVATOR_POS_KD = 0;
     public static final int ELEVATOR_POS_SLOT_ID = 0;
 }

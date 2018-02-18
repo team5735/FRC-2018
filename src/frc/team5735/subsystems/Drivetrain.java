@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.drive.RobotDriveBase;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 import frc.team5735.constants.PidConstants;
 import frc.team5735.constants.RobotConstants;
+import frc.team5735.utils.SimpleNetworkTable;
 
 public class Drivetrain implements Subsystem {
     // ===== Singleton =====
@@ -38,6 +39,7 @@ public class Drivetrain implements Subsystem {
     // ===== Methods =====
     private Drivetrain() {
         initMotors();
+        putStatus();
     }
 
     private void initMotors() {
@@ -105,6 +107,7 @@ public class Drivetrain implements Subsystem {
     public void runPeriodic() {
         leftFrontMotor.set(ControlMode.PercentOutput, leftSideTargetOutput);
         rightFrontMotor.set(ControlMode.PercentOutput, rightSideTargetOutput);
+        putStatus();
     }
 
     @Override
@@ -220,5 +223,21 @@ public class Drivetrain implements Subsystem {
         System.out.println("Right Velocity: " + rightFrontMotor.getSelectedSensorVelocity(0));
         System.out.println("Left Velocity: " + leftFrontMotor.getSelectedSensorVelocity(0));
         System.out.println();
+    }
+
+    public void putStatus() {
+        SimpleNetworkTable.setDouble("dtLSensorPosition", leftFrontMotor.getSelectedSensorPosition(0));
+        SimpleNetworkTable.setDouble("dtLSensorVelocity", leftFrontMotor.getSelectedSensorVelocity(0));
+
+        SimpleNetworkTable.setDouble("dtLPercent", leftFrontMotor.getMotorOutputPercent());
+        SimpleNetworkTable.setDouble("dtLVoltage", leftFrontMotor.getMotorOutputVoltage());
+        SimpleNetworkTable.setDouble("dtLCurrent", leftFrontMotor.getOutputCurrent());
+
+        SimpleNetworkTable.setDouble("dtRSensorPosition", rightFrontMotor.getSelectedSensorPosition(0));
+        SimpleNetworkTable.setDouble("dtRSensorVelocity", rightFrontMotor.getSelectedSensorVelocity(0));
+
+        SimpleNetworkTable.setDouble("dtRPercent", rightFrontMotor.getMotorOutputPercent());
+        SimpleNetworkTable.setDouble("dtRVoltage", rightFrontMotor.getMotorOutputVoltage());
+        SimpleNetworkTable.setDouble("dtRCurrent", rightFrontMotor.getOutputCurrent());
     }
 }

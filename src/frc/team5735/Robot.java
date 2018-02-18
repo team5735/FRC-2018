@@ -2,11 +2,12 @@ package frc.team5735;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import frc.team5735.constants.RobotConstants;
-import frc.team5735.controllers.auto.AutoController;
-import frc.team5735.controllers.auto.StraightSwitchController;
+import frc.team5735.controllers.auto.*;
+import frc.team5735.controllers.motionprofiling.Trajectory;
 import frc.team5735.controllers.teleop.DrivetrainController;
 import frc.team5735.controllers.teleop.SubsystemController;
 import frc.team5735.subsystems.*;
+import frc.team5735.utils.SimpleNetworkTable;
 
 public class Robot extends TimedRobot {
 
@@ -19,10 +20,12 @@ public class Robot extends TimedRobot {
     private SubsystemController subsystemController;
     private DrivetrainController drivetrainController;
 
-    AutoController autoController;
+    private AutoController autoController;
 
     @Override
     public void robotInit() {
+        new SimpleNetworkTable();
+
         drivetrain = Drivetrain.getInstance();
         drivetrainIntake = DrivetrainIntake.getInstance();
         elevator = Elevator.getInstance();
@@ -44,7 +47,7 @@ public class Robot extends TimedRobot {
         elevatorIntake.runInit();
         wrist.runInit();
 
-        autoController = new StraightSwitchController();
+        autoController = new SuperAutoController(Autos.straightSwitch);
         autoController.runInit();
     }
 
