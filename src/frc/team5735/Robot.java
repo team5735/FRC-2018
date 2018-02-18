@@ -1,6 +1,11 @@
 package frc.team5735;
 
+import com.sun.org.apache.xpath.internal.SourceTree;
+import com.sun.org.apache.xpath.internal.operations.String;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team5735.constants.RobotConstants;
 import frc.team5735.controllers.auto.*;
 import frc.team5735.controllers.motionprofiling.Trajectory;
@@ -22,9 +27,27 @@ public class Robot extends TimedRobot {
 
     private AutoController autoController;
 
+    public static SendableChooser autoStartPositionChooser;
+    public static SendableChooser autoPriorityChooser;
+
     @Override
     public void robotInit() {
         new SimpleNetworkTable();
+        autoStartPositionChooser = new SendableChooser();
+        autoStartPositionChooser.addDefault("Default", null);
+        autoStartPositionChooser.addObject("Start Left", GameDataController.StartingPosition.LEFT);
+        autoStartPositionChooser.addObject("Start Center", GameDataController.StartingPosition.CENTER);
+        autoStartPositionChooser.addObject("Start Right", GameDataController.StartingPosition.RIGHT);
+        SmartDashboard.putData("Auto Start Position", autoStartPositionChooser);
+
+        autoPriorityChooser = new SendableChooser();
+        autoPriorityChooser.addDefault("Default", null);
+        autoPriorityChooser.addObject("Switch", GameDataController.Priority.SWITCH);
+        autoPriorityChooser.addObject("Scale", GameDataController.Priority.SCALE);
+        autoPriorityChooser.addObject("None", GameDataController.Priority.NONE);
+        SmartDashboard.putData("Auto Priority", autoPriorityChooser);
+
+        SmartDashboard.putNumber("Delay", 0);
 
         drivetrain = Drivetrain.getInstance();
         drivetrainIntake = DrivetrainIntake.getInstance();
@@ -47,8 +70,13 @@ public class Robot extends TimedRobot {
         elevatorIntake.runInit();
         wrist.runInit();
 
-        autoController = new SuperAutoController(GameDataController.findAppropriateTrajectory());
-        autoController.runInit();
+        GameDataController.updateData();
+        if(GameDataController.allFieldsPopulated) {
+            autoController = new SuperAutoController(GameDataController.findAppropriateTrajectory());
+            autoController.runInit();
+        } else {
+            System.err.println("Not all necessary autonomous parameters populated yet!");
+        }
     }
 
     /**
@@ -62,7 +90,9 @@ public class Robot extends TimedRobot {
         elevatorIntake.runPeriodic();
         wrist.runPeriodic();
 
-        autoController.runPeriodic();
+        if(autoController != null) {
+            autoController.runPeriodic();
+        }
     }
 
     /**
@@ -117,6 +147,11 @@ public class Robot extends TimedRobot {
         if(autoController != null) {
             autoController.disabledInit();
         }
+    }
+
+    @Override
+    public void disabledPeriodic() {
+
     }
 
 }

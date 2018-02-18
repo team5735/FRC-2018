@@ -60,7 +60,7 @@ public class TrajectoryParser {
                 points[i] = point;
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Exception during trajectory point initialization. Do the CSV files exist?");
         } finally {
             if (in != null) {
                 try {

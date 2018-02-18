@@ -2,7 +2,62 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3759321f-c24f-45e4-a8fc-3c5fcd669a43" name="Default" comment="">
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/ant.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Deploy_Robot.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/build/frc/team5735/Robot.class" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/build/frc/team5735/constants/PidConstants.class" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/build/frc/team5735/constants/RobotConstants.class" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/build/frc/team5735/controllers/Controller.class" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/build/frc/team5735/controllers/CustomXbox.class" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/build/frc/team5735/controllers/auto/AutoCommand.class" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/build/frc/team5735/controllers/auto/AutoController.class" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/build/frc/team5735/controllers/auto/Autos.class" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/build/frc/team5735/controllers/auto/GameDataController$1.class" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/build/frc/team5735/controllers/auto/GameDataController$Priority.class" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/build/frc/team5735/controllers/auto/GameDataController$StartingPosition.class" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/build/frc/team5735/controllers/auto/GameDataController.class" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/build/frc/team5735/controllers/auto/RightDirectScaleController.class" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/build/frc/team5735/controllers/auto/StraightSwitchController.class" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/build/frc/team5735/controllers/auto/SuperAutoController.class" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/build/frc/team5735/controllers/motionprofiling/Instrumentation.class" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/build/frc/team5735/controllers/motionprofiling/MotionProfile$PeriodicRunnable.class" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/build/frc/team5735/controllers/motionprofiling/MotionProfile.class" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/build/frc/team5735/controllers/motionprofiling/MotionProfileController$MotionProfileControllerState.class" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/build/frc/team5735/controllers/motionprofiling/MotionProfileController.class" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/build/frc/team5735/controllers/motionprofiling/Trajectory.class" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/build/frc/team5735/controllers/motionprofiling/TrajectoryParser$CSV_FORMAT.class" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/build/frc/team5735/controllers/motionprofiling/TrajectoryParser.class" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/build/frc/team5735/controllers/teleop/DrivetrainController.class" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/build/frc/team5735/controllers/teleop/SubsystemController.class" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/build/frc/team5735/subsystems/Drivetrain.class" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/build/frc/team5735/subsystems/DrivetrainIntake.class" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/build/frc/team5735/subsystems/Elevator$ElevatorState.class" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/build/frc/team5735/subsystems/Elevator.class" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/build/frc/team5735/subsystems/ElevatorIntake.class" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/build/frc/team5735/subsystems/Subsystem.class" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/build/frc/team5735/subsystems/Wrist$WristState.class" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/build/frc/team5735/subsystems/Wrist.class" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/build/frc/team5735/utils/SimpleNetworkTable.class" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/build/frc/team5735/utils/units/Degrees.class" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/build/frc/team5735/utils/units/ElevatorInches.class" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/build/frc/team5735/utils/units/Inches.class" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/build/frc/team5735/utils/units/NativeUnits.class" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/build/frc/team5735/utils/units/Unit.class" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/build/jars/CTRE_Phoenix.jar" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/build/jars/Pathfinder-Java.jar" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/build/jars/WPILib.jar" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/build/jars/commons-csv-1.5.jar" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/build/jars/cscore.jar" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/build/jars/ntcore.jar" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/build/jars/opencv.jar" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/build/jars/wpiutil.jar" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/dist/FRCUserProgram.jar" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change beforePath="$PROJECT_DIR$/src/frc/team5735/Robot.java" afterPath="$PROJECT_DIR$/src/frc/team5735/Robot.java" />
       <change beforePath="$PROJECT_DIR$/src/frc/team5735/controllers/auto/Autos.java" afterPath="$PROJECT_DIR$/src/frc/team5735/controllers/auto/Autos.java" />
+      <change beforePath="$PROJECT_DIR$/src/frc/team5735/controllers/auto/GameDataController.java" afterPath="$PROJECT_DIR$/src/frc/team5735/controllers/auto/GameDataController.java" />
+      <change beforePath="$PROJECT_DIR$/src/frc/team5735/controllers/motionprofiling/Trajectory.java" afterPath="$PROJECT_DIR$/src/frc/team5735/controllers/motionprofiling/Trajectory.java" />
+      <change beforePath="$PROJECT_DIR$/src/frc/team5735/controllers/motionprofiling/TrajectoryParser.java" afterPath="$PROJECT_DIR$/src/frc/team5735/controllers/motionprofiling/TrajectoryParser.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -12,13 +67,82 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FavoritesManager">
+    <favorites_list name="FRC-2018" />
+  </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Autos.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="GameDataController.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/frc/team5735/controllers/auto/GameDataController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="614">
+              <caret line="100" column="52" lean-forward="false" selection-start-line="100" selection-start-column="52" selection-end-line="100" selection-end-column="52" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Arrays.java" pinned="false" current-in-tab="false">
+        <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/src.zip!/java/util/Arrays.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="424">
+              <caret line="3798" column="30" lean-forward="false" selection-start-line="3798" selection-start-column="30" selection-end-line="3798" selection-end-column="30" />
+              <folding>
+                <element signature="e#177013#177014#0" expanded="true" />
+                <element signature="e#177054#177055#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Autos.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/frc/team5735/controllers/auto/Autos.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="547">
-              <caret line="86" column="72" lean-forward="false" selection-start-line="86" selection-start-column="72" selection-end-line="86" selection-end-column="72" />
+            <state relative-caret-position="274">
+              <caret line="126" column="70" lean-forward="false" selection-start-line="126" selection-start-column="70" selection-end-line="126" selection-end-column="70" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Trajectory.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/frc/team5735/controllers/motionprofiling/Trajectory.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="190">
+              <caret line="10" column="108" lean-forward="false" selection-start-line="10" selection-start-column="12" selection-end-line="10" selection-end-column="108" />
+              <folding>
+                <element signature="e#598#599#0" expanded="true" />
+                <element signature="e#631#632#0" expanded="true" />
+                <element signature="e#673#674#0" expanded="true" />
+                <element signature="e#707#708#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TrajectoryParser.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/frc/team5735/controllers/motionprofiling/TrajectoryParser.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="326">
+              <caret line="18" column="31" lean-forward="false" selection-start-line="18" selection-start-column="31" selection-end-line="18" selection-end-column="31" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#587#588#0" expanded="true" />
+                <element signature="e#652#653#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MotionProfile.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/frc/team5735/controllers/motionprofiling/MotionProfile.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="247">
+              <caret line="13" column="19" lean-forward="false" selection-start-line="13" selection-start-column="19" selection-end-line="13" selection-end-column="19" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -29,18 +153,18 @@
       <file leaf-file-name="Robot.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/frc/team5735/Robot.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-605">
-              <caret line="48" column="0" lean-forward="false" selection-start-line="48" selection-start-column="0" selection-end-line="48" selection-end-column="0" />
+            <state relative-caret-position="201">
+              <caret line="74" column="46" lean-forward="false" selection-start-line="74" selection-start-column="46" selection-end-line="74" selection-end-column="46" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Drivetrain.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/frc/team5735/subsystems/Drivetrain.java">
+      <file leaf-file-name="SuperAutoController.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/frc/team5735/controllers/auto/SuperAutoController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="305">
-              <caret line="26" column="24" lean-forward="true" selection-start-line="26" selection-start-column="24" selection-end-line="26" selection-end-column="24" />
+            <state relative-caret-position="94">
+              <caret line="21" column="11" lean-forward="false" selection-start-line="21" selection-start-column="11" selection-end-line="21" selection-end-column="11" />
               <folding />
             </state>
           </provider>
@@ -60,7 +184,17 @@
       <find>in RPM</find>
       <find>kLeft</find>
       <find>getAButton</find>
+      <find>-40</find>
+      <find>24</find>
+      <find>-80</find>
+      <find>78</find>
     </findStrings>
+    <replaceStrings>
+      <replace>SWITCH_WRIST_ANGLE</replace>
+      <replace>SWITCH_ELEVATOR_HEIGHT</replace>
+      <replace>SCALE_WRIST_ANGLE</replace>
+      <replace>SCALE_ELEVATOR_HEIGHT</replace>
+    </replaceStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -78,10 +212,12 @@
         <option value="$PROJECT_DIR$/src/frc/team5735/subsystems/Elevator.java" />
         <option value="$PROJECT_DIR$/src/frc/team5735/controllers/teleop/DrivetrainController.java" />
         <option value="$PROJECT_DIR$/src/frc/team5735/controllers/teleop/SubsystemController.java" />
-        <option value="$PROJECT_DIR$/src/frc/team5735/Robot.java" />
-        <option value="$PROJECT_DIR$/src/frc/team5735/controllers/auto/GameDataController.java" />
         <option value="$PROJECT_DIR$/src/frc/team5735/subsystems/Drivetrain.java" />
         <option value="$PROJECT_DIR$/src/frc/team5735/controllers/auto/Autos.java" />
+        <option value="$PROJECT_DIR$/src/frc/team5735/Robot.java" />
+        <option value="$PROJECT_DIR$/src/frc/team5735/controllers/auto/GameDataController.java" />
+        <option value="$PROJECT_DIR$/src/frc/team5735/controllers/motionprofiling/Trajectory.java" />
+        <option value="$PROJECT_DIR$/src/frc/team5735/controllers/motionprofiling/TrajectoryParser.java" />
       </list>
     </option>
   </component>
@@ -89,6 +225,9 @@
     <option name="y" value="23" />
     <option name="width" value="1440" />
     <option name="height" value="873" />
+  </component>
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -189,10 +328,10 @@
   </component>
   <component name="PropertiesComponent">
     <property name="project.structure.last.edited" value="Modules" />
-    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
-    <property name="SearchEverywhereHistoryKey" value="subs&#9;FILE&#9;file:///Users/student/Documents/Robotics/FRC-2018/src/frc/team5735/controllers/teleop/SubsystemController.java" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Color Scheme Font" />
+    <property name="SearchEverywhereHistoryKey" value="trajector&#9;FILE&#9;file:///Users/student/Documents/Robotics/FRC-2018/src/frc/team5735/controllers/motionprofiling/TrajectoryParser.java&#10;rob&#9;FILE&#9;file:///Users/student/Documents/Robotics/FRC-2018/src/frc/team5735/Robot.java&#10;fl&#9;ACTION&#9;ActivateFloobitsToolWindow&#10;game&#9;FILE&#9;file:///Users/student/Documents/Robotics/FRC-2018/src/frc/team5735/controllers/auto/GameDataController.java&#10;floo&#9;ACTION&#9;ActivateFloobitsToolWindow&#10;subs&#9;FILE&#9;file:///Users/student/Documents/Robotics/FRC-2018/src/frc/team5735/controllers/teleop/SubsystemController.java" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -306,29 +445,28 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="873" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32958803" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32958803" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Floobits" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Floobits" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32958803" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.49563047" order="0" side_tool="false" content_ui="combo" />
       <window_info id="FRC" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.50436956" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
@@ -342,8 +480,29 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager />
+    <breakpoint-manager>
+      <option name="time" value="1" />
+    </breakpoint-manager>
     <watches-manager />
+  </component>
+  <component name="antWorkspaceConfiguration">
+    <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
+    <option name="FILTER_TARGETS" value="false" />
+    <buildFile url="file://$PROJECT_DIR$/build.xml">
+      <targetFilters>
+        <filter targetName="clean" isVisible="true" />
+        <filter targetName="get-target-ip" isVisible="false" />
+        <filter targetName="compile" isVisible="true" />
+        <filter targetName="jar" isVisible="false" />
+        <filter targetName="deploy" isVisible="true" />
+        <filter targetName="debug-deploy" isVisible="true" />
+        <filter targetName="jar-for-simulation" isVisible="false" />
+        <filter targetName="simulate" isVisible="false" />
+        <filter targetName="debug-simulate" isVisible="false" />
+        <filter targetName="dependencies" isVisible="false" />
+      </targetFilters>
+      <expanded value="true" />
+    </buildFile>
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/frc/team5735/controllers/Controller.java">
@@ -405,26 +564,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/frc/team5735/controllers/motionprofiling/MotionProfile.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-699">
-          <caret line="12" column="13" lean-forward="false" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/frc/team5735/controllers/motionprofiling/MotionProfileController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="353">
           <caret line="25" column="29" lean-forward="true" selection-start-line="25" selection-start-column="29" selection-end-line="25" selection-end-column="29" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/frc/team5735/controllers/motionprofiling/TrajectoryParser.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-448">
-          <caret line="46" column="34" lean-forward="true" selection-start-line="46" selection-start-column="34" selection-end-line="46" selection-end-column="34" />
           <folding />
         </state>
       </provider>
@@ -549,40 +692,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/frc/team5735/controllers/motionprofiling/Trajectory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="13" lean-forward="false" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/frc/team5735/controllers/teleop/SubsystemController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="281">
           <caret line="84" column="46" lean-forward="false" selection-start-line="84" selection-start-column="42" selection-end-line="84" selection-end-column="46" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/src.zip!/java/util/Arrays.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="258">
-          <caret line="3798" column="30" lean-forward="false" selection-start-line="3798" selection-start-column="30" selection-end-line="3798" selection-end-column="30" />
-          <folding>
-            <element signature="e#177013#177014#0" expanded="false" />
-            <element signature="e#177054#177055#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/frc/team5735/controllers/auto/GameDataController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="331">
-          <caret line="27" column="24" lean-forward="true" selection-start-line="27" selection-start-column="24" selection-end-line="27" selection-end-column="24" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -594,26 +708,106 @@
         </state>
       </provider>
     </entry>
+    <entry file="jar://$USER_HOME$/wpilib/java/current/lib/ntcore-sources.jar!/edu/wpi/first/networktables/NetworkTable.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="171">
+          <caret line="21" column="19" lean-forward="false" selection-start-line="21" selection-start-column="19" selection-end-line="21" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/wpilib/java/current/lib/ntcore-sources.jar!/edu/wpi/first/wpilibj/networktables/NetworkTable.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="152">
+          <caret line="36" column="66" lean-forward="false" selection-start-line="36" selection-start-column="26" selection-end-line="36" selection-end-column="66" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/wpilib/java/current/lib/WPILib-sources.jar!/edu/wpi/first/wpilibj/smartdashboard/SmartDashboard.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="254">
+          <caret line="97" column="38" lean-forward="false" selection-start-line="97" selection-start-column="38" selection-end-line="97" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/frc/team5735/controllers/auto/SuperAutoController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="438">
-          <caret line="58" column="4" lean-forward="false" selection-start-line="58" selection-start-column="4" selection-end-line="58" selection-end-column="4" />
+        <state relative-caret-position="94">
+          <caret line="21" column="11" lean-forward="false" selection-start-line="21" selection-start-column="11" selection-end-line="21" selection-end-column="11" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/frc/team5735/Robot.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-605">
-          <caret line="48" column="0" lean-forward="false" selection-start-line="48" selection-start-column="0" selection-end-line="48" selection-end-column="0" />
+        <state relative-caret-position="201">
+          <caret line="74" column="46" lean-forward="false" selection-start-line="74" selection-start-column="46" selection-end-line="74" selection-end-column="46" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/frc/team5735/controllers/auto/GameDataController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="614">
+          <caret line="100" column="52" lean-forward="false" selection-start-line="100" selection-start-column="52" selection-end-line="100" selection-end-column="52" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/frc/team5735/controllers/auto/Autos.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="547">
-          <caret line="86" column="72" lean-forward="false" selection-start-line="86" selection-start-column="72" selection-end-line="86" selection-end-column="72" />
+        <state relative-caret-position="274">
+          <caret line="126" column="70" lean-forward="false" selection-start-line="126" selection-start-column="70" selection-end-line="126" selection-end-column="70" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/src.zip!/java/util/Arrays.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="424">
+          <caret line="3798" column="30" lean-forward="false" selection-start-line="3798" selection-start-column="30" selection-end-line="3798" selection-end-column="30" />
+          <folding>
+            <element signature="e#177013#177014#0" expanded="true" />
+            <element signature="e#177054#177055#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/frc/team5735/controllers/motionprofiling/Trajectory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="10" column="108" lean-forward="false" selection-start-line="10" selection-start-column="12" selection-end-line="10" selection-end-column="108" />
+          <folding>
+            <element signature="e#598#599#0" expanded="true" />
+            <element signature="e#631#632#0" expanded="true" />
+            <element signature="e#673#674#0" expanded="true" />
+            <element signature="e#707#708#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/frc/team5735/controllers/motionprofiling/TrajectoryParser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="326">
+          <caret line="18" column="31" lean-forward="false" selection-start-line="18" selection-start-column="31" selection-end-line="18" selection-end-column="31" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#587#588#0" expanded="true" />
+            <element signature="e#652#653#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/frc/team5735/controllers/motionprofiling/MotionProfile.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="247">
+          <caret line="13" column="19" lean-forward="false" selection-start-line="13" selection-start-column="19" selection-end-line="13" selection-end-column="19" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
