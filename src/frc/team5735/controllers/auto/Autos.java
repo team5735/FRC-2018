@@ -68,7 +68,7 @@ public class Autos {
             }
     };
 
-    public static AutoCommand[][] startCenterToHomeLeft = {
+    public static AutoCommand[][] startCenterToHomeLeft = { //done
             {
                     new AutoCommand(Drivetrain.getInstance(), new Trajectory("startCenterToHomeLeft", TrajectoryParser.CSV_FORMAT.NORMAL)),
                     new AutoCommand(Wrist.getInstance(), new Degrees(SWITCH_WRIST_ANGLE)),
