@@ -23,7 +23,7 @@ public class Autos {
             }
     };
 
-    public static AutoCommand[][] startLeftToHomeLeft = {
+    public static AutoCommand[][] startLeftToHomeLeft = { //done
             {
                     new AutoCommand(Drivetrain.getInstance(), new Trajectory("startLeftToHomeLeft", TrajectoryParser.CSV_FORMAT.NORMAL)),
                     new AutoCommand(Wrist.getInstance(), new Degrees(SWITCH_WRIST_ANGLE)),
@@ -41,7 +41,7 @@ public class Autos {
             }
     };
 
-    public static AutoCommand[][] startLeftToScaleLeft = {
+    public static AutoCommand[][] startLeftToScaleLeft = { //done
             {
                     new AutoCommand(Drivetrain.getInstance(), new Trajectory("startLeftToScaleLeft", TrajectoryParser.CSV_FORMAT.NORMAL)),
                     new AutoCommand(Wrist.getInstance(), new Degrees(SCALE_WRIST_ANGLE)),
@@ -59,7 +59,7 @@ public class Autos {
             }
     };
 
-    public static AutoCommand[][] startLeftToForward = {
+    public static AutoCommand[][] startLeftToForward = { //done
             {
                     new AutoCommand(Drivetrain.getInstance(), new Trajectory("startLeftToForward", TrajectoryParser.CSV_FORMAT.NORMAL)),
                     new AutoCommand(Wrist.getInstance(), new Degrees(SWITCH_WRIST_ANGLE)),
@@ -68,7 +68,7 @@ public class Autos {
             }
     };
 
-    public static AutoCommand[][] startCenterToHomeLeft = {
+    public static AutoCommand[][] startCenterToHomeLeft = { //done
             {
                     new AutoCommand(Drivetrain.getInstance(), new Trajectory("startCenterToHomeLeft", TrajectoryParser.CSV_FORMAT.NORMAL)),
                     new AutoCommand(Wrist.getInstance(), new Degrees(SWITCH_WRIST_ANGLE)),
