@@ -2,6 +2,7 @@ package frc.team5735.controllers.auto;
 
 import frc.team5735.controllers.motionprofiling.MotionProfileController;
 import frc.team5735.controllers.motionprofiling.Trajectory;
+import frc.team5735.controllers.motionprofiling.TrajectoryParser;
 import frc.team5735.subsystems.Elevator;
 import frc.team5735.subsystems.ElevatorIntake;
 import frc.team5735.subsystems.Wrist;
@@ -25,7 +26,7 @@ public class RightDirectScaleController extends AutoController{
         this.elevatorIntake = ElevatorIntake.getInstance();
 
         motionProfileController = new MotionProfileController();
-        trajectory = new Trajectory("right-direct-scale");
+        trajectory = new Trajectory("right-direct-scale", TrajectoryParser.CSV_FORMAT.NORMAL);
         motionProfileController.loadProfile(trajectory);
     }
 

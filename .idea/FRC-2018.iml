@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/.idea" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$USER_HOME$/wpilib/user/java/lib/commons-csv-1.5.jar!/" />
+          <root url="jar://$USER_HOME$/wpilib/user/java/lib/CTRE_Phoenix.jar!/" />
+          <root url="jar://$USER_HOME$/wpilib/user/java/lib/Pathfinder-Java.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <NATIVE>
+          <root url="file://$USER_HOME$/wpilib/user/java/lib" />
+        </NATIVE>
+        <SOURCES>
+          <root url="jar://$USER_HOME$/wpilib/user/java/lib/CTRE_Phoenix-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$USER_HOME$/wpilib/java/current/lib/cscore.jar!/" />
+          <root url="jar://$USER_HOME$/wpilib/java/current/lib/ntcore.jar!/" />
+          <root url="jar://$USER_HOME$/wpilib/java/current/lib/opencv.jar!/" />
+          <root url="jar://$USER_HOME$/wpilib/java/current/lib/WPILib.jar!/" />
+          <root url="jar://$USER_HOME$/wpilib/java/current/lib/wpiutil.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/wpilib/java/current/lib/cscore-sources.jar!/" />
+          <root url="jar://$USER_HOME$/wpilib/java/current/lib/ntcore-sources.jar!/" />
+          <root url="jar://$USER_HOME$/wpilib/java/current/lib/opencv-sources.jar!/" />
+          <root url="jar://$USER_HOME$/wpilib/java/current/lib/WPILib-sources.jar!/" />
+          <root url="jar://$USER_HOME$/wpilib/java/current/lib/wpiutil-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+  </component>
+</module>

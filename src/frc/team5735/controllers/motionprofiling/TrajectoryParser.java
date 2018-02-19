@@ -19,7 +19,7 @@ import org.apache.commons.csv.CSVRecord;
 public class TrajectoryParser {
 
     public enum CSV_FORMAT {
-        PATHFINDER, NORMAL
+        PATHFINDER, NORMAL //Pathfinder = detailed
     }
 
     public static double[][] getTrajectory(String filename) {
@@ -60,7 +60,7 @@ public class TrajectoryParser {
                 points[i] = point;
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Exception during trajectory point initialization. Do the CSV files exist?");
         } finally {
             if (in != null) {
                 try {
