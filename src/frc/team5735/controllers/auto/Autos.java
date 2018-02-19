@@ -2,6 +2,7 @@ package frc.team5735.controllers.auto;
 
 import com.sun.org.apache.bcel.internal.generic.SWITCH;
 import frc.team5735.controllers.motionprofiling.Trajectory;
+import frc.team5735.controllers.motionprofiling.TrajectoryParser;
 import frc.team5735.subsystems.Drivetrain;
 import frc.team5735.subsystems.Elevator;
 import frc.team5735.subsystems.ElevatorIntake;
@@ -24,7 +25,7 @@ public class Autos {
 
     public static AutoCommand[][] startLeftToHomeLeft = {
             {
-                    new AutoCommand(Drivetrain.getInstance(), new Trajectory("startLeftToHomeLeft")),
+                    new AutoCommand(Drivetrain.getInstance(), new Trajectory("startLeftToHomeLeft", TrajectoryParser.CSV_FORMAT.NORMAL)),
                     new AutoCommand(Wrist.getInstance(), new Degrees(SWITCH_WRIST_ANGLE)),
                     new AutoCommand(Elevator.getInstance(), new Inches(SWITCH_ELEVATOR_HEIGHT)),
                     new AutoCommand(ElevatorIntake.getInstance(), INTAKE_HOLDING_SPEED)
@@ -42,7 +43,7 @@ public class Autos {
 
     public static AutoCommand[][] startLeftToScaleLeft = {
             {
-                    new AutoCommand(Drivetrain.getInstance(), new Trajectory("startLeftToScaleLeft")),
+                    new AutoCommand(Drivetrain.getInstance(), new Trajectory("startLeftToScaleLeft", TrajectoryParser.CSV_FORMAT.NORMAL)),
                     new AutoCommand(Wrist.getInstance(), new Degrees(SCALE_WRIST_ANGLE)),
                     new AutoCommand(Elevator.getInstance(), new Inches(SCALE_ELEVATOR_HEIGHT)),
                     new AutoCommand(ElevatorIntake.getInstance(), INTAKE_HOLDING_SPEED)
@@ -60,7 +61,7 @@ public class Autos {
 
     public static AutoCommand[][] startLeftToForward = {
             {
-                    new AutoCommand(Drivetrain.getInstance(), new Trajectory("startLeftToForward")),
+                    new AutoCommand(Drivetrain.getInstance(), new Trajectory("startLeftToForward", TrajectoryParser.CSV_FORMAT.NORMAL)),
                     new AutoCommand(Wrist.getInstance(), new Degrees(SWITCH_WRIST_ANGLE)),
                     new AutoCommand(Elevator.getInstance(), new Inches(SWITCH_ELEVATOR_HEIGHT)),
                     new AutoCommand(ElevatorIntake.getInstance(), INTAKE_HOLDING_SPEED)
@@ -69,7 +70,7 @@ public class Autos {
 
     public static AutoCommand[][] startCenterToHomeLeft = {
             {
-                    new AutoCommand(Drivetrain.getInstance(), new Trajectory("startCenterToHomeLeft")),
+                    new AutoCommand(Drivetrain.getInstance(), new Trajectory("startCenterToHomeLeft", TrajectoryParser.CSV_FORMAT.NORMAL)),
                     new AutoCommand(Wrist.getInstance(), new Degrees(SWITCH_WRIST_ANGLE)),
                     new AutoCommand(Elevator.getInstance(), new Inches(SWITCH_ELEVATOR_HEIGHT)),
                     new AutoCommand(ElevatorIntake.getInstance(), INTAKE_HOLDING_SPEED)
@@ -87,7 +88,7 @@ public class Autos {
 
     public static AutoCommand[][] startCenterToHomeRight = {
             {
-                    new AutoCommand(Drivetrain.getInstance(), new Trajectory("startCenterToHomeRight")),
+                    new AutoCommand(Drivetrain.getInstance(), new Trajectory("startCenterToHomeRight", TrajectoryParser.CSV_FORMAT.NORMAL)),
                     new AutoCommand(Wrist.getInstance(), new Degrees(SWITCH_WRIST_ANGLE)),
                     new AutoCommand(Elevator.getInstance(), new Inches(SWITCH_ELEVATOR_HEIGHT)),
                     new AutoCommand(ElevatorIntake.getInstance(), INTAKE_HOLDING_SPEED)
@@ -105,7 +106,7 @@ public class Autos {
 
     public static AutoCommand[][] startCenterToScaleLeft = {
             {
-                    new AutoCommand(Drivetrain.getInstance(), new Trajectory("startCenterToScaleLeft")),
+                    new AutoCommand(Drivetrain.getInstance(), new Trajectory("startCenterToScaleLeft", TrajectoryParser.CSV_FORMAT.NORMAL)),
                     new AutoCommand(Wrist.getInstance(), new Degrees(SCALE_WRIST_ANGLE)),
                     new AutoCommand(Elevator.getInstance(), new Inches(SCALE_ELEVATOR_HEIGHT)),
                     new AutoCommand(ElevatorIntake.getInstance(), INTAKE_HOLDING_SPEED)
@@ -124,7 +125,7 @@ public class Autos {
 
     public static AutoCommand[][] startCenterToScaleRight = {
             {
-                    new AutoCommand(Drivetrain.getInstance(), new Trajectory("startCenterToScaleRight")),
+                    new AutoCommand(Drivetrain.getInstance(), new Trajectory("startCenterToScaleRight", TrajectoryParser.CSV_FORMAT.NORMAL)),
                     new AutoCommand(Wrist.getInstance(), new Degrees(SCALE_WRIST_ANGLE)),
                     new AutoCommand(Elevator.getInstance(), new Inches(SCALE_ELEVATOR_HEIGHT)),
                     new AutoCommand(ElevatorIntake.getInstance(), INTAKE_HOLDING_SPEED)
@@ -143,7 +144,7 @@ public class Autos {
 
     public static AutoCommand[][] startRightToHomeRight = {
             {
-                    new AutoCommand(Drivetrain.getInstance(), new Trajectory("startRightToHomeRight")),
+                    new AutoCommand(Drivetrain.getInstance(), new Trajectory("startRightToHomeRight", TrajectoryParser.CSV_FORMAT.NORMAL)),
                     new AutoCommand(Wrist.getInstance(), new Degrees(SWITCH_WRIST_ANGLE)),
                     new AutoCommand(Elevator.getInstance(), new Inches(SWITCH_ELEVATOR_HEIGHT)),
                     new AutoCommand(ElevatorIntake.getInstance(), INTAKE_HOLDING_SPEED)
@@ -161,7 +162,7 @@ public class Autos {
 
     public static AutoCommand[][] startRightToScaleRight = {
             {
-                    new AutoCommand(Drivetrain.getInstance(), new Trajectory("startRightToScaleRight")),
+                    new AutoCommand(Drivetrain.getInstance(), new Trajectory("startRightToScaleRight", TrajectoryParser.CSV_FORMAT.NORMAL)),
                     new AutoCommand(Wrist.getInstance(), new Degrees(SWITCH_WRIST_ANGLE)),
                     new AutoCommand(Elevator.getInstance(), new Inches(SWITCH_ELEVATOR_HEIGHT)),
                     new AutoCommand(ElevatorIntake.getInstance(), INTAKE_HOLDING_SPEED)
@@ -179,7 +180,7 @@ public class Autos {
 
     public static AutoCommand[][] startRightToForward = {
             {
-                    new AutoCommand(Drivetrain.getInstance(), new Trajectory("startRightToForward")),
+                    new AutoCommand(Drivetrain.getInstance(), new Trajectory("startRightToForward", TrajectoryParser.CSV_FORMAT.NORMAL)),
                     new AutoCommand(Wrist.getInstance(), new Degrees(SWITCH_WRIST_ANGLE)),
                     new AutoCommand(Elevator.getInstance(), new Inches(SWITCH_ELEVATOR_HEIGHT)),
                     new AutoCommand(ElevatorIntake.getInstance(), INTAKE_HOLDING_SPEED)

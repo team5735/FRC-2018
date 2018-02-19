@@ -134,7 +134,8 @@ public class GameDataController {
                 break;
         }
 
-        AutoCommand[][] commandsArray = {(AutoCommand[]) commands.toArray()};
+        AutoCommand[][] commandsArray = {new AutoCommand[commands.size()]};
+        commandsArray = commands.toArray(commandsArray);
         return commandsArray;
     }
 }

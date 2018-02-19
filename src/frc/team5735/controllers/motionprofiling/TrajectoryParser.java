@@ -19,7 +19,7 @@ import org.apache.commons.csv.CSVRecord;
 public class TrajectoryParser {
 
     public enum CSV_FORMAT {
-        PATHFINDER, NORMAL
+        PATHFINDER, NORMAL //Pathfinder = detailed
     }
 
     public static double[][] getTrajectory(String filename) {
