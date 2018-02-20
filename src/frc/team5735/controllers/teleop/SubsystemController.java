@@ -1,29 +1,29 @@
 package frc.team5735.controllers.teleop;
 
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.XboxController;
 import frc.team5735.controllers.Controller;
 import frc.team5735.controllers.CustomXbox;
-import frc.team5735.subsystems.*;
+import frc.team5735.subsystems.DrivetrainIntake;
+import frc.team5735.subsystems.Elevator;
+import frc.team5735.subsystems.ElevatorIntake;
+import frc.team5735.subsystems.Wrist;
 import frc.team5735.utils.units.Degrees;
 import frc.team5735.utils.units.Inches;
 
 public class SubsystemController implements Controller{
+
     private CustomXbox xboxController;
 
     private Wrist wrist;
     private Elevator elevator;
     private ElevatorIntake elevatorIntake;
-    private DrivetrainIntake drivetrainIntake;
 
     public SubsystemController(int joystickPort) {
         this.elevator = Elevator.getInstance();
         this.wrist = Wrist.getInstance();
         this.elevatorIntake = ElevatorIntake.getInstance();
-        this.drivetrainIntake = DrivetrainIntake.getInstance();
         xboxController = new CustomXbox(joystickPort);
     }
-
 
     @Override
     public void runInit() {
@@ -31,72 +31,90 @@ public class SubsystemController implements Controller{
 
     @Override
     public void runPeriodic() {
-        //WRIST STUFF
-        if (wrist.getState() == Wrist.WristState.DEFAULT) {
-            wrist.setTargetSpeed(xboxController.getY(GenericHID.Hand.kLeft,0.1));
-        }else {
-            if (xboxController.getBackButtonPressed()) {
-                wrist.zeroSensor();
-            } else if (xboxController.getPOV() == 180) {
-                wrist.setTargetAngle(new Degrees(-85));
-            } else if (xboxController.getPOV() == 0) {
-                wrist.setTargetAngle(new Degrees(-40));
+        if (xboxController.getBackButtonPressed()) {
+            if(elevator.getState() == Elevator.ElevatorState.DEFAULT || wrist.getState() == Wrist.WristState.DEFAULT) {
+                elevator.setState(Elevator.ElevatorState.POSITION_HOLDING);
+                wrist.setState(Wrist.WristState.POSITION_HOLDING);
             } else {
-                wrist.setTargetAngle(new Degrees(wrist.getTargetAngle().getValue() + xboxController.getY(GenericHID.Hand.kLeft,0.1)));
+                elevator.setState(Elevator.ElevatorState.DEFAULT);
+                wrist.setState(Wrist.WristState.DEFAULT);
+            }
+        }
+
+        //WRIST STUFF
+        double wristJoystick = xboxController.getY(GenericHID.Hand.kRight,0.2),
+                WRIST_INCREMENT = 0.75;
+        if (wrist.getState() == Wrist.WristState.DEFAULT) {
+            wrist.setTargetSpeed(wristJoystick); // limited in Wrist.java
+        }else {
+            if (xboxController.getStartButton()) {
+                wrist.zeroSensor();
+            } else {
+                if(Math.abs(wristJoystick) > 0 && xboxController.getBumper(GenericHID.Hand.kLeft)) {
+                    wrist.setTargetAngle(new Degrees(wrist.getTargetAngle().getValue() + Math.copySign(WRIST_INCREMENT, wristJoystick)));
+                } else if (xboxController.getXButton()) {
+                    // Cancel
+                    wrist.setTargetAngle(wrist.getCurrentAngle());
+                } else if (xboxController.getAButton()) {
+                    // Intake position
+                    wrist.setTargetAngle(new Degrees(-85));
+                } else if (xboxController.getBButton()) {
+                    // Switch position
+                    wrist.setTargetAngle(new Degrees(-40));
+                } else if (xboxController.getYButton()) {
+                    // Scale position
+                    wrist.setTargetAngle(new Degrees(-10));
+                }
             }
         }
 
         //ELEVATOR STUFF
+        double elevatorJoystick = xboxController.getY(GenericHID.Hand.kLeft, 0.2),
+                ELEVATOR_INCREMENT = 0.5;
         if (elevator.getState() == Elevator.ElevatorState.DEFAULT) {
-            elevator.setTargetSpeed(xboxController.getY(GenericHID.Hand.kRight,0.1));
+            elevator.setTargetSpeed(elevatorJoystick);
         } else {
-            if(xboxController.getStartButtonPressed()) {
+            if(xboxController.getStartButton()) {
                 elevator.zeroSensor();
-            } else if (xboxController.getPOV() == 180) {
-                elevator.setTargetHeight(new Inches(6));
-            } else if (xboxController.getPOV() == 0) {
-                elevator.setTargetHeight(new Inches(20));
             } else {
-                elevator.setTargetHeight(new Inches(elevator.getTargetHeight().getValue() + xboxController.getY(GenericHID.Hand.kRight,0.1)));
+                if(Math.abs(elevatorJoystick) > 0 && xboxController.getBumper(GenericHID.Hand.kLeft)) {
+                    elevator.setTargetHeight(new Inches(elevator.getTargetHeight().getValue() + (ELEVATOR_INCREMENT * elevatorJoystick) ));
+                } else if (xboxController.getXButton()) {
+                    // Cancel
+                    elevator.setTargetHeight(elevator.getCurrentHeight());
+                } else if (xboxController.getAButton()) {
+                    // Intake position
+                    elevator.setTargetHeight(new Inches(8));
+                } else if (xboxController.getBButton()) {
+                    // Switch position
+                    elevator.setTargetHeight(new Inches(20));
+                } else if (xboxController.getYButton()) {
+                    // Scale position
+                    elevator.setTargetHeight(new Inches(58));
+                }
             }
         }
 
-        //Elevator Stuff
-//        elevator.setTargetSpeed(xboxController.getY(GenericHID.Hand.kLeft,0.1));
-
-        //Intake
-        if (xboxController.getTriggerAxis(GenericHID.Hand.kRight) > 0){
-            drivetrainIntake.setTargetSpeed(xboxController.getTriggerAxis(GenericHID.Hand.kRight)*0.75);
-        }else if(xboxController.getBButton()) {
-            drivetrainIntake.setLeftTargetSpeed(-0.5);
-            drivetrainIntake.setRightTargetSpeed(0.5);
-        } else if (xboxController.getBumper(GenericHID.Hand.kLeft)) {
-            drivetrainIntake.setTargetSpeed(-0.5);
-        } else {
-            drivetrainIntake.setTargetSpeed(0);
-        }
-
-        //Intake
-        if (xboxController.getTriggerAxis(GenericHID.Hand.kLeft) > 0) {
-            elevatorIntake.setTargetSpeed(-1);
-        } else if(xboxController.getTriggerAxis(GenericHID.Hand.kRight) > 0) {
-            elevatorIntake.setTargetSpeed(xboxController.getTriggerAxis(GenericHID.Hand.kRight)*0.85);
-        } else if (xboxController.getAButton()) {
+        //Intake (Eject override Hold override Intake)
+        double ejectTrigger = xboxController.getTriggerAxis(GenericHID.Hand.kLeft),
+                intakeTrigger = xboxController.getTriggerAxis(GenericHID.Hand.kRight),
+                INTAKE_MAX = 1;
+        if (ejectTrigger > 0) {
+            //Eject
+            if(xboxController.getBumper(GenericHID.Hand.kRight)) {
+                // Constant
+                elevatorIntake.setTargetSpeed(-1);
+            } else {
+                // Variable
+                elevatorIntake.setTargetSpeed(-ejectTrigger);
+            }
+        } else if (xboxController.getBumper(GenericHID.Hand.kRight)) {
+            // Hold
             elevatorIntake.setTargetSpeed(0.42);
-        } else if (xboxController.getBumper(GenericHID.Hand.kLeft)) {
-            elevatorIntake.setTargetSpeed(-0.5);
+        } else if (intakeTrigger > 0) {
+            elevatorIntake.setTargetSpeed(intakeTrigger * INTAKE_MAX);
         } else {
             elevatorIntake.setTargetSpeed(0);
-        }
-
-//        else if (xboxController.getTriggerAxis(GenericHID.Hand.kLeft) > 0){
-////            elevatorIntake.setTargetSpeed(-xboxController.getTriggerAxis(GenericHID.Hand.kLeft));
-//            elevatorIntake.setTargetSpeed(-xboxController.getTriggerAxis(GenericHID.Hand.kLeft)*0.3);
-//        }
-
-        if(xboxController.getYButtonPressed()){
-            wrist.printStatus();
-            elevator.printStatus();
         }
     }
 

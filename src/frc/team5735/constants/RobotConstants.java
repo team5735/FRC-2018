@@ -44,6 +44,6 @@ public class RobotConstants {
     public static final int SUBSYSTEM_CONTROLLER_ID = 1;
 
     // ========== Physical Robot Properties ==========
-    public static final double WHEEL_DIAMETER = 6;  //Inches
+    public static final double WHEEL_DIAMETER = 5.9;  //Inches 5.8
     public static final double TRACKWIDTH = 24;     //Inches
 }

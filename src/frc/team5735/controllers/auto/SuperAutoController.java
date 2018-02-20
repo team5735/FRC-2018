@@ -14,6 +14,7 @@ public class SuperAutoController extends AutoController {
     private Elevator elevator;
     private ElevatorIntake elevatorIntake;
     private DrivetrainIntake drivetrainIntake;
+    private Drivetrain drivetrain;
 
     private MotionProfileController motionProfileController;
 
@@ -24,6 +25,7 @@ public class SuperAutoController extends AutoController {
         this.elevator = Elevator.getInstance();
         this.elevatorIntake = ElevatorIntake.getInstance();
         this.drivetrainIntake = DrivetrainIntake.getInstance();
+        this.drivetrain = Drivetrain.getInstance();
 
         motionProfileController = new MotionProfileController();
 
@@ -52,21 +54,25 @@ public class SuperAutoController extends AutoController {
                     elevatorIntake.setTargetSpeed((Double) command.getValue());
                 } else if (command.getSubsystem() instanceof DrivetrainIntake) {
                     drivetrainIntake.setTargetSpeed((Double) command.getValue());
-                } else if (command.getSubsystem() instanceof DrivetrainIntake) {
-                    drivetrainIntake.setTargetSpeed((Double) command.getValue());
                 } else if (command.getSubsystem() instanceof Drivetrain) {
-                    if (motionProfileController.getState() == MotionProfileController.MotionProfileControllerState.EMPTY) {
-                        motionProfileController.loadProfile((Trajectory) command.getValue());
-                        motionProfileController.startProfile();
+                    if (command.getValue() instanceof Degrees) {
+                        drivetrain.setTargetAngle((Degrees) command.getValue());
+                        isStepFinished = isStepFinished && drivetrain.getState() == Drivetrain.DrivetrainState.GYRO_FINISHED;
+                    } else {
+                        if (motionProfileController.getState() == MotionProfileController.MotionProfileControllerState.EMPTY) {
+                            motionProfileController.loadProfile((Trajectory) command.getValue());
+                            motionProfileController.startProfile();
+                        }
+                        motionProfileController.runPeriodic();
+                        isStepFinished = isStepFinished && motionProfileController.getState() == MotionProfileController.MotionProfileControllerState.FINISHED;
                     }
-                    motionProfileController.runPeriodic();
-                    isStepFinished = isStepFinished && motionProfileController.getState() == MotionProfileController.MotionProfileControllerState.FINISHED;
                 } else {
                     isStepFinished = isStepFinished && delay((int)command.getValue());
                 }
             }
 
             if (isStepFinished) {
+                drivetrain.setState(Drivetrain.DrivetrainState.DEFAULT);
                 step++;
                 motionProfileController.empty();
             }

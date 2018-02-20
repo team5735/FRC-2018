@@ -36,4 +36,12 @@ public class CustomXbox extends XboxController{
             return value;
         }
     }
+
+    public double getXSquared(Hand hand) {
+        return Math.copySign(Math.pow(getX(hand), 2), getX(hand));
+    }
+
+    public double getYSquared(Hand hand) {
+        return Math.copySign(Math.pow(getY(hand), 2), getY(hand));
+    }
 }

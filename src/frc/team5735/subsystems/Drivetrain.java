@@ -4,13 +4,16 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-import edu.wpi.first.wpilibj.drive.RobotDriveBase;
-import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+import com.ctre.phoenix.sensors.PigeonIMU;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team5735.constants.PidConstants;
 import frc.team5735.constants.RobotConstants;
+import frc.team5735.controllers.motionprofiling.MotionProfile;
 import frc.team5735.utils.SimpleNetworkTable;
+import frc.team5735.utils.units.Degrees;
 
 public class Drivetrain implements Subsystem {
+
     // ===== Singleton =====
     private static Drivetrain instance = new Drivetrain();
 
@@ -32,14 +35,29 @@ public class Drivetrain implements Subsystem {
     // Motor Controllers
     private TalonSRX leftFrontMotor, rightFrontMotor, leftRearMotor;
     private VictorSPX rightRearMotor;
+    private PigeonIMU gyro;
+
+    // Gyro Values
+    private double gyroSpeedLimit = 0.35;
+    private Degrees gyroMargin = new Degrees(3);
+    private double turnSpeedMin = 0.2;
 
     // Output Values
-    private double leftSideTargetOutput = 0, rightSideTargetOutput = 0;
+    private double leftSideTargetPercent = 0, rightSideTargetPercent = 0;
+    private double leftSideMPOutput = 0, rightSideMPOutput = 0;
+    private Degrees targetAngle = new Degrees(0);
+
+    // Info
+    private DrivetrainState state;
+    private PigeonIMU.GeneralStatus gyroStatus;
 
     // ===== Methods =====
     private Drivetrain() {
         initMotors();
         putStatus();
+        state = DrivetrainState.DEFAULT;
+        gyro = new PigeonIMU(leftRearMotor);
+        gyroStatus = new PigeonIMU.GeneralStatus();
     }
 
     private void initMotors() {
@@ -77,7 +95,7 @@ public class Drivetrain implements Subsystem {
 
         // Configure Sensors
         rightFrontMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,0,10); //TODO Check encoder error codes
-        rightFrontMotor.setSensorPhase(false);
+        rightFrontMotor.setSensorPhase(true);
 
         // Configure voltage limits TODO add ramp rate
         rightFrontMotor.configNominalOutputForward(+0.0f, 0);
@@ -105,14 +123,74 @@ public class Drivetrain implements Subsystem {
 
     @Override
     public void runPeriodic() {
-        leftFrontMotor.set(ControlMode.PercentOutput, leftSideTargetOutput);
-        rightFrontMotor.set(ControlMode.PercentOutput, rightSideTargetOutput);
+//        System.out.println(gyro.getFusedHeading());
+        if (state == DrivetrainState.MP) {
+            leftFrontMotor.set(ControlMode.MotionProfile, leftSideMPOutput);
+            rightFrontMotor.set(ControlMode.MotionProfile, rightSideMPOutput);
+        } else if (state == DrivetrainState.GYRO_STARTED || state == DrivetrainState.GYRO_BUSY) {
+            gyro.getGeneralStatus(gyroStatus);
+            if ( gyroStatus.state == PigeonIMU.PigeonState.Ready) {
+                if(state == DrivetrainState.GYRO_STARTED) {
+                    gyro.setFusedHeading(0,0);
+                    state = DrivetrainState.GYRO_BUSY;
+                } else {
+                    double turnSpeed = (targetAngle.getValue() - gyro.getFusedHeading()) / 180.;
+                    turnSpeed = limit(turnSpeed);
+
+                    turnSpeed = turnSpeed * gyroSpeedLimit;
+
+                    if (Math.abs(turnSpeed) < turnSpeedMin) {
+                        if (turnSpeed < 0) {
+                            turnSpeed = -turnSpeedMin;
+                        } else {
+                            turnSpeed = turnSpeedMin;
+                        }
+                    }
+
+                    leftFrontMotor.set(ControlMode.PercentOutput, -turnSpeed);
+                    rightFrontMotor.set(ControlMode.PercentOutput, turnSpeed);
+
+                    if (new Degrees(gyro.getFusedHeading()).withinMargin(targetAngle, gyroMargin)) {
+                        state = DrivetrainState.GYRO_FINISHED;
+                    }
+                }
+            } else {
+                leftFrontMotor.set(ControlMode.PercentOutput, 0);
+                rightFrontMotor.set(ControlMode.PercentOutput, 0);
+            }
+        } else {
+            leftFrontMotor.set(ControlMode.PercentOutput, leftSideTargetPercent);
+            rightFrontMotor.set(ControlMode.PercentOutput, rightSideTargetPercent);
+        }
         putStatus();
     }
 
     @Override
     public void disabledInit() {
 
+    }
+
+    public DrivetrainState getState() {
+        return state;
+    }
+
+    public void setMotionProfileOutput (int leftOutput, int rightOutput) {
+        leftSideMPOutput = leftOutput;
+        rightSideMPOutput = rightOutput;
+        state = DrivetrainState.MP;
+    }
+
+    public void setPercentOutput (double leftSideTargetPercent, double rightSideTargetPercent) {
+        this.leftSideTargetPercent = leftSideTargetPercent;
+        this.rightSideTargetPercent = rightSideTargetPercent;
+        this.state = DrivetrainState.DEFAULT;
+    }
+
+    public void setTargetAngle (Degrees angle) {
+        targetAngle = angle;
+        if (state != DrivetrainState.GYRO_BUSY && state != DrivetrainState.GYRO_FINISHED){
+            this.state = DrivetrainState.GYRO_STARTED;
+        }
     }
 
     public void curvatureDrive(double xSpeed, double zRotation, boolean isQuickTurn) {
@@ -165,8 +243,22 @@ public class Drivetrain implements Subsystem {
             }
         }
 
-        leftSideTargetOutput = leftMotorOutput * m_maxOutput;
-        rightSideTargetOutput = rightMotorOutput * m_maxOutput;
+        setPercentOutput(leftMotorOutput * m_maxOutput,rightMotorOutput * m_maxOutput);
+    }
+
+    public void clearMotionProfileTrajectories() {
+        leftFrontMotor.clearMotionProfileTrajectories();
+        leftRearMotor.clearMotionProfileTrajectories();
+        rightFrontMotor.clearMotionProfileTrajectories();
+        rightRearMotor.clearMotionProfileTrajectories();
+    }
+
+    public void resetGyro(){
+        gyro.setFusedHeading(0,0);
+    }
+
+    public void setState(DrivetrainState state) {
+        this.state = state;
     }
 
     public TalonSRX getLeftMotor() {
@@ -175,13 +267,6 @@ public class Drivetrain implements Subsystem {
 
     public TalonSRX getRightMotor() {
         return rightFrontMotor;
-    }
-
-    public void clearMotionProfileTrajectories() {
-        leftFrontMotor.clearMotionProfileTrajectories();
-        leftRearMotor.clearMotionProfileTrajectories();
-        rightFrontMotor.clearMotionProfileTrajectories();
-        rightRearMotor.clearMotionProfileTrajectories();
     }
 
     // ===== RobotDriveBase Methods =====
@@ -226,18 +311,23 @@ public class Drivetrain implements Subsystem {
     }
 
     public void putStatus() {
-        SimpleNetworkTable.setDouble("dtLSensorPosition", leftFrontMotor.getSelectedSensorPosition(0));
-        SimpleNetworkTable.setDouble("dtLSensorVelocity", leftFrontMotor.getSelectedSensorVelocity(0));
+        SmartDashboard.getNumber("test",-1);
+        SmartDashboard.putNumber("dtLSensorPosition", leftFrontMotor.getSelectedSensorPosition(0));
+        SmartDashboard.putNumber("dtLSensorVelocity", leftFrontMotor.getSelectedSensorVelocity(0));
 
-        SimpleNetworkTable.setDouble("dtLPercent", leftFrontMotor.getMotorOutputPercent());
-        SimpleNetworkTable.setDouble("dtLVoltage", leftFrontMotor.getMotorOutputVoltage());
-        SimpleNetworkTable.setDouble("dtLCurrent", leftFrontMotor.getOutputCurrent());
+        SmartDashboard.putNumber("dtLPercent", leftFrontMotor.getMotorOutputPercent());
+        SmartDashboard.putNumber("dtLVoltage", leftFrontMotor.getMotorOutputVoltage());
+        SmartDashboard.putNumber("dtLCurrent", leftFrontMotor.getOutputCurrent());
 
-        SimpleNetworkTable.setDouble("dtRSensorPosition", rightFrontMotor.getSelectedSensorPosition(0));
-        SimpleNetworkTable.setDouble("dtRSensorVelocity", rightFrontMotor.getSelectedSensorVelocity(0));
+        SmartDashboard.putNumber("dtRSensorPosition", rightFrontMotor.getSelectedSensorPosition(0));
+        SmartDashboard.putNumber("dtRSensorVelocity", rightFrontMotor.getSelectedSensorVelocity(0));
 
-        SimpleNetworkTable.setDouble("dtRPercent", rightFrontMotor.getMotorOutputPercent());
-        SimpleNetworkTable.setDouble("dtRVoltage", rightFrontMotor.getMotorOutputVoltage());
-        SimpleNetworkTable.setDouble("dtRCurrent", rightFrontMotor.getOutputCurrent());
+        SmartDashboard.putNumber("dtRPercent", rightFrontMotor.getMotorOutputPercent());
+        SmartDashboard.putNumber("dtRVoltage", rightFrontMotor.getMotorOutputVoltage());
+        SmartDashboard.putNumber("dtRCurrent", rightFrontMotor.getOutputCurrent());
+    }
+
+    public enum DrivetrainState {
+        DEFAULT, MP, GYRO_STARTED, GYRO_BUSY, GYRO_FINISHED
     }
 }

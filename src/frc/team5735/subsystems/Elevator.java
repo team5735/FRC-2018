@@ -38,8 +38,8 @@ public class Elevator implements Subsystem {
 
     private static final int ENCODER_TICKS_PER_REVOLUTION = 4096;   //TODO CHECK this?
 
-    private static final double ZEROING_SPEED = -0.1;      // Percent output value for zeroing
-    private static final double DEFAULT_SPEED_LIMIT = 0.50;  // Factor to limit speed when in DEFAULT state
+    private static final double ZEROING_SPEED = -0.15;      // Percent output value for zeroing
+    private static final double DEFAULT_SPEED_LIMIT = 0.4;  // Factor to limit speed when in DEFAULT state
     private static final ElevatorState DEFAULT_ENABLE_STATE = ElevatorState.POSITION_HOLDING;
 
     // ===== Instance Fields =====
@@ -85,6 +85,12 @@ public class Elevator implements Subsystem {
         elevatorMotor.configNominalOutputReverse(0, 0);
         elevatorMotor.configPeakOutputForward(1, 0);
         elevatorMotor.configPeakOutputReverse(-1, 0);
+
+        elevatorMotor.enableCurrentLimit(true);
+        elevatorMotor.configContinuousCurrentLimit(18,0);
+        elevatorMotor.configPeakCurrentDuration(0,0);
+        elevatorMotor.configPeakCurrentLimit(20,0);
+
 //        elevatorMotor.configClosedloopRamp(2,0);
 
         // Configure PID constants TODO Continue to tune pid
@@ -94,8 +100,8 @@ public class Elevator implements Subsystem {
         elevatorMotor.config_kI(PidConstants.ELEVATOR_POS_SLOT_ID, PidConstants.ELEVATOR_POS_KI, 100);
         elevatorMotor.config_kD(PidConstants.ELEVATOR_POS_SLOT_ID, PidConstants.ELEVATOR_POS_KD, 100);
 
-        elevatorMotor.configMotionCruiseVelocity(800, 0);
-        elevatorMotor.configMotionAcceleration(350, 0);
+        elevatorMotor.configMotionCruiseVelocity(625, 0);
+        elevatorMotor.configMotionAcceleration(300, 0);
         elevatorMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, 0);
     }
 
@@ -122,8 +128,12 @@ public class Elevator implements Subsystem {
      */
     @Override
     public void runPeriodic() {
+
+        if (elevatorMotor.getSensorCollection().getPulseWidthRiseToRiseUs() == 0) {
+            state = ElevatorState.DEFAULT;
+        }
         putStatus();
-        if (state == ElevatorState.ZEROING) {                                                          // ZEROING STATE
+        if (state == ElevatorState.ZEROING && elevatorMotor.getSensorCollection().getPulseWidthRiseToRiseUs() != 0) {                                                          // ZEROING STATE
             // UPDATE MOTOR OUTPUT !!!
             elevatorMotor.set(ControlMode.PercentOutput,ZEROING_SPEED);
             if(checkLowerLimitSwitch()){
@@ -251,14 +261,14 @@ public class Elevator implements Subsystem {
     }
 
     public void putStatus() {
-        SimpleNetworkTable.setDouble("eTargetHeight", targetHeight.getValue());
-        SimpleNetworkTable.setDouble("eCurrentHeight", getCurrentHeight().getValue());
-        SimpleNetworkTable.setDouble("eSensorPosition", elevatorMotor.getSelectedSensorPosition(0));
-        SimpleNetworkTable.setDouble("eSensorVelocity", elevatorMotor.getSelectedSensorVelocity(0));
+        SmartDashboard.putNumber("eTargetHeight", targetHeight.getValue());
+        SmartDashboard.putNumber("eCurrentHeight", getCurrentHeight().getValue());
+        SmartDashboard.putNumber("eSensorPosition", elevatorMotor.getSelectedSensorPosition(0));
+        SmartDashboard.putNumber("eSensorVelocity", elevatorMotor.getSelectedSensorVelocity(0));
 
-        SimpleNetworkTable.setDouble("ePercent", elevatorMotor.getMotorOutputPercent());
-        SimpleNetworkTable.setDouble("eVoltage", elevatorMotor.getMotorOutputVoltage());
-        SimpleNetworkTable.setDouble("eCurrent", elevatorMotor.getOutputCurrent());
+        SmartDashboard.putNumber("ePercent", elevatorMotor.getMotorOutputPercent());
+        SmartDashboard.putNumber("eVoltage", elevatorMotor.getMotorOutputVoltage());
+        SmartDashboard.putNumber("eCurrent", elevatorMotor.getOutputCurrent());
     }
 
     public ElevatorState getState() {

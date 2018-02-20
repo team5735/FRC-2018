@@ -3,9 +3,9 @@ package frc.team5735;
 import edu.wpi.first.wpilibj.TimedRobot;
 import frc.team5735.constants.RobotConstants;
 import frc.team5735.controllers.auto.*;
-import frc.team5735.controllers.motionprofiling.Trajectory;
 import frc.team5735.controllers.teleop.DrivetrainController;
 import frc.team5735.controllers.teleop.SubsystemController;
+import frc.team5735.controllers.teleop.SubsystemController_Original;
 import frc.team5735.subsystems.*;
 import frc.team5735.utils.SimpleNetworkTable;
 
@@ -47,7 +47,7 @@ public class Robot extends TimedRobot {
         elevatorIntake.runInit();
         wrist.runInit();
 
-        autoController = new SuperAutoController(Autos.straightSwitch);
+        autoController = new SuperAutoController(Autos.gyroTest);
         autoController.runInit();
     }
 

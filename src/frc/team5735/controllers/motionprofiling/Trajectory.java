@@ -4,8 +4,8 @@ public class Trajectory {
     private double[][] leftPoints, rightPoints;  // Position (rotations), Velocity (RPM), Duration (ms)
 
     public Trajectory(String fileName) {
-        leftPoints = TrajectoryParser.getTrajectory(fileName + "_left.csv");
-        rightPoints = TrajectoryParser.getTrajectory(fileName + "_right.csv");
+        leftPoints = TrajectoryParser.getTrajectory(fileName + "/" + fileName + "_left.csv");
+        rightPoints = TrajectoryParser.getTrajectory(fileName + "/" + fileName + "_right.csv");
     }
 
     public double[][] getLeftPoints() {

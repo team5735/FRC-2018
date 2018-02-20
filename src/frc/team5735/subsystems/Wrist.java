@@ -3,13 +3,9 @@ package frc.team5735.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team5735.constants.PidConstants;
 import frc.team5735.constants.RobotConstants;
-import frc.team5735.utils.SimpleNetworkTable;
 import frc.team5735.utils.units.Degrees;
 
 /**
@@ -35,7 +31,7 @@ public class Wrist implements Subsystem {
             UPPER_BOUND = new Degrees(0);                 // Highest position of the Wrist
 
     private static final double GEAR_RATIO = 3.5;               // Gear ratio between motor and Wrist
-    private static final double ZEROING_SPEED = 0.4;           // Percent output value for zeroing
+    private static final double ZEROING_SPEED = 0.18;           // Percent output value for zeroing
     private static final double DEFAULT_SPEED_LIMIT = 0.4;      // Speed limit when in DEFAULT (percentOutput) state
     private static final WristState
             DEFAULT_ENABLE_STATE = WristState.POSITION_HOLDING; // Default state when robot is enabled
@@ -113,8 +109,11 @@ public class Wrist implements Subsystem {
      */
     @Override
     public void runPeriodic() {
+        if (wristMotor.getSensorCollection().getPulseWidthRiseToRiseUs() == 0) {
+            state = WristState.DEFAULT;
+        }
         putStatus();
-        if (state == WristState.ZEROING) {                                                          // ZEROING STATE
+        if (state == WristState.ZEROING && wristMotor.getSensorCollection().getPulseWidthRiseToRiseUs() != 0) {                                                      // ZEROING STATE
             // UPDATE MOTOR OUTPUT !!!
             wristMotor.set(ControlMode.PercentOutput,ZEROING_SPEED);
             if(checkUpperLimitSwitch()){
@@ -124,7 +123,7 @@ public class Wrist implements Subsystem {
             }
         } else if (state == WristState.POSITION_HOLDING || state == WristState.POSITION_BUSY){      // POSITION STATES
             // UPDATE MOTOR OUTPUT !!!
-            double output = targetAngle.toNativeUnits().getValue() * GEAR_RATIO;
+            double output = degreeToNative(targetAngle) * GEAR_RATIO;
             wristMotor.set(ControlMode.MotionMagic, output);
 
             // Check if upper limit switch is hit
@@ -230,6 +229,10 @@ public class Wrist implements Subsystem {
         return nativeUnits / 4096 * 360; //TODO check if this is correct
     }
 
+    public double degreeToNative(Degrees value) {
+        return value.getValue() / 360. * 4096.;
+    }
+
     public WristState getState() {
         return state;
     }
@@ -243,14 +246,14 @@ public class Wrist implements Subsystem {
     }
 
     public void putStatus() {
-        SimpleNetworkTable.setDouble("wTargetAngle", targetAngle.getValue());
-        SimpleNetworkTable.setDouble("wCurrentAngle", getCurrentAngle().getValue());
-        SimpleNetworkTable.setDouble("wSensorPosition", wristMotor.getSelectedSensorPosition(0));
-        SimpleNetworkTable.setDouble("wSensorVelocity", wristMotor.getSelectedSensorVelocity(0));
+        SmartDashboard.putNumber("wTargetAngle", targetAngle.getValue());
+        SmartDashboard.putNumber("wCurrentAngle", getCurrentAngle().getValue());
+        SmartDashboard.putNumber("wSensorPosition", wristMotor.getSelectedSensorPosition(0));
+        SmartDashboard.putNumber("wSensorVelocity", wristMotor.getSelectedSensorVelocity(0));
 
-        SimpleNetworkTable.setDouble("wPercent", wristMotor.getMotorOutputPercent());
-        SimpleNetworkTable.setDouble("wVoltage", wristMotor.getMotorOutputVoltage());
-        SimpleNetworkTable.setDouble("wCurrent", wristMotor.getOutputCurrent());
+        SmartDashboard.putNumber("wPercent", wristMotor.getMotorOutputPercent());
+        SmartDashboard.putNumber("wVoltage", wristMotor.getMotorOutputVoltage());
+        SmartDashboard.putNumber("wCurrent", wristMotor.getOutputCurrent());
     }
 
     /**

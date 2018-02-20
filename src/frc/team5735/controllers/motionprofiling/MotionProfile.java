@@ -171,8 +171,6 @@ public class MotionProfile {
 
                         setValue = SetValueMotionProfile.Disable;
 
-                        fillBuffer();
-
                         /*
                          * MP is being sent to CAN bus, wait a small amount of time
                          */
@@ -228,7 +226,7 @@ public class MotionProfile {
             pos = talon.getActiveTrajectoryPosition();
             vel = talon.getActiveTrajectoryVelocity();
             /* printfs and/or logging */
-//            Instrumentation.process(status, pos, vel, heading);
+            Instrumentation.process(status, pos, vel, heading);
         }
     }
     /**
