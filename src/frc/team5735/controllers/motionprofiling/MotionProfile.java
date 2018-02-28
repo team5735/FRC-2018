@@ -24,6 +24,7 @@ public class MotionProfile {
      */
     private TalonSRX talon;
     private double[][] profile;
+
     /**
      * State machine to make sure we let enough of the motion profile stream to
      * talon before we fire it.
@@ -141,7 +142,7 @@ public class MotionProfile {
                  * something is wrong. Talon is not present, unplugged, breaker
                  * tripped
                  */
-//                Instrumentation.OnNoProgress();
+                Instrumentation.OnNoProgress();
             } else {
                 --loopTimeout;
             }
@@ -163,6 +164,8 @@ public class MotionProfile {
              * do.
              */
 //            System.out.println(state);
+            fillBuffer();
+
             switch (state) {
                 case 0: /* wait for application to tell us to start an MP */
 
@@ -205,7 +208,7 @@ public class MotionProfile {
                      * another. We will go into hold state so robot servo's
                      * position.
                      */
-                    if (status.activePointValid && status.isLast) {
+                    if (status.btmBufferCnt == 0) { //status.activePointValid && status.isLast
                         /*
                          * because we set the last point's isLast to true, we will
                          * get here when the MP is done
@@ -218,7 +221,11 @@ public class MotionProfile {
                     break;
             }
 
-            fillBuffer();
+//            if ((profile.length - nextPointIndexToPush) < 512 && (profile.length - nextPointIndexToPush) > 0) {
+//                nextPointIndexToPush = startFilling(profile, nextPointIndexToPush, profile.length - nextPointIndexToPush) - 1;
+//            } else {
+//                nextPointIndexToPush = startFilling(profile, nextPointIndexToPush, 512);
+//            }
 
             /* Get the motion profile status every loop */
             talon.getMotionProfileStatus(status);
@@ -226,7 +233,7 @@ public class MotionProfile {
             pos = talon.getActiveTrajectoryPosition();
             vel = talon.getActiveTrajectoryVelocity();
             /* printfs and/or logging */
-            Instrumentation.process(status, pos, vel, heading);
+//            Instrumentation.process(status, pos, vel, heading);
         }
     }
     /**
@@ -256,7 +263,7 @@ public class MotionProfile {
         /* did we get an underrun condition since last time we checked ? */
         if (status.hasUnderrun) {
             /* better log it so we know about it */
-//            Instrumentation.OnUnderrun();
+            Instrumentation.OnUnderrun();
             /*
              * clear the error. This flag does not auto clear, this way
              * we never miss logging it.
@@ -284,7 +291,6 @@ public class MotionProfile {
             point.position = (position * 12 / (Math.PI * RobotConstants.WHEEL_DIAMETER)) * 4096; //Convert Feet to Units
             point.velocity = (velocity * 12 / (Math.PI * RobotConstants.WHEEL_DIAMETER)) * 4096 / 10; //Convert RPM to Units/100ms
 
-
             point.headingDeg = 0; /* future feature - not used in this example*/
             point.profileSlotSelect0 = 0; /* which set of gains would you like to use [0,3]? */
             point.profileSlotSelect1 = 0; /* future feature  - not used in this example - cascaded PID [0,1], leave zero */
@@ -294,8 +300,10 @@ public class MotionProfile {
                 point.zeroPos = true; /* set this to true on the first point */
 
             point.isLastPoint = false;
-            if ((i + 1) == totalCnt)
-                point.isLastPoint = true; /* set this to true on the last point  */
+//            if ((i + 1) == totalCnt) {
+////                point.isLastPoint = true; /* set this to true on the last point  */
+//                System.out.println("LAST POINT");
+//            }
 
             talon.pushMotionProfileTrajectory(point);
 //            System.out.println("{" + lPositionRot + ", " + lVelocityRPM + ", 16}");

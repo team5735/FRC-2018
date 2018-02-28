@@ -41,7 +41,7 @@ public class MotionProfileController implements Controller {
     public void runPeriodic() {
         SetValueMotionProfile leftSetOutput = leftMotionProfile.getSetValue();
         SetValueMotionProfile rightSetOutput = rightMotionProfile.getSetValue();
-        drivetrain.setMotionProfileOutput(leftSetOutput.value, rightSetOutput.value);
+        drivetrain.setMotionProfileOutput(leftSetOutput.value, rightSetOutput.value); // leftSet
 
         leftMotionProfile.control();
         rightMotionProfile.control();

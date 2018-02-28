@@ -3,12 +3,12 @@ package frc.team5735.controllers.teleop;
 import edu.wpi.first.wpilibj.GenericHID;
 import frc.team5735.controllers.Controller;
 import frc.team5735.controllers.CustomXbox;
-import frc.team5735.subsystems.DrivetrainIntake;
 import frc.team5735.subsystems.Elevator;
 import frc.team5735.subsystems.ElevatorIntake;
 import frc.team5735.subsystems.Wrist;
 import frc.team5735.utils.units.Degrees;
 import frc.team5735.utils.units.Inches;
+import static frc.team5735.constants.PositionConstants.*;
 
 public class SubsystemController implements Controller{
 
@@ -57,13 +57,13 @@ public class SubsystemController implements Controller{
                     wrist.setTargetAngle(wrist.getCurrentAngle());
                 } else if (xboxController.getAButton()) {
                     // Intake position
-                    wrist.setTargetAngle(new Degrees(-85));
+                    wrist.setTargetAngle(new Degrees(WRIST_INTAKE));
                 } else if (xboxController.getBButton()) {
                     // Switch position
-                    wrist.setTargetAngle(new Degrees(-40));
+                    wrist.setTargetAngle(new Degrees(WRIST_FLAT));
                 } else if (xboxController.getYButton()) {
                     // Scale position
-                    wrist.setTargetAngle(new Degrees(-10));
+                    wrist.setTargetAngle(new Degrees(WRIST_SCALE));
                 }
             }
         }
@@ -84,13 +84,13 @@ public class SubsystemController implements Controller{
                     elevator.setTargetHeight(elevator.getCurrentHeight());
                 } else if (xboxController.getAButton()) {
                     // Intake position
-                    elevator.setTargetHeight(new Inches(8));
+                    elevator.setTargetHeight(new Inches(ELEVATOR_INTAKE));
                 } else if (xboxController.getBButton()) {
                     // Switch position
-                    elevator.setTargetHeight(new Inches(20));
+                    elevator.setTargetHeight(new Inches(ELEVATOR_SWITCH));
                 } else if (xboxController.getYButton()) {
                     // Scale position
-                    elevator.setTargetHeight(new Inches(58));
+                    elevator.setTargetHeight(new Inches(ELEVATOR_SCALE));
                 }
             }
         }
@@ -115,6 +115,11 @@ public class SubsystemController implements Controller{
             elevatorIntake.setTargetSpeed(intakeTrigger * INTAKE_MAX);
         } else {
             elevatorIntake.setTargetSpeed(0);
+        }
+
+        if(xboxController.getPOV() == 0){
+            wrist.printStatus();
+            elevator.printStatus();
         }
     }
 

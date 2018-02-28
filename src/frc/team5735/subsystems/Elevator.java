@@ -27,10 +27,10 @@ public class Elevator implements Subsystem {
 
     // ===== Constants =====
     private static final Inches
-            BACKLASH_MARGIN = new Inches(5);         // Margin of error to determine states
+            BACKLASH_MARGIN = new Inches(7);         // Margin of error to determine states
     private static final Inches
             LOWER_BOUND = new Inches(0),             // Lowest position of the Elevator
-            UPPER_BOUND = new Inches(62);            // Highest position of the Elevator
+            UPPER_BOUND = new Inches(69);            // Highest position of the Elevator
 
     private static final double GEAR_RATIO = 4.0 / 3.0;           // Gear ratio between motor and Elevator
     private static final int SPROCKET_TOOTH_COUNT = 22;
@@ -38,7 +38,7 @@ public class Elevator implements Subsystem {
 
     private static final int ENCODER_TICKS_PER_REVOLUTION = 4096;   //TODO CHECK this?
 
-    private static final double ZEROING_SPEED = -0.15;      // Percent output value for zeroing
+    private static final double ZEROING_SPEED = -0.10;      // Percent output value for zeroing
     private static final double DEFAULT_SPEED_LIMIT = 0.4;  // Factor to limit speed when in DEFAULT state
     private static final ElevatorState DEFAULT_ENABLE_STATE = ElevatorState.POSITION_HOLDING;
 
@@ -63,7 +63,7 @@ public class Elevator implements Subsystem {
         hasZeroed = false;
         targetHeight = encoderTicksToElevatorInches(elevatorMotor.getSelectedSensorPosition(0));
 
-        putStatus();
+//        putStatus();
     }
 
     /**
@@ -100,8 +100,8 @@ public class Elevator implements Subsystem {
         elevatorMotor.config_kI(PidConstants.ELEVATOR_POS_SLOT_ID, PidConstants.ELEVATOR_POS_KI, 100);
         elevatorMotor.config_kD(PidConstants.ELEVATOR_POS_SLOT_ID, PidConstants.ELEVATOR_POS_KD, 100);
 
-        elevatorMotor.configMotionCruiseVelocity(625, 0);
-        elevatorMotor.configMotionAcceleration(300, 0);
+        elevatorMotor.configMotionCruiseVelocity(1000, 0);   //625
+        elevatorMotor.configMotionAcceleration(325, 0);
         elevatorMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, 0);
     }
 
@@ -128,11 +128,13 @@ public class Elevator implements Subsystem {
      */
     @Override
     public void runPeriodic() {
+//        System.out.println("TARGET: " + getTargetHeight().getValue());
+//        System.out.println(getCurrentHeight().getValue());
 
         if (elevatorMotor.getSensorCollection().getPulseWidthRiseToRiseUs() == 0) {
             state = ElevatorState.DEFAULT;
         }
-        putStatus();
+//        putStatus();
         if (state == ElevatorState.ZEROING && elevatorMotor.getSensorCollection().getPulseWidthRiseToRiseUs() != 0) {                                                          // ZEROING STATE
             // UPDATE MOTOR OUTPUT !!!
             elevatorMotor.set(ControlMode.PercentOutput,ZEROING_SPEED);

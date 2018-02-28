@@ -12,14 +12,14 @@ import org.apache.commons.csv.CSVRecord;
 /**
  * Pathfinder CSV format
  * dt (time delta between points in seconds), x, y, position, velocity, acceleration, jerk, heading
- * 
+ *
  * Normal CSV Format
  * position, velocity, dt
  */
 public class TrajectoryParser {
 
     public enum CSV_FORMAT {
-        PATHFINDER, NORMAL
+        PATHFINDER, NORMAL //Pathfinder = detailed
     }
 
     public static double[][] getTrajectory(String filename) {
@@ -60,7 +60,7 @@ public class TrajectoryParser {
                 points[i] = point;
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Exception during trajectory point initialization. Do the CSV files exist?");
         } finally {
             if (in != null) {
                 try {
@@ -81,7 +81,7 @@ public class TrajectoryParser {
     }
 
     public static void writeCSVTrajectory(String filename, Trajectory trajectory,
-            CSV_FORMAT csvFormat) throws IOException {
+                                          CSV_FORMAT csvFormat) throws IOException {
         long timenow = System.currentTimeMillis();
         File outFile = new File(filename);
 

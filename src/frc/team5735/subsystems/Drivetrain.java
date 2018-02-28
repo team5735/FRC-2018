@@ -38,9 +38,9 @@ public class Drivetrain implements Subsystem {
     private PigeonIMU gyro;
 
     // Gyro Values
-    private double gyroSpeedLimit = 0.35;
+    private double gyroSpeedLimit = 0.50;
     private Degrees gyroMargin = new Degrees(3);
-    private double turnSpeedMin = 0.2;
+    private double turnSpeedMin = 0.33;
 
     // Output Values
     private double leftSideTargetPercent = 0, rightSideTargetPercent = 0;
@@ -54,7 +54,7 @@ public class Drivetrain implements Subsystem {
     // ===== Methods =====
     private Drivetrain() {
         initMotors();
-        putStatus();
+        //putStatus();
         state = DrivetrainState.DEFAULT;
         gyro = new PigeonIMU(leftRearMotor);
         gyroStatus = new PigeonIMU.GeneralStatus();
@@ -162,7 +162,7 @@ public class Drivetrain implements Subsystem {
             leftFrontMotor.set(ControlMode.PercentOutput, leftSideTargetPercent);
             rightFrontMotor.set(ControlMode.PercentOutput, rightSideTargetPercent);
         }
-        putStatus();
+        //putStatus();
     }
 
     @Override

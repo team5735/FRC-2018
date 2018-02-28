@@ -31,7 +31,7 @@ public class Wrist implements Subsystem {
             UPPER_BOUND = new Degrees(0);                 // Highest position of the Wrist
 
     private static final double GEAR_RATIO = 3.5;               // Gear ratio between motor and Wrist
-    private static final double ZEROING_SPEED = 0.18;           // Percent output value for zeroing
+    private static final double ZEROING_SPEED = 0.25;           // Percent output value for zeroing
     private static final double DEFAULT_SPEED_LIMIT = 0.4;      // Speed limit when in DEFAULT (percentOutput) state
     private static final WristState
             DEFAULT_ENABLE_STATE = WristState.POSITION_HOLDING; // Default state when robot is enabled
@@ -55,7 +55,7 @@ public class Wrist implements Subsystem {
         hasZeroed = false;
         isUpperLimitSwitchPressed = false;
         targetAngle = getCurrentAngle();
-        putStatus();
+//        putStatus();
     }
 
     /**
@@ -112,7 +112,7 @@ public class Wrist implements Subsystem {
         if (wristMotor.getSensorCollection().getPulseWidthRiseToRiseUs() == 0) {
             state = WristState.DEFAULT;
         }
-        putStatus();
+//        putStatus();
         if (state == WristState.ZEROING && wristMotor.getSensorCollection().getPulseWidthRiseToRiseUs() != 0) {                                                      // ZEROING STATE
             // UPDATE MOTOR OUTPUT !!!
             wristMotor.set(ControlMode.PercentOutput,ZEROING_SPEED);
