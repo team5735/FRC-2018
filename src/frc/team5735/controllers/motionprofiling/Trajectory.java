@@ -7,17 +7,13 @@ public class Trajectory {
         this(fileName,false);
     }
 
-    // Swap left and right, make velocity negative, flip profile (first point is the last point), correct position
     public Trajectory(String fileName, boolean isReversed) {
-        if (isReversed) {
-            leftPoints = TrajectoryParser.getTrajectory(fileName + "/" + fileName + "_right.csv");
-            rightPoints = TrajectoryParser.getTrajectory(fileName + "/" + fileName + "_left.csv");
+        leftPoints = TrajectoryParser.getTrajectory(fileName + "/" + fileName + "_left.csv");
+        rightPoints = TrajectoryParser.getTrajectory(fileName + "/" + fileName + "_right.csv");
 
+        if (isReversed) {    // Make velocity negative, flip profile (first point is the last point), correct position
             leftPoints = reversePath(leftPoints);
             rightPoints = reversePath(rightPoints);
-        } else {
-            leftPoints = TrajectoryParser.getTrajectory(fileName + "/" + fileName + "_left.csv");
-            rightPoints = TrajectoryParser.getTrajectory(fileName + "/" + fileName + "_right.csv");
         }
     }
 
@@ -36,10 +32,10 @@ public class Trajectory {
             double[] currentPoint = points[points.length-1-i];
 
             currentPoint[0] -= finalPosition;   // Position
-            currentPoint[0] = roundAvoid(currentPoint[0],6);
+//            currentPoint[0] = round(currentPoint[0],6);
 
             currentPoint[1] *= -1;              // Velocity
-            currentPoint[1] = roundAvoid(currentPoint[1],6);
+//            currentPoint[1] = round(currentPoint[1],6);
 
             reversedPoints[i] = currentPoint;
         }
@@ -47,7 +43,7 @@ public class Trajectory {
         return reversedPoints;
     }
 
-    private static double roundAvoid(double value, int places) {
+    private static double round(double value, int places) {
         double scale = Math.pow(10, places);
         return Math.round(value * scale) / scale;
     }

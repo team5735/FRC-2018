@@ -1,0 +1,8 @@
+build/
+dist/
+out/
+res/
+*.DS_Store
+*.iml
+.classpath
+.project

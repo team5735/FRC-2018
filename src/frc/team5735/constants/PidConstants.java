@@ -4,18 +4,18 @@ public class PidConstants {
     // ========== PID Parameters ==========
     //Drivetrain Left - Closed Loop Velocity (Slot 0)
     public static final double
-            DT_LEFT_VEL_KF = 0.25 * 1023 / 745,     // 0.212
-            DT_LEFT_VEL_KP = 0.7, // 2.0
+            DT_LEFT_VEL_KF = 0.25 * 1023 / 825,     // 0.212
+            DT_LEFT_VEL_KP = 1.2, // 2.0, 0.7
             DT_LEFT_VEL_KI = 0,
-            DT_LEFT_VEL_KD = 0.5;
+            DT_LEFT_VEL_KD = 1.0;
     public static final int DT_LEFT_VEL_SLOT_ID = 0;
 
     //Drivetrain Right - Closed Loop Velocity (Slot 0)
     public static final double
-            DT_RIGHT_VEL_KF = 0.25 * 1023 / 745,
-            DT_RIGHT_VEL_KP = .7, // 1.8
+            DT_RIGHT_VEL_KF = 0.25 * 1023 / 685,
+            DT_RIGHT_VEL_KP = 1.92, // 1.8 , 0.7
             DT_RIGHT_VEL_KI = 0,
-            DT_RIGHT_VEL_KD = 0.4;
+            DT_RIGHT_VEL_KD = 1.23;
     public static final int DT_RIGHT_VEL_SLOT_ID = 0;
 
     //Wrist - Closed Loop Position (Slot 0)
@@ -28,9 +28,9 @@ public class PidConstants {
 
     //Elevator - Closed Loop Position (Slot 0)
     public static final double
-            ELEVATOR_POS_KF = (0.4 * 1023) / 350, //
-            ELEVATOR_POS_KP = 0.44,
+            ELEVATOR_POS_KF = (0.4 * 1023) / 415, //
+            ELEVATOR_POS_KP = 0.28, //0.44
             ELEVATOR_POS_KI = 0,
-            ELEVATOR_POS_KD = 0;
+            ELEVATOR_POS_KD = 0.05;
     public static final int ELEVATOR_POS_SLOT_ID = 0;
 }

@@ -37,9 +37,9 @@ public class Robot extends TimedRobot {
         SmartDashboard.putData("Auto Start Position", autoStartPositionChooser);
 
         autoPriorityChooser = new SendableChooser();
-        autoPriorityChooser.addDefault("Switch", GameDataController.Priority.SWITCH);
+        autoPriorityChooser.addDefault("None", GameDataController.Priority.NONE);
+        autoPriorityChooser.addObject("Switch", GameDataController.Priority.SWITCH);
         autoPriorityChooser.addObject("Scale", GameDataController.Priority.SCALE);
-        autoPriorityChooser.addObject("None", GameDataController.Priority.NONE);
         SmartDashboard.putData("Auto Priority", autoPriorityChooser);
 
         SmartDashboard.putNumber("Delay", 0);
@@ -67,16 +67,15 @@ public class Robot extends TimedRobot {
         elevatorIntake.runInit();
         wrist.runInit();
 
-//        autoController = new SuperAutoController(Autos.centerToLeftSwitch);
-//        autoController.runInit();
-
         GameDataController.updateData();
-        if(GameDataController.allFieldsPopulated) {
-            autoController = new SuperAutoController(GameDataController.findAppropriateTrajectory());
-            autoController.runInit();
-        } else {
-            System.err.println("Not all necessary autonomous parameters populated yet!");
-        }
+        autoController = new SuperAutoController(GameDataController.findAppropriateTrajectory());
+        autoController.runInit();
+
+//        if(GameDataController.allFieldsPopulated) {
+//
+//        } else {
+//            System.err.println("Not all necessary autonomous parameters populated yet!");
+//        }
     }
 
     /**
