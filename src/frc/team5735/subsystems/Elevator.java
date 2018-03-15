@@ -30,7 +30,7 @@ public class Elevator implements Subsystem {
             BACKLASH_MARGIN = new Inches(7);         // Margin of error to determine states
     private static final Inches
             LOWER_BOUND = new Inches(0),             // Lowest position of the Elevator
-            UPPER_BOUND = new Inches(69);            // Highest position of the Elevator
+            UPPER_BOUND = new Inches(67);            // Highest position of the Elevator
 
     private static final double GEAR_RATIO = 4.0 / 3.0;           // Gear ratio between motor and Elevator
     private static final int SPROCKET_TOOTH_COUNT = 22;
@@ -84,7 +84,7 @@ public class Elevator implements Subsystem {
         elevatorMotor.configNominalOutputForward(0, 0);
         elevatorMotor.configNominalOutputReverse(0, 0);
         elevatorMotor.configPeakOutputForward(1, 0);
-        elevatorMotor.configPeakOutputReverse(-1, 0);
+        elevatorMotor.configPeakOutputReverse(-0.5, 0);
 
         elevatorMotor.enableCurrentLimit(true);
         elevatorMotor.configContinuousCurrentLimit(18,0);
@@ -100,8 +100,8 @@ public class Elevator implements Subsystem {
         elevatorMotor.config_kI(PidConstants.ELEVATOR_POS_SLOT_ID, PidConstants.ELEVATOR_POS_KI, 100);
         elevatorMotor.config_kD(PidConstants.ELEVATOR_POS_SLOT_ID, PidConstants.ELEVATOR_POS_KD, 100);
 
-        elevatorMotor.configMotionCruiseVelocity(1000, 0);   //625
-        elevatorMotor.configMotionAcceleration(325, 0);
+        elevatorMotor.configMotionCruiseVelocity(1300, 0);   //1000
+        elevatorMotor.configMotionAcceleration(475, 0); //325
         elevatorMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, 0);
     }
 

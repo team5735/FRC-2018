@@ -72,6 +72,8 @@ public class MotionProfile {
      * every 10ms.
      */
     public int nextPointIndexToPush = 0;
+    
+    public boolean btmHasBeenFull = false;
 
 
     class PeriodicRunnable implements Runnable {
@@ -219,6 +221,10 @@ public class MotionProfile {
                         System.out.println("MP done");
                     }
                     break;
+            }
+            
+            if (!btmHasBeenFull && status.btmBufferCnt >= 127) {
+            	btmHasBeenFull = true;
             }
 
 //            if ((profile.length - nextPointIndexToPush) < 512 && (profile.length - nextPointIndexToPush) > 0) {

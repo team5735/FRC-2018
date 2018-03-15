@@ -1,6 +1,7 @@
 package frc.team5735.controllers.teleop;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import frc.team5735.controllers.Controller;
 import frc.team5735.controllers.CustomXbox;
 import frc.team5735.subsystems.Elevator;
@@ -31,7 +32,7 @@ public class SubsystemController implements Controller{
 
     @Override
     public void runPeriodic() {
-        if (xboxController.getBackButtonPressed()) {
+        if (xboxController.getBackButtonPressed() && xboxController.getBumper(Hand.kLeft)) {
             if(elevator.getState() == Elevator.ElevatorState.DEFAULT || wrist.getState() == Wrist.WristState.DEFAULT) {
                 elevator.setState(Elevator.ElevatorState.POSITION_HOLDING);
                 wrist.setState(Wrist.WristState.POSITION_HOLDING);
@@ -43,7 +44,7 @@ public class SubsystemController implements Controller{
 
         //WRIST STUFF
         double wristJoystick = xboxController.getY(GenericHID.Hand.kRight,0.2),
-                WRIST_INCREMENT = 0.75;
+                WRIST_INCREMENT = 0.5;
         if (wrist.getState() == Wrist.WristState.DEFAULT) {
             wrist.setTargetSpeed(wristJoystick); // limited in Wrist.java
         }else {
