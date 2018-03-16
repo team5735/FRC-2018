@@ -1,6 +1,10 @@
 package frc.team5735.controllers.teleop;
 
+import static frc.team5735.constants.RobotConstants.PCM_ID;
+
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team5735.controllers.Controller;
 import frc.team5735.controllers.CustomXbox;
 import frc.team5735.subsystems.Drivetrain;
@@ -18,8 +22,11 @@ public class DrivetrainController implements Controller {
     private final double UNBALANCED_HEIGHT = 40;
     private final double UNBALANCED_SPEED_LIMIT = 0.7;
     private final double UNBALANCED_SPIN_LIMIT = 0.85; //0.8
+    private final Compressor compressor;
 
     public DrivetrainController(int joystickPort) {
+    	compressor = new Compressor(PCM_ID);
+    	compressor.setClosedLoopControl(false);
         this.drivetrain = Drivetrain.getInstance();
         xboxController = new CustomXbox(joystickPort);
     }
@@ -77,6 +84,13 @@ public class DrivetrainController implements Controller {
             }
         }
 
+        if(xboxController.getBackButtonPressed()) {
+        	if(compressor.enabled()) {
+        		compressor.stop();
+        	} else {
+        		compressor.start();
+        	}
+        }
 
         if (xboxController.getBackButton()) {
             drivetrain.resetGyro();

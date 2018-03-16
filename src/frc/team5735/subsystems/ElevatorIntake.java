@@ -3,7 +3,10 @@ package frc.team5735.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-import frc.team5735.constants.RobotConstants;
+
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import static frc.team5735.constants.RobotConstants.*;
 
 public class ElevatorIntake implements Subsystem {
 
@@ -20,6 +23,7 @@ public class ElevatorIntake implements Subsystem {
     // ===== Instance Fields =====
     // Motor Controller
     private VictorSPX elevatorIntakeMotor;
+    private DoubleSolenoid doubleSolenoid;
 
     // Target Outputs
     private double targetSpeed;
@@ -27,13 +31,14 @@ public class ElevatorIntake implements Subsystem {
 
     // ===== Methods =====
     private ElevatorIntake() {
+    	doubleSolenoid = new DoubleSolenoid(PCM_ID, INTAKE_SOLENOID_FORWARD_ID, INTAKE_SOLENOID_BACKWARD_ID);
         initMotors();
         targetSpeed = 0;
     }
 
     private void initMotors() {
         // ===== Elevator FRONT SETUP =====
-        elevatorIntakeMotor = new VictorSPX(RobotConstants.VICTOR_INTAKE_ELEV_ID);
+        elevatorIntakeMotor = new VictorSPX(VICTOR_INTAKE_ELEV_ID);
         elevatorIntakeMotor.set(ControlMode.PercentOutput,targetSpeed);                // Default control mode
         elevatorIntakeMotor.setInverted(false);                                        // In is positive (green led) TODO Check/change inversion to match
 
@@ -49,7 +54,15 @@ public class ElevatorIntake implements Subsystem {
     public void setTargetSpeed(double targetSpeed) {
         this.targetSpeed = targetSpeed;
     }
-
+    
+    public void toggleIntakeClaw() {
+    	if(doubleSolenoid.get() == DoubleSolenoid.Value.kForward) {
+            doubleSolenoid.set(DoubleSolenoid.Value.kReverse);
+        } else {
+            doubleSolenoid.set(DoubleSolenoid.Value.kForward);
+        }
+    }
+    
     @Override
     public void runInit() {
         targetSpeed = 0;

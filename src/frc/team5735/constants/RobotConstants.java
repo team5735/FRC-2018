@@ -36,7 +36,10 @@ public class RobotConstants {
 
     //Intake Elevator
     public static final int
-            VICTOR_INTAKE_ELEV_ID = 10;
+            VICTOR_INTAKE_ELEV_ID = 10,
+            PCM_ID = 12,
+            INTAKE_SOLENOID_FORWARD_ID = 0, 
+            INTAKE_SOLENOID_BACKWARD_ID = 1;
 
 
     // ========== Controllers ==========
