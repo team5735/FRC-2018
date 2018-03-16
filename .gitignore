@@ -2,7 +2,7 @@ build/
 dist/
 out/
 res/
-idea/
+.idea/
 *.DS_Store
 FRC-2018.iml
 *.iml
