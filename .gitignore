@@ -3,6 +3,8 @@ dist/
 out/
 res/
 .idea/
+.idea/*
+.idea/*.xml
 *.DS_Store
 FRC-2018.iml
 *.iml
