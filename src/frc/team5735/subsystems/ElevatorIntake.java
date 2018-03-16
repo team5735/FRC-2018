@@ -57,10 +57,18 @@ public class ElevatorIntake implements Subsystem {
     
     public void toggleIntakeClaw() {
     	if(doubleSolenoid.get() == DoubleSolenoid.Value.kForward) {
-            doubleSolenoid.set(DoubleSolenoid.Value.kReverse);
+            closeClaw();
         } else {
-            doubleSolenoid.set(DoubleSolenoid.Value.kForward);
+            openClaw();
         }
+    }
+
+    public void openClaw() {
+        doubleSolenoid.set(DoubleSolenoid.Value.kForward);
+    }
+
+    public void closeClaw() {
+        doubleSolenoid.set(DoubleSolenoid.Value.kReverse);
     }
     
     @Override

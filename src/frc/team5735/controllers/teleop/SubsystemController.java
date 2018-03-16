@@ -104,11 +104,11 @@ public class SubsystemController implements Controller{
 
         double ejectTrigger = xboxController.getTriggerAxis(GenericHID.Hand.kLeft),
                 intakeTrigger = xboxController.getTriggerAxis(GenericHID.Hand.kRight),
-                EJECT_SPEED_MAX = 0.55,
+                EJECT_SPEED_MAX = INTAKE_EJECT_VALUE,
                 INTAKE_MAX = 0.85;
         if (ejectTrigger > 0) {
             //Eject
-            elevatorIntake.setTargetSpeed(-ejectTrigger * EJECT_SPEED_MAX);
+            elevatorIntake.setTargetSpeed(ejectTrigger * EJECT_SPEED_MAX);
 //            elevatorIntake.set(ControlMode.PercentOutput, -EJECT_SPEED);
         } else if (intakeTrigger > 0) {
             elevatorIntake.setTargetSpeed(intakeTrigger * INTAKE_MAX);

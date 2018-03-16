@@ -47,12 +47,27 @@ public class SuperAutoController extends AutoController {
                 for (AutoCommand command : stepCommands) {
                     if (command.getSubsystem() instanceof Wrist) {
                         wrist.setTargetAngle((Degrees) command.getValue());
-                        isStepFinished = isStepFinished && wrist.getState() == Wrist.WristState.POSITION_HOLDING;
+                        // if zeroing at beginning, don't wait to complete
+                        if(wrist.getState() != Wrist.WristState.ZEROING) {
+                            isStepFinished = isStepFinished && wrist.getState() == Wrist.WristState.POSITION_HOLDING;
+                        }
                     } else if (command.getSubsystem() instanceof Elevator) {
                         elevator.setTargetHeight((Inches) command.getValue());
-                        isStepFinished = isStepFinished && elevator.getState() == Elevator.ElevatorState.POSITION_HOLDING;
+                        // if zeroing at beginning, don't wait to complete
+                        if(elevator.getState() != Elevator.ElevatorState.ZEROING) {
+                            isStepFinished = isStepFinished && elevator.getState() == Elevator.ElevatorState.POSITION_HOLDING;
+                        }
                     } else if (command.getSubsystem() instanceof ElevatorIntake) {
-                        elevatorIntake.setTargetSpeed((Double) command.getValue());
+                        if(command.getValue() instanceof Double) {
+                            elevatorIntake.setTargetSpeed((Double) command.getValue());
+                        } else if(command.getValue() instanceof Boolean) {
+                            if((boolean) command.getValue()) {
+                                elevatorIntake.openClaw();
+                            } else {
+                                elevatorIntake.closeClaw();
+                            }
+                        }
+
                     } else if (command.getSubsystem() instanceof DrivetrainIntake) {
                         drivetrainIntake.setTargetSpeed((Double) command.getValue());
                     } else if (command.getSubsystem() instanceof Drivetrain) {

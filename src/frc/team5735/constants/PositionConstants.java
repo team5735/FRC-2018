@@ -8,8 +8,9 @@ public class PositionConstants {
                                 ELEVATOR_SWITCH = 30,
                                 ELEVATOR_SCALE = 67;
 
-    public static final double INTAKE_HOLDING_VALUE = 0.2,
-            INTAKE_EJECT_VALUE = -0.7,
+    public static final double
+//            INTAKE_HOLDING_VALUE = 0.2,
+            INTAKE_EJECT_VALUE = -0.55,
             INTAKE_INTAKE_VALUE = 1,
             INTAKE_STOP_VALUE = 0;
 

@@ -17,7 +17,7 @@ public class Autos {
 
     public static AutoCommand[][] moveForward = {
             {
-                    new AutoCommand(ElevatorIntake.getInstance(), INTAKE_HOLDING_VALUE)
+                    new AutoCommand(ElevatorIntake.getInstance(), true)
             },
             {
                     new AutoCommand(Drivetrain.getInstance(), new Trajectory("centerToRightSwitch")),
@@ -28,7 +28,7 @@ public class Autos {
 
     public static AutoCommand[][] centerToLeftSwitch = {
             {
-                    new AutoCommand(ElevatorIntake.getInstance(), INTAKE_HOLDING_VALUE)
+                    new AutoCommand(ElevatorIntake.getInstance(), true)
             },
             {
                     new AutoCommand(Drivetrain.getInstance(), new Trajectory("centerToLeftSwitch")),
@@ -48,7 +48,7 @@ public class Autos {
 
     public static AutoCommand[][] centerToRightSwitch = {
             {
-                    new AutoCommand(ElevatorIntake.getInstance(), INTAKE_HOLDING_VALUE)
+                    new AutoCommand(ElevatorIntake.getInstance(), true)
             },
             {
                     new AutoCommand(Drivetrain.getInstance(), new Trajectory("centerToRightSwitch")),
@@ -68,7 +68,7 @@ public class Autos {
 
     public static AutoCommand[][] rightToRightSwitch = {
             {
-                    new AutoCommand(ElevatorIntake.getInstance(), INTAKE_HOLDING_VALUE)
+                    new AutoCommand(ElevatorIntake.getInstance(), true)
             },
             {
                     new AutoCommand(Drivetrain.getInstance(), new Trajectory("rightToRightSwitch")),
@@ -88,7 +88,7 @@ public class Autos {
 
     public static AutoCommand[][] leftToLeftSwitch = {
             {
-                    new AutoCommand(ElevatorIntake.getInstance(), INTAKE_HOLDING_VALUE)
+                    new AutoCommand(ElevatorIntake.getInstance(), true)
             },
             {
                     new AutoCommand(Drivetrain.getInstance(), new Trajectory("leftToLeftSwitch")),
@@ -108,7 +108,7 @@ public class Autos {
 
     public static AutoCommand[][] rightToRightScale = {
             {
-                    new AutoCommand(ElevatorIntake.getInstance(), INTAKE_HOLDING_VALUE)
+                    new AutoCommand(ElevatorIntake.getInstance(), true)
             },
             {
                     new AutoCommand(Drivetrain.getInstance(), new Trajectory("rightToRightScale")),
@@ -131,7 +131,7 @@ public class Autos {
 
     public static AutoCommand[][] leftToLeftScale = {
             {
-                    new AutoCommand(ElevatorIntake.getInstance(), INTAKE_HOLDING_VALUE)
+                    new AutoCommand(ElevatorIntake.getInstance(), true)
             },
             {
                     new AutoCommand(Drivetrain.getInstance(), new Trajectory("leftToLeftScale")),
@@ -164,6 +164,7 @@ public class Autos {
             },
             {
                     new AutoCommand(Drivetrain.getInstance(), new Trajectory("leftBackupToCube")),
+                    new AutoCommand(ElevatorIntake.getInstance(), false),
                     new AutoCommand(ElevatorIntake.getInstance(), INTAKE_INTAKE_VALUE)
             },
             {
@@ -171,7 +172,7 @@ public class Autos {
             },
             {
                     new AutoCommand(Drivetrain.getInstance(), new Trajectory("leftBackupToCube",true)),
-                    new AutoCommand(ElevatorIntake.getInstance(), INTAKE_HOLDING_VALUE)
+                    new AutoCommand(ElevatorIntake.getInstance(), true)
             },
             {
                     new AutoCommand(Drivetrain.getInstance(), new Trajectory("leftBackupToSwitch")),
@@ -200,16 +201,17 @@ public class Autos {
             },
             {
                     new AutoCommand(Drivetrain.getInstance(), new Trajectory("rightBackupToCube")),
+                    new AutoCommand(ElevatorIntake.getInstance(), false),
                     new AutoCommand(ElevatorIntake.getInstance(), INTAKE_INTAKE_VALUE)
             },
             {
                     new AutoCommand(Drivetrain.getInstance(), new Trajectory("rightBackupToCube",true)),
-                    new AutoCommand(ElevatorIntake.getInstance(), INTAKE_HOLDING_VALUE),
+                    new AutoCommand(ElevatorIntake.getInstance(), true),
                     new AutoCommand(Elevator.getInstance(), new Inches(ELEVATOR_SWITCH))
             },
             {
                 new AutoCommand(Wrist.getInstance(), new Degrees(WRIST_FLAT)),
-    
+
             	new AutoCommand(Drivetrain.getInstance(), new Trajectory("rightBackupToSwitch")),
             },
             {
@@ -235,7 +237,7 @@ public class Autos {
 
     public static AutoCommand[][] newTwoCube = {
             {
-                    new AutoCommand(ElevatorIntake.getInstance(), INTAKE_HOLDING_VALUE)
+                    new AutoCommand(ElevatorIntake.getInstance(), true)
             },
             {
                     new AutoCommand(Drivetrain.getInstance(), new Trajectory("rightToRightScale")),
@@ -256,10 +258,11 @@ public class Autos {
             },
             {
                     new AutoCommand(Drivetrain.getInstance(), new Trajectory("rightSBackupToCube")),
+                    new AutoCommand(ElevatorIntake.getInstance(), false),
                     new AutoCommand(ElevatorIntake.getInstance(), INTAKE_INTAKE_VALUE)
             },
             {
-                    new AutoCommand(ElevatorIntake.getInstance(), INTAKE_HOLDING_VALUE),
+                    new AutoCommand(ElevatorIntake.getInstance(), true),
                     new AutoCommand(Wrist.getInstance(), new Degrees(WRIST_FLAT)),
                     new AutoCommand(Elevator.getInstance(), new Inches(ELEVATOR_SWITCH)),
                     new AutoCommand(Drivetrain.getInstance(), new Trajectory("short"))
@@ -277,7 +280,7 @@ public class Autos {
 
     public static AutoCommand[][] twoCube = {
             {
-                    new AutoCommand(ElevatorIntake.getInstance(), INTAKE_HOLDING_VALUE)
+                    new AutoCommand(ElevatorIntake.getInstance(), true)
             },
             {
                     new AutoCommand(Drivetrain.getInstance(), new Trajectory("rightToRightScale")),
@@ -303,7 +306,7 @@ public class Autos {
                     new AutoCommand(Drivetrain.getInstance(), new Trajectory("rightScaleToRightSwitch")),
             },
             {
-                    new AutoCommand(ElevatorIntake.getInstance(), INTAKE_HOLDING_VALUE)
+                    new AutoCommand(ElevatorIntake.getInstance(), true)
             },
             {
                     new AutoCommand(Wrist.getInstance(), new Degrees(WRIST_FLAT)),
