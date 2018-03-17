@@ -17,6 +17,21 @@ public class Trajectory {
         }
     }
 
+    public Trajectory(double[][] leftPoints, double[][] rightPoints) {
+        this.leftPoints = leftPoints;
+        this.rightPoints = rightPoints;
+    }
+
+    public static Trajectory reverse(Trajectory trajectory) {
+        double[][] newLeftPoints = reversePath(trajectory.getLeftPoints());
+        double[][] newRightPoints = reversePath(trajectory.getRightPoints());
+        return new Trajectory(newLeftPoints, newRightPoints);
+    }
+
+    public static Trajectory swapSides(Trajectory trajectory) {
+        return new Trajectory(trajectory.getRightPoints(), trajectory.getLeftPoints());
+    }
+
     public double[][] getLeftPoints() {
         return leftPoints;
     }

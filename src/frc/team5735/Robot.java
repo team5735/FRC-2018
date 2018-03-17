@@ -5,7 +5,9 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team5735.constants.RobotConstants;
+import frc.team5735.constants.TrajectoryConstants;
 import frc.team5735.controllers.auto.*;
+import frc.team5735.controllers.motionprofiling.Trajectory;
 import frc.team5735.controllers.teleop.DrivetrainController;
 import frc.team5735.controllers.teleop.SubsystemController;
 import frc.team5735.controllers.teleop.SubsystemController_Original;
@@ -30,6 +32,8 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotInit() {
+        TrajectoryConstants.loadTrajectories();
+
         autoStartPositionChooser = new SendableChooser();
         autoStartPositionChooser.addDefault("Center", GameDataController.StartingPosition.CENTER);
         autoStartPositionChooser.addObject("Left", GameDataController.StartingPosition.LEFT);

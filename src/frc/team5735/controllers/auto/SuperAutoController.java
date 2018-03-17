@@ -46,25 +46,27 @@ public class SuperAutoController extends AutoController {
                 boolean isStepFinished = true;
                 for (AutoCommand command : stepCommands) {
                     if (command.getSubsystem() instanceof Wrist) {
-                        wrist.setTargetAngle((Degrees) command.getValue());
-                        // if zeroing at beginning, don't wait to complete
                         if(wrist.getState() != Wrist.WristState.ZEROING) {
+                            wrist.setTargetAngle((Degrees) command.getValue());
                             isStepFinished = isStepFinished && wrist.getState() == Wrist.WristState.POSITION_HOLDING;
+                        } else {
+                            isStepFinished = false;
                         }
                     } else if (command.getSubsystem() instanceof Elevator) {
-                        elevator.setTargetHeight((Inches) command.getValue());
-                        // if zeroing at beginning, don't wait to complete
                         if(elevator.getState() != Elevator.ElevatorState.ZEROING) {
+                            elevator.setTargetHeight((Inches) command.getValue());
                             isStepFinished = isStepFinished && elevator.getState() == Elevator.ElevatorState.POSITION_HOLDING;
+                        } else {
+                            isStepFinished = false;
                         }
                     } else if (command.getSubsystem() instanceof ElevatorIntake) {
                         if(command.getValue() instanceof Double) {
                             elevatorIntake.setTargetSpeed((Double) command.getValue());
                         } else if(command.getValue() instanceof Boolean) {
                             if((boolean) command.getValue()) {
-                                elevatorIntake.openClaw();
-                            } else {
                                 elevatorIntake.closeClaw();
+                            } else {
+                                elevatorIntake.openClaw();
                             }
                         }
 

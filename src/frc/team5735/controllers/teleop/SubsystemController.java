@@ -121,6 +121,11 @@ public class SubsystemController implements Controller{
         if (xboxController.getBumperPressed(GenericHID.Hand.kRight)) {
             elevatorIntake.toggleIntakeClaw();
         }
+            else if(xboxController.getStickButtonPressed(Hand.kLeft)) {
+                elevatorIntake.openClaw();
+            } else if(xboxController.getStickButtonPressed(Hand.kRight)) {
+                elevatorIntake.closeClaw();
+            }
         
         //Intake (Eject override Hold override Intake)
 //        double ejectTrigger = xboxController.getTriggerAxis(GenericHID.Hand.kLeft),
