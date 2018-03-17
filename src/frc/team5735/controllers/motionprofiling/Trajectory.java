@@ -24,11 +24,11 @@ public class Trajectory {
         this.rightPoints = rightPoints;
     }
 
-    public static Trajectory reverse(Trajectory trajectory) {
-        double[][] newLeftPoints = reversePath(trajectory.getLeftPoints());
-        double[][] newRightPoints = reversePath(trajectory.getRightPoints());
-        return new Trajectory(newLeftPoints, newRightPoints);
-    }
+//    public static Trajectory reverse(Trajectory trajectory) {
+//        double[][] newLeftPoints = reversePath(trajectory.getLeftPoints());
+//        double[][] newRightPoints = reversePath(trajectory.getRightPoints());
+//        return new Trajectory(newLeftPoints, newRightPoints);
+//    }
 
     public static Trajectory swapSides(Trajectory trajectory) {
         return new Trajectory(trajectory.getRightPoints(), trajectory.getLeftPoints());

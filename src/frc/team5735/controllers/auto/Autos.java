@@ -124,7 +124,7 @@ public class Autos {
             },
             {
                     new AutoCommand(ElevatorIntake.getInstance(), INTAKE_STOP_VALUE),
-                    new AutoCommand(Drivetrain.getInstance(), Trajectory.reverse(TrajectoryConstants.shortPath)),
+                    new AutoCommand(Drivetrain.getInstance(), TrajectoryConstants.shortPathReversed),
                     new AutoCommand(Wrist.getInstance(), new Degrees(WRIST_INTAKE)),
                     new AutoCommand(Elevator.getInstance(), new Inches(ELEVATOR_INTAKE))
             }
@@ -150,7 +150,7 @@ public class Autos {
             },
             {
                     new AutoCommand(ElevatorIntake.getInstance(), INTAKE_STOP_VALUE),
-                    new AutoCommand(Drivetrain.getInstance(), Trajectory.reverse(TrajectoryConstants.shortPath)),
+                    new AutoCommand(Drivetrain.getInstance(), TrajectoryConstants.shortPathReversed),
                     new AutoCommand(Wrist.getInstance(), new Degrees(WRIST_INTAKE)),
                     new AutoCommand(Elevator.getInstance(), new Inches(ELEVATOR_INTAKE))
             }
@@ -159,7 +159,7 @@ public class Autos {
     //TWO CUBE
     public static AutoCommand[][] leftSwitchTwoCube = {
             {
-                    new AutoCommand(Drivetrain.getInstance(), Trajectory.swapSides(Trajectory.reverse(TrajectoryConstants.switchBackupToSwitch))),
+                    new AutoCommand(Drivetrain.getInstance(), Trajectory.swapSides(TrajectoryConstants.switchBackupToSwitchReversed)),
                     new AutoCommand(Wrist.getInstance(), new Degrees(WRIST_INTAKE)),
                     new AutoCommand(Elevator.getInstance(), new Inches(ELEVATOR_INTAKE))
             },
@@ -172,7 +172,7 @@ public class Autos {
                     new AutoCommand(null, 250)
             },
             {
-                    new AutoCommand(Drivetrain.getInstance(), Trajectory.swapSides(Trajectory.reverse(TrajectoryConstants.switchBackupToCube))),
+                    new AutoCommand(Drivetrain.getInstance(), Trajectory.swapSides(TrajectoryConstants.switchBackupToCubeReversed)),
                     new AutoCommand(ElevatorIntake.getInstance(), true)
             },
             {
@@ -188,7 +188,7 @@ public class Autos {
             },
             {
                     new AutoCommand(ElevatorIntake.getInstance(), INTAKE_STOP_VALUE),
-                    new AutoCommand(Drivetrain.getInstance(), Trajectory.reverse(TrajectoryConstants.shortPath)),
+                    new AutoCommand(Drivetrain.getInstance(), TrajectoryConstants.shortPathReversed),
                     new AutoCommand(Wrist.getInstance(), new Degrees(WRIST_INTAKE)),
                     new AutoCommand(Elevator.getInstance(), new Inches(ELEVATOR_INTAKE))
             }
@@ -223,7 +223,7 @@ public class Autos {
             },
             {
                     new AutoCommand(ElevatorIntake.getInstance(), INTAKE_STOP_VALUE),
-                    new AutoCommand(Drivetrain.getInstance(), Trajectory.reverse(TrajectoryConstants.shortPath)),
+                    new AutoCommand(Drivetrain.getInstance(), TrajectoryConstants.shortPathReversed),
                     new AutoCommand(Wrist.getInstance(), new Degrees(WRIST_INTAKE)),
                     new AutoCommand(Elevator.getInstance(), new Inches(ELEVATOR_INTAKE))
             }
