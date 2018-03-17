@@ -87,10 +87,10 @@ public class GameDataController {
             case CENTER:
                 if(homeSwitch == 'L') {
                     commands.addAll(Arrays.asList(Autos.centerToLeftSwitch));
-//                    commands.addAll(Arrays.asList(Autos.leftSwitchTwoCube));
+                    commands.addAll(Arrays.asList(Autos.leftSwitchTwoCube));
                 } else if(homeSwitch == 'R'){
                     commands.addAll(Arrays.asList(Autos.centerToRightSwitch));
-//                    commands.addAll(Arrays.asList(Autos.rightSwitchTwoCube));
+                    commands.addAll(Arrays.asList(Autos.rightSwitchTwoCube));
                 }
 
                 // If we ever need to go to the scale from center... WHY????

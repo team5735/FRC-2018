@@ -196,7 +196,7 @@ public class Autos {
 
     public static AutoCommand[][] rightSwitchTwoCube = {
             {
-                    new AutoCommand(Drivetrain.getInstance(), TrajectoryConstants.switchBackupToSwitch),
+                    new AutoCommand(Drivetrain.getInstance(), Trajectory.reverse(TrajectoryConstants.switchBackupToSwitch)),
                     new AutoCommand(Wrist.getInstance(), new Degrees(WRIST_INTAKE)),
                     new AutoCommand(Elevator.getInstance(), new Inches(ELEVATOR_INTAKE))
             },
@@ -206,14 +206,14 @@ public class Autos {
                     new AutoCommand(ElevatorIntake.getInstance(), INTAKE_INTAKE_VALUE)
             },
             {
-                    new AutoCommand(Drivetrain.getInstance(), TrajectoryConstants.switchBackupToCubeReversed),
+                    new AutoCommand(Drivetrain.getInstance(), Trajectory.reverse(TrajectoryConstants.switchBackupToCube)),
                     new AutoCommand(ElevatorIntake.getInstance(), true),
                     new AutoCommand(Elevator.getInstance(), new Inches(ELEVATOR_SWITCH))
             },
             {
                 new AutoCommand(Wrist.getInstance(), new Degrees(WRIST_FLAT)),
 
-            	new AutoCommand(Drivetrain.getInstance(), TrajectoryConstants.switchBackupToSwitchReversed),
+            	new AutoCommand(Drivetrain.getInstance(), TrajectoryConstants.switchBackupToSwitch),
             },
             {
                     new AutoCommand(ElevatorIntake.getInstance(), INTAKE_EJECT_VALUE)

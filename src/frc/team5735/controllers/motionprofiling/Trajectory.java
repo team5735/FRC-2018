@@ -35,11 +35,11 @@ public class Trajectory {
     }
 
     public double[][] getLeftPoints() {
-        return leftPoints.clone();
+        return leftPoints;
     }
 
     public double[][] getRightPoints() {
-        return rightPoints.clone();
+        return rightPoints;
     }
 
     public String getFilename() {
@@ -50,15 +50,10 @@ public class Trajectory {
         double finalPosition = points[points.length-1][0];
         double[][] reversedPoints = new double[points.length][3];
         for (int i = 0; i < points.length; i++) {
-            double[] currentPoint = points[points.length-1-i];
-
-            currentPoint[0] -= finalPosition;   // Position
-//            currentPoint[0] = round(currentPoint[0],6);
-
-            currentPoint[1] *= -1;              // Velocity
-//            currentPoint[1] = round(currentPoint[1],6);
-
-            reversedPoints[i] = currentPoint;
+            int currentRowIndex = points.length-1-i;
+            reversedPoints[i][0] = points[currentRowIndex][0] - finalPosition;
+            reversedPoints[i][1] = points[currentRowIndex][1] * -1;
+            reversedPoints[i][2] = points[currentRowIndex][2];
         }
 
         return reversedPoints;

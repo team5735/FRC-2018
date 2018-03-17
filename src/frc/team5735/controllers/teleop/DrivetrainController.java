@@ -92,11 +92,11 @@ public class DrivetrainController implements Controller {
         	}
         }
 
-        if (xboxController.getBackButton()) {
-            drivetrain.resetGyro();
-            drivetrain.getRightMotor().setSelectedSensorPosition(0,0,0);
-            drivetrain.getLeftMotor().setSelectedSensorPosition(0,0,0);
-        }
+//        if (xboxController.getBackButton()) {
+//            drivetrain.resetGyro();
+//            drivetrain.getRightMotor().setSelectedSensorPosition(0,0,0);
+//            drivetrain.getLeftMotor().setSelectedSensorPosition(0,0,0);
+//        }
     }
 
     @Override

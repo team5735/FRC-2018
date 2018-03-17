@@ -6,7 +6,7 @@ public class PositionConstants {
                                 WRIST_SCALE = -10;
     public static final double ELEVATOR_INTAKE = 0,
                                 ELEVATOR_SWITCH = 30,
-                                ELEVATOR_SCALE = 67;
+                                ELEVATOR_SCALE = 67.5;
 
     public static final double
 //            INTAKE_HOLDING_VALUE = 0.2,
