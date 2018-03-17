@@ -1,6 +1,7 @@
 package frc.team5735.controllers.motionprofiling;
 
 public class Trajectory {
+    private String filename;
     private double[][] leftPoints, rightPoints;  // Position (rotations), Velocity (RPM), Duration (ms)
 
     public Trajectory(String fileName) {
@@ -8,6 +9,7 @@ public class Trajectory {
     }
 
     public Trajectory(String fileName, boolean isReversed) {
+        this.filename = fileName;
         leftPoints = TrajectoryParser.getTrajectory(fileName + "/" + fileName + "_left.csv");
         rightPoints = TrajectoryParser.getTrajectory(fileName + "/" + fileName + "_right.csv");
 
@@ -33,11 +35,15 @@ public class Trajectory {
     }
 
     public double[][] getLeftPoints() {
-        return leftPoints;
+        return leftPoints.clone();
     }
 
     public double[][] getRightPoints() {
-        return rightPoints;
+        return rightPoints.clone();
+    }
+
+    public String getFilename() {
+        return filename;
     }
 
     private static double[][] reversePath(double[][] points) {

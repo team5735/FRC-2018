@@ -78,6 +78,8 @@ public class SuperAutoController extends AutoController {
                             isStepFinished = isStepFinished && drivetrain.getState() == Drivetrain.DrivetrainState.GYRO_FINISHED;
                         } else {
                             if (motionProfileController.getState() == MotionProfileController.MotionProfileControllerState.EMPTY) {
+                                System.out.println("PROFILE EMPTY ##########");
+                                System.out.println("PROFILE: " + ((Trajectory) command.getValue()).getFilename());
                                 motionProfileController.loadProfile((Trajectory) command.getValue());
                                 motionProfileController.startProfile();
                             }

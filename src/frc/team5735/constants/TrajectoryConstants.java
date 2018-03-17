@@ -6,8 +6,11 @@ public class TrajectoryConstants {
     public static Trajectory
         centerToLeftSwitch = new Trajectory("centerToLeftSwitch"),
         centerToRightSwitch = new Trajectory("centerToRightSwitch"),
-        switchBackupToCube = new Trajectory("rightBackupToCube"), //mirrorable
-        switchBackupToSwitch = new Trajectory("rightBackupToSwitch"),
+        switchBackupToCubeReversed = new Trajectory("rightBackupToCube",true),
+            switchBackupToCube = new Trajectory("rightBackupToCube",false),//mirrorable
+//        switchBackupToCube = new Trajectory("centerToRightSwitch"), // Remove Later
+        switchBackupToSwitch = new Trajectory("rightBackupToSwitch", false),
+        switchBackupToSwitchReversed = new Trajectory("rightBackupToSwitch", true),
         sideToSwitch = new Trajectory("rightToRightSwitch"),
         sideToScale = new Trajectory("rightToRightScale"),
         shortPath = new Trajectory("short");

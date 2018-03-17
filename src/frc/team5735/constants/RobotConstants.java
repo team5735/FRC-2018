@@ -38,8 +38,8 @@ public class RobotConstants {
     public static final int
             VICTOR_INTAKE_ELEV_ID = 10,
             PCM_ID = 12,
-            INTAKE_SOLENOID_FORWARD_ID = 0, 
-            INTAKE_SOLENOID_BACKWARD_ID = 1;
+            INTAKE_SOLENOID_FORWARD_ID = 1,
+            INTAKE_SOLENOID_BACKWARD_ID = 0;
 
 
     // ========== Controllers ==========

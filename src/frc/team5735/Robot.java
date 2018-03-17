@@ -30,6 +30,7 @@ public class Robot extends TimedRobot {
     public static SendableChooser autoStartPositionChooser;
     public static SendableChooser autoPriorityChooser;
 
+
     @Override
     public void robotInit() {
         TrajectoryConstants.loadTrajectories();
