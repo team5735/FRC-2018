@@ -33,4 +33,7 @@ public class PidConstants {
             ELEVATOR_POS_KI = 0,
             ELEVATOR_POS_KD = 0.05;
     public static final int ELEVATOR_POS_SLOT_ID = 0;
+
+    //Gyro Turning
+    public static final double TURN_P = 0.8;
 }

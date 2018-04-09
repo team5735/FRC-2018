@@ -48,5 +48,10 @@ public class RobotConstants {
 
     // ========== Physical Robot Properties ==========
     public static final double WHEEL_DIAMETER = 5.9;  //Inches 5.8
+    public static final double WHEEL_DIAMETER_METERS = 0.14986;
+    public static final double WHEEL_BASE = 2.32;
     public static final double TRACKWIDTH = 24;       //Inches
+
+    // ========== Motion Profiling ============
+    public static final double MAX_VELOCITY = 1.8288; // m/s; =6ft/s
 }

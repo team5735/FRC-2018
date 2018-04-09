@@ -125,19 +125,18 @@ public class Drivetrain implements Subsystem {
     public void runPeriodic() {
 //        System.out.println(gyro.getFusedHeading());
         if (state == DrivetrainState.MP) {
-            leftFrontMotor.set(ControlMode.MotionProfile, leftSideMPOutput);
-            rightFrontMotor.set(ControlMode.MotionProfile, rightSideMPOutput);
+            leftFrontMotor.set(ControlMode.PercentOutput, leftSideMPOutput);
+            rightFrontMotor.set(ControlMode.PercentOutput, rightSideMPOutput);
         } else if (state == DrivetrainState.GYRO_STARTED || state == DrivetrainState.GYRO_BUSY) {
             gyro.getGeneralStatus(gyroStatus);
             if ( gyroStatus.state == PigeonIMU.PigeonState.Ready) {
                 if(state == DrivetrainState.GYRO_STARTED) {
-                    gyro.setFusedHeading(0,0);
                     state = DrivetrainState.GYRO_BUSY;
                 } else {
                     double turnSpeed = (targetAngle.getValue() - gyro.getFusedHeading()) / 180.;
                     turnSpeed = limit(turnSpeed);
 
-                    turnSpeed = turnSpeed * gyroSpeedLimit;
+                    turnSpeed *= gyroSpeedLimit;
 
                     if (Math.abs(turnSpeed) < turnSpeedMin) {
                         if (turnSpeed < 0) {
@@ -174,7 +173,7 @@ public class Drivetrain implements Subsystem {
         return state;
     }
 
-    public void setMotionProfileOutput (int leftOutput, int rightOutput) {
+    public void setMotionProfileOutput (double leftOutput, double rightOutput) {
         leftSideMPOutput = leftOutput;
         rightSideMPOutput = rightOutput;
         state = DrivetrainState.MP;
@@ -247,10 +246,10 @@ public class Drivetrain implements Subsystem {
     }
 
     public void clearMotionProfileTrajectories() {
-        leftFrontMotor.clearMotionProfileTrajectories();
-        leftRearMotor.clearMotionProfileTrajectories();
-        rightFrontMotor.clearMotionProfileTrajectories();
-        rightRearMotor.clearMotionProfileTrajectories();
+//        leftFrontMotor.clearMotionProfileTrajectories();
+//        leftRearMotor.clearMotionProfileTrajectories();
+//        rightFrontMotor.clearMotionProfileTrajectories();
+//        rightRearMotor.clearMotionProfileTrajectories();
     }
 
     public void resetGyro(){
@@ -267,6 +266,10 @@ public class Drivetrain implements Subsystem {
 
     public TalonSRX getRightMotor() {
         return rightFrontMotor;
+    }
+
+    public double getGyroHeading() {
+        return gyro.getFusedHeading();
     }
 
     // ===== RobotDriveBase Methods =====

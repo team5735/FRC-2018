@@ -1,7 +1,7 @@
 package frc.team5735.controllers.auto;
 
+import frc.team5735.controllers.motionprofiling.CustomTrajectory;
 import frc.team5735.controllers.motionprofiling.MotionProfileController;
-import frc.team5735.controllers.motionprofiling.Trajectory;
 import frc.team5735.subsystems.*;
 import frc.team5735.utils.units.Degrees;
 import frc.team5735.utils.units.Inches;
@@ -79,8 +79,8 @@ public class SuperAutoController extends AutoController {
                         } else {
                             if (motionProfileController.getState() == MotionProfileController.MotionProfileControllerState.EMPTY) {
                                 System.out.println("PROFILE EMPTY ##########");
-                                System.out.println("PROFILE: " + ((Trajectory) command.getValue()).getFilename());
-                                motionProfileController.loadProfile((Trajectory) command.getValue());
+                                System.out.println("PROFILE: " + ((CustomTrajectory) command.getValue()).getFilename());
+                                motionProfileController.loadProfile((CustomTrajectory) command.getValue());
                                 motionProfileController.startProfile();
                             }
                             motionProfileController.runPeriodic();
