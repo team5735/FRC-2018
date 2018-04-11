@@ -75,13 +75,15 @@ public class Drivetrain implements Subsystem {
         leftFrontMotor.configNominalOutputReverse(-0.0f, 0);
         leftFrontMotor.configPeakOutputForward(+12.0f, 0);
         leftFrontMotor.configPeakOutputReverse(-12.0f, 0);
+        leftFrontMotor.configVoltageCompSaturation(11.8, 0);
+        leftFrontMotor.enableVoltageCompensation(true);
+        leftFrontMotor.configVoltageMeasurementFilter(32, 10);
 
         // Configure PID constants
         leftFrontMotor.config_kF(PidConstants.DT_LEFT_VEL_SLOT_ID, PidConstants.DT_LEFT_VEL_KF, 100);
         leftFrontMotor.config_kP(PidConstants.DT_LEFT_VEL_SLOT_ID, PidConstants.DT_LEFT_VEL_KP, 100);
         leftFrontMotor.config_kI(PidConstants.DT_LEFT_VEL_SLOT_ID, PidConstants.DT_LEFT_VEL_KI, 100);
         leftFrontMotor.config_kD(PidConstants.DT_LEFT_VEL_SLOT_ID, PidConstants.DT_LEFT_VEL_KD, 100);
-
         // ===== LEFT REAR MOTOR SETUP =====
         leftRearMotor = new TalonSRX(RobotConstants.TALON_DT_LEFT_REAR_ID);
         leftRearMotor.set(ControlMode.Follower, 0);
@@ -102,6 +104,9 @@ public class Drivetrain implements Subsystem {
         rightFrontMotor.configNominalOutputReverse(-0.0f, 0);
         rightFrontMotor.configPeakOutputForward(+12.0f, 0);
         rightFrontMotor.configPeakOutputReverse(-12.0f, 0);
+        rightFrontMotor.configVoltageCompSaturation(11.8, 0);
+        rightFrontMotor.enableVoltageCompensation(true);
+        rightFrontMotor.configVoltageMeasurementFilter(32, 10);
 
         // Configure PID constants
         rightFrontMotor.config_kF(PidConstants.DT_RIGHT_VEL_SLOT_ID, PidConstants.DT_RIGHT_VEL_KF, 100);
