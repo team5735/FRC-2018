@@ -84,7 +84,7 @@ public class CustomTrajectory {
     }
 
     public static CustomTrajectory swapSides(CustomTrajectory trajectory) {
-        CustomTrajectory newCustomTrajectory = new CustomTrajectory();
+        /*CustomTrajectory newCustomTrajectory = new CustomTrajectory();
 
         Trajectory.Segment[] segments = trajectory.getTrajectory().segments.clone();
         Trajectory.Segment[] newSegs = new Trajectory.Segment[segments.length];
@@ -103,14 +103,13 @@ public class CustomTrajectory {
         Trajectory newTrajectory = new Trajectory(newSegs);
 
         newCustomTrajectory = new CustomTrajectory(newTrajectory);
-
-        EncoderFollower temp;
+*/ //might be unnecessary as flipping sides would be enough
+        EncoderFollower temp = trajectory.leftEF;
         // FIXME symlink??
-        temp = newCustomTrajectory.leftEF;
-        newCustomTrajectory.leftEF = trajectory.rightEF;
-        newCustomTrajectory.rightEF = temp;
+        trajectory.leftEF = trajectory.rightEF;
+        trajectory.rightEF = temp;
 
-        return newCustomTrajectory;
+        return trajectory;
     }
 
     public String getFilename() {
