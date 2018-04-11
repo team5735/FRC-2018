@@ -7,7 +7,7 @@ public class PidConstants {
             DT_LEFT_VEL_KF = 0.25 * 1023 / 825,     // 0.212
             DT_LEFT_VEL_KP = 1.2, // 2.0, 0.7
             DT_LEFT_VEL_KI = 0,
-            DT_LEFT_VEL_KD = 1.0;
+            DT_LEFT_VEL_KD = 0; //1.0
     public static final int DT_LEFT_VEL_SLOT_ID = 0;
 
     //Drivetrain Right - Closed Loop Velocity (Slot 0)
@@ -15,7 +15,7 @@ public class PidConstants {
             DT_RIGHT_VEL_KF = 0.25 * 1023 / 685,
             DT_RIGHT_VEL_KP = 1.92, // 1.8 , 0.7
             DT_RIGHT_VEL_KI = 0,
-            DT_RIGHT_VEL_KD = 1.23;
+            DT_RIGHT_VEL_KD = 0; //1.23
     public static final int DT_RIGHT_VEL_SLOT_ID = 0;
 
     //Wrist - Closed Loop Position (Slot 0)

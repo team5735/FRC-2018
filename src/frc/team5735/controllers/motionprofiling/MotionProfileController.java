@@ -86,6 +86,8 @@ public class MotionProfileController implements Controller {
 
     public void empty(){
         drivetrain.clearMotionProfileTrajectories();
+        trajectory.getLeftEF().reset();
+        trajectory.getRightEF().reset();
         state = MotionProfileControllerState.EMPTY;
     }
 
