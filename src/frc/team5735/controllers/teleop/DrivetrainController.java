@@ -33,7 +33,8 @@ public class DrivetrainController implements Controller {
 
     @Override
     public void runInit() {
-
+        System.out.println("auto start");
+        drivetrain.resetGyro();
     }
 
     @Override

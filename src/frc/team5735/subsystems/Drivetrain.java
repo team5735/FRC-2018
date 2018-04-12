@@ -135,6 +135,7 @@ public class Drivetrain implements Subsystem {
         voltage = new ArrayList<>();
         velocity = new ArrayList<>();
         accel = new ArrayList<>();
+        gyro.enterCalibrationMode(PigeonIMU.CalibrationMode.BootTareGyroAccel, 0);
     }
 
     @Override
@@ -331,7 +332,7 @@ public class Drivetrain implements Subsystem {
     public void pushVoltData() {
         voltage.add(leftFrontMotor.getBusVoltage());
         velocity.add((double) leftFrontMotor.getSelectedSensorVelocity(0) * 600 / 4096);
-        gyro.getBiasedAccelerometer();
+//        gyro.getBiasedAccelerometer();
     }
 
     public void writeVoltData() {

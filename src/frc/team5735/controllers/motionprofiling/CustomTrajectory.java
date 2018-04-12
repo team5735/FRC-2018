@@ -22,16 +22,19 @@ public class CustomTrajectory {
     }
 
     public CustomTrajectory(String fileName, boolean isReversed) {
+        System.out.println("loading trajs");
         this.filename = fileName;
         trajectory = TrajectoryParser.getTrajectory(fileName + "/" + fileName + ".csv");
-
+        System.out.println("loaded trajs");
         if (isReversed) {    // Make velocity negative, flip profile (first point is the last point), correct position
             trajectory = reverse(trajectory);
+            System.out.println("reversing");
         }
 
         modifier = new TankModifier(trajectory).modify(RobotConstants.WHEEL_BASE);
         leftEF = new EncoderFollower(modifier.getLeftTrajectory());
         rightEF = new EncoderFollower(modifier.getRightTrajectory());
+        System.out.println("finished trajs");
     }
 
     public CustomTrajectory(Trajectory trajectory) {
@@ -44,11 +47,11 @@ public class CustomTrajectory {
     public static CustomTrajectory reverse(CustomTrajectory trajectory) {
         Trajectory.Segment[] segments = trajectory.trajectory.segments.clone();
         Trajectory.Segment[] newSegs = new Trajectory.Segment[segments.length];
-
         double finalPosition = segments[segments.length-1].position;
 
         for(int i = 0; i < segments.length; i++) {
             int currentRowIndex = segments.length - 1 - i;
+            newSegs[i] = segments[currentRowIndex];
             newSegs[i].position = segments[currentRowIndex].position - finalPosition;
             newSegs[i].velocity = segments[currentRowIndex].velocity * -1;
             newSegs[i].acceleration = segments[currentRowIndex].acceleration;
@@ -90,6 +93,7 @@ public class CustomTrajectory {
         Trajectory.Segment[] newSegs = new Trajectory.Segment[segments.length];
 
         for(int i = 0; i < segments.length; i++) {
+            newSegs[i] = segments[i];
             newSegs[i].position = segments[i].position;
             newSegs[i].velocity = segments[i].velocity;
             newSegs[i].acceleration = segments[i].acceleration;

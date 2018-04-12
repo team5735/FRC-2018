@@ -4,6 +4,7 @@ import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 
 import java.io.*;
+import java.net.URL;
 import java.util.List;
 
 import org.apache.commons.csv.CSVFormat;
@@ -20,9 +21,12 @@ public class TrajectoryParser {
     public static Trajectory getTrajectory(String filename) {
         Trajectory trajectory = null;
         long timenow = System.currentTimeMillis();
-
+        System.out.println("filename: " + filename);
         try {
-            File myFile = new File("trajectories/" + filename);
+//            URL url = TrajectoryParser.class.getResource("/trajectories/" + filename);
+//            File myFile = new File(url.getPath());
+            File myFile = new File("/trajectories/" + filename);
+            System.out.println(myFile.exists());
             trajectory = Pathfinder.readFromCSV(myFile);
         } catch (Exception e) {
             e.printStackTrace();

@@ -226,7 +226,7 @@ public class Autos {
             },
             {       // stop, turn around, drop intake
                     new AutoCommand(ElevatorIntake.getInstance(), INTAKE_STOP_VALUE),
-                    new AutoCommand(Drivetrain.getInstance(), 180),
+                    new AutoCommand(Drivetrain.getInstance(), new Degrees(180)),
                     new AutoCommand(Wrist.getInstance(), new Degrees(WRIST_INTAKE)),
                     new AutoCommand(Elevator.getInstance(), new Inches(ELEVATOR_INTAKE))
             },
@@ -250,7 +250,7 @@ public class Autos {
                     new AutoCommand(Wrist.getInstance(), new Degrees(WRIST_SCALE)),
             },
             {       // turn
-                    new AutoCommand(Drivetrain.getInstance(), 0),
+                    new AutoCommand(Drivetrain.getInstance(), new Degrees(0)),
             },
             {
                     // eject
@@ -285,7 +285,7 @@ public class Autos {
             },
             {       // stop, turn around, drop intake
                     new AutoCommand(ElevatorIntake.getInstance(), INTAKE_STOP_VALUE),
-                    new AutoCommand(Drivetrain.getInstance(), 180),
+                    new AutoCommand(Drivetrain.getInstance(), new Degrees(180)),
                     new AutoCommand(Wrist.getInstance(), new Degrees(WRIST_INTAKE)),
                     new AutoCommand(Elevator.getInstance(), new Inches(ELEVATOR_INTAKE))
             },
@@ -309,7 +309,7 @@ public class Autos {
                     new AutoCommand(Wrist.getInstance(), new Degrees(WRIST_SCALE)),
             },
             {       // turn
-                    new AutoCommand(Drivetrain.getInstance(), 0),
+                    new AutoCommand(Drivetrain.getInstance(), new Degrees(0)),
             },
             {
                     // eject
@@ -338,7 +338,7 @@ public class Autos {
                     new AutoCommand(Elevator.getInstance(), new Inches(ELEVATOR_SWITCH))
             },
             {       // turn to 0, lift up
-                    new AutoCommand(Drivetrain.getInstance(), 0),
+                    new AutoCommand(Drivetrain.getInstance(), new Degrees(0)),
                     new AutoCommand(Wrist.getInstance(), new Degrees(WRIST_SCALE)),
                     new AutoCommand(Elevator.getInstance(), new Inches(ELEVATOR_SCALE))
             },
@@ -353,7 +353,7 @@ public class Autos {
             },
             {       // stop, turn around, drop intake
                     new AutoCommand(ElevatorIntake.getInstance(), INTAKE_STOP_VALUE),
-                    new AutoCommand(Drivetrain.getInstance(), 180),
+                    new AutoCommand(Drivetrain.getInstance(), new Degrees(180)),
                     new AutoCommand(Wrist.getInstance(), new Degrees(WRIST_INTAKE)),
                     new AutoCommand(Elevator.getInstance(), new Inches(ELEVATOR_INTAKE))
             },
@@ -377,7 +377,7 @@ public class Autos {
                     new AutoCommand(Wrist.getInstance(), new Degrees(WRIST_SCALE)),
             },
             {       // turn
-                    new AutoCommand(Drivetrain.getInstance(), 0),
+                    new AutoCommand(Drivetrain.getInstance(), new Degrees(0)),
             },
             {
                     // eject
@@ -405,7 +405,7 @@ public class Autos {
                     new AutoCommand(Elevator.getInstance(), new Inches(ELEVATOR_SWITCH))
             },
             {       // turn to 0, lift up
-                    new AutoCommand(Drivetrain.getInstance(), 0),
+                    new AutoCommand(Drivetrain.getInstance(), new Degrees(0)),
                     new AutoCommand(Wrist.getInstance(), new Degrees(WRIST_SCALE)),
                     new AutoCommand(Elevator.getInstance(), new Inches(ELEVATOR_SCALE))
             },
@@ -420,7 +420,7 @@ public class Autos {
             },
             {       // stop, turn around, drop intake
                     new AutoCommand(ElevatorIntake.getInstance(), INTAKE_STOP_VALUE),
-                    new AutoCommand(Drivetrain.getInstance(), 180),
+                    new AutoCommand(Drivetrain.getInstance(), new Degrees(180)),
                     new AutoCommand(Wrist.getInstance(), new Degrees(WRIST_INTAKE)),
                     new AutoCommand(Elevator.getInstance(), new Inches(ELEVATOR_INTAKE))
             },
@@ -444,7 +444,7 @@ public class Autos {
                     new AutoCommand(Wrist.getInstance(), new Degrees(WRIST_SCALE)),
             },
             {       // turn
-                    new AutoCommand(Drivetrain.getInstance(), 0),
+                    new AutoCommand(Drivetrain.getInstance(), new Degrees(0)),
             },
             {
                     // eject
@@ -468,31 +468,31 @@ public class Autos {
                     new AutoCommand(Drivetrain.getInstance(), new Degrees(45))
             },
             {
-                    new AutoCommand(null, INTAKE_DELAY_VALUE)
+                    new AutoCommand(null, 1000)
             },
             {
                 new AutoCommand(Drivetrain.getInstance(), new Degrees(90))
             },
             {
-                    new AutoCommand(null, INTAKE_DELAY_VALUE)
+                    new AutoCommand(null, 1000)
             },
             {
                     new AutoCommand(Drivetrain.getInstance(), new Degrees(180))
             },
             {
-                    new AutoCommand(null, INTAKE_DELAY_VALUE)
+                    new AutoCommand(null, 1000)
             },
             {
                     new AutoCommand(Drivetrain.getInstance(), new Degrees(270))
             },
             {
-                    new AutoCommand(null, INTAKE_DELAY_VALUE)
+                    new AutoCommand(null, 1000)
             },
             {
                     new AutoCommand(Drivetrain.getInstance(), new Degrees(360))
             },
             {
-                    new AutoCommand(null, INTAKE_DELAY_VALUE)
+                    new AutoCommand(null, 1000)
             },
     };
 }

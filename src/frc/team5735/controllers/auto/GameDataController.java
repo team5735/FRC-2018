@@ -85,7 +85,7 @@ public class GameDataController {
                 } else if(homeSwitch == 'R'){
                     commands.addAll(Arrays.asList(Autos.centerToRightSwitch));
                 }
-
+//                commands.addAll(Arrays.asList(Autos.gyroTes   t));
                 break;
 
             case RIGHT:
