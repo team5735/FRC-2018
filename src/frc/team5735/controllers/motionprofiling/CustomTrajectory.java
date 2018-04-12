@@ -84,7 +84,7 @@ public class CustomTrajectory {
     }
 
     public static CustomTrajectory swapSides(CustomTrajectory trajectory) {
-        /*CustomTrajectory newCustomTrajectory = new CustomTrajectory();
+        CustomTrajectory newCustomTrajectory = new CustomTrajectory();
 
         Trajectory.Segment[] segments = trajectory.getTrajectory().segments.clone();
         Trajectory.Segment[] newSegs = new Trajectory.Segment[segments.length];
@@ -103,11 +103,10 @@ public class CustomTrajectory {
         Trajectory newTrajectory = new Trajectory(newSegs);
 
         newCustomTrajectory = new CustomTrajectory(newTrajectory);
-*/ //might be unnecessary as flipping sides would be enough
-        EncoderFollower temp = trajectory.leftEF;
-        // FIXME symlink??
-        trajectory.leftEF = trajectory.rightEF;
-        trajectory.rightEF = temp;
+
+        EncoderFollower temp = newCustomTrajectory.leftEF;
+        newCustomTrajectory.leftEF = newCustomTrajectory.rightEF;
+        newCustomTrajectory.rightEF = temp;
 
         return trajectory;
     }

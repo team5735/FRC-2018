@@ -4,7 +4,6 @@ import static frc.team5735.constants.RobotConstants.PCM_ID;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team5735.controllers.Controller;
 import frc.team5735.controllers.CustomXbox;
 import frc.team5735.subsystems.Drivetrain;
@@ -90,6 +89,26 @@ public class DrivetrainController implements Controller {
         	} else {
         		compressor.start();
         	}
+        }
+
+        if(xboxController.getStartButtonPressed()) {
+            drivetrain.clearData();
+        }
+
+        if(xboxController.getYButtonPressed()) {
+            drivetrain.pushVoltData();
+        }
+
+        if(xboxController.getXButtonPressed()) {
+            drivetrain.writeVoltData();
+        }
+
+        if(xboxController.getAButtonPressed()) {
+            drivetrain.pushAccelData();
+        }
+
+        if(xboxController.getBButtonPressed()) {
+            drivetrain.writeAccelData();
         }
 
 //        if (xboxController.getBackButton()) {
