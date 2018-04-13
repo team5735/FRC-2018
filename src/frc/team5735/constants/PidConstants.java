@@ -35,5 +35,6 @@ public class PidConstants {
     public static final int ELEVATOR_POS_SLOT_ID = 0;
 
     //Gyro Turning
-    public static final double TURN_P = 0.8;
+    public static final double TURN_P = 1/80; // use full power (1) when |error| > 80
+    public static final double TURN_LIMIT = 0.3;
 }

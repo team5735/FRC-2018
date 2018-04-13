@@ -11,6 +11,7 @@ import frc.team5735.constants.RobotConstants;
 import frc.team5735.controllers.motionprofiling.MotionProfile;
 import frc.team5735.utils.SimpleNetworkTable;
 import frc.team5735.utils.units.Degrees;
+import jaci.pathfinder.Pathfinder;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 
@@ -46,7 +47,7 @@ public class Drivetrain implements Subsystem {
     private PigeonIMU gyro;
 
     // Gyro Values
-    private double gyroSpeedLimit = 0.50;
+    private double gyroSpeedLimit = 0.65;
     private Degrees gyroMargin = new Degrees(3);
     private double turnSpeedMin = 0.33;
 
@@ -135,7 +136,6 @@ public class Drivetrain implements Subsystem {
         voltage = new ArrayList<>();
         velocity = new ArrayList<>();
         accel = new ArrayList<>();
-        gyro.enterCalibrationMode(PigeonIMU.CalibrationMode.BootTareGyroAccel, 0);
     }
 
     @Override
@@ -150,18 +150,11 @@ public class Drivetrain implements Subsystem {
                 if(state == DrivetrainState.GYRO_STARTED) {
                     state = DrivetrainState.GYRO_BUSY;
                 } else {
-                    double turnSpeed = (targetAngle.getValue() - gyro.getFusedHeading()) / 180.;
+                    double gyro_heading = gyro.getFusedHeading();
+                    double desired_heading = targetAngle.getValue();
+                    double angleDifference = Pathfinder.boundHalfDegrees(desired_heading - gyro_heading);
+                    double turnSpeed = PidConstants.TURN_LIMIT * PidConstants.TURN_P * angleDifference;
                     turnSpeed = limit(turnSpeed);
-
-                    turnSpeed *= gyroSpeedLimit;
-
-                    if (Math.abs(turnSpeed) < turnSpeedMin) {
-                        if (turnSpeed < 0) {
-                            turnSpeed = -turnSpeedMin;
-                        } else {
-                            turnSpeed = turnSpeedMin;
-                        }
-                    }
 
                     leftFrontMotor.set(ControlMode.PercentOutput, -turnSpeed);
                     rightFrontMotor.set(ControlMode.PercentOutput, turnSpeed);

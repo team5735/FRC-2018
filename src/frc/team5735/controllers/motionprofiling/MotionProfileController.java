@@ -65,7 +65,7 @@ public class MotionProfileController implements Controller {
         double desired_heading = Pathfinder.r2d(trajectory.getLeftEF().getHeading());  // Should also be in degrees
 
         double angleDifference = Pathfinder.boundHalfDegrees(desired_heading - gyro_heading);
-        double turn = PidConstants.TURN_P * (-1.0/80.0) * angleDifference;
+        double turn = PidConstants.TURN_LIMIT * -PidConstants.TURN_P * angleDifference;
 
         drivetrain.setMotionProfileOutput(l + turn, r - turn);
 
