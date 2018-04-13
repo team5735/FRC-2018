@@ -101,7 +101,7 @@ public class CustomTrajectory {
             newSegs[i].heading = segments[i].heading * -1;
             newSegs[i].jerk = segments[i].jerk;
             newSegs[i].x = segments[i].x; // unused I think
-            newSegs[i].y = 13 - (segments[i].y - 13); // unused I think //flips over center line at 13ft
+            newSegs[i].y = 13.5 - (segments[i].y - 13.5); // unused I think //flips over center line at 13ft
         }
 
         Trajectory newTrajectory = new Trajectory(newSegs);
