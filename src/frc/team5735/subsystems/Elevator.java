@@ -30,7 +30,7 @@ public class Elevator implements Subsystem {
             BACKLASH_MARGIN = new Inches(7);         // Margin of error to determine states
     private static final Inches
             LOWER_BOUND = new Inches(0),             // Lowest position of the Elevator
-            UPPER_BOUND = new Inches(67);            // Highest position of the Elevator
+            UPPER_BOUND = new Inches(67.5);            // Highest position of the Elevator
 
     private static final double GEAR_RATIO = 4.0 / 3.0;           // Gear ratio between motor and Elevator
     private static final int SPROCKET_TOOTH_COUNT = 22;

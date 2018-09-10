@@ -1,5 +1,8 @@
 package frc.team5735.controllers.teleop;
 
+import static frc.team5735.constants.RobotConstants.PCM_ID;
+
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.GenericHID;
 import frc.team5735.controllers.Controller;
 import frc.team5735.controllers.CustomXbox;
@@ -18,8 +21,11 @@ public class DrivetrainController implements Controller {
     private final double UNBALANCED_HEIGHT = 40;
     private final double UNBALANCED_SPEED_LIMIT = 0.7;
     private final double UNBALANCED_SPIN_LIMIT = 0.85; //0.8
+    private final Compressor compressor;
 
     public DrivetrainController(int joystickPort) {
+    	compressor = new Compressor(PCM_ID);
+    	compressor.setClosedLoopControl(false);
         this.drivetrain = Drivetrain.getInstance();
         xboxController = new CustomXbox(joystickPort);
     }
@@ -27,7 +33,8 @@ public class DrivetrainController implements Controller {
 
     @Override
     public void runInit() {
-
+        System.out.println("auto start");
+        drivetrain.resetGyro();
     }
 
     @Override
@@ -77,12 +84,39 @@ public class DrivetrainController implements Controller {
             }
         }
 
-
-        if (xboxController.getBackButton()) {
-            drivetrain.resetGyro();
-            drivetrain.getRightMotor().setSelectedSensorPosition(0,0,0);
-            drivetrain.getLeftMotor().setSelectedSensorPosition(0,0,0);
+        if(xboxController.getBackButtonPressed()) {
+        	if(compressor.enabled()) {
+        		compressor.stop();
+        	} else {
+        		compressor.start();
+        	}
         }
+
+        if(xboxController.getStartButtonPressed()) {
+            drivetrain.clearData();
+        }
+
+        if(xboxController.getYButtonPressed()) {
+            drivetrain.pushVoltData();
+        }
+
+        if(xboxController.getXButtonPressed()) {
+            drivetrain.writeVoltData();
+        }
+
+        if(xboxController.getAButtonPressed()) {
+            drivetrain.pushAccelData();
+        }
+
+        if(xboxController.getBButtonPressed()) {
+            drivetrain.writeAccelData();
+        }
+
+//        if (xboxController.getBackButton()) {
+//            drivetrain.resetGyro();
+//            drivetrain.getRightMotor().setSelectedSensorPosition(0,0,0);
+//            drivetrain.getLeftMotor().setSelectedSensorPosition(0,0,0);
+//        }
     }
 
     @Override

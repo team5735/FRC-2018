@@ -1,7 +1,7 @@
 package frc.team5735.controllers.auto;
 
+import frc.team5735.controllers.motionprofiling.CustomTrajectory;
 import frc.team5735.controllers.motionprofiling.MotionProfileController;
-import frc.team5735.controllers.motionprofiling.Trajectory;
 import frc.team5735.subsystems.*;
 import frc.team5735.utils.units.Degrees;
 import frc.team5735.utils.units.Inches;
@@ -46,13 +46,30 @@ public class SuperAutoController extends AutoController {
                 boolean isStepFinished = true;
                 for (AutoCommand command : stepCommands) {
                     if (command.getSubsystem() instanceof Wrist) {
-                        wrist.setTargetAngle((Degrees) command.getValue());
-                        isStepFinished = isStepFinished && wrist.getState() == Wrist.WristState.POSITION_HOLDING;
+                        if(wrist.getState() != Wrist.WristState.ZEROING) {
+                            wrist.setTargetAngle((Degrees) command.getValue());
+                            isStepFinished = isStepFinished && wrist.getState() == Wrist.WristState.POSITION_HOLDING;
+                        } else {
+                            isStepFinished = false;
+                        }
                     } else if (command.getSubsystem() instanceof Elevator) {
-                        elevator.setTargetHeight((Inches) command.getValue());
-                        isStepFinished = isStepFinished && elevator.getState() == Elevator.ElevatorState.POSITION_HOLDING;
+                        if(elevator.getState() != Elevator.ElevatorState.ZEROING) {
+                            elevator.setTargetHeight((Inches) command.getValue());
+                            isStepFinished = isStepFinished && elevator.getState() == Elevator.ElevatorState.POSITION_HOLDING;
+                        } else {
+                            isStepFinished = false;
+                        }
                     } else if (command.getSubsystem() instanceof ElevatorIntake) {
-                        elevatorIntake.setTargetSpeed((Double) command.getValue());
+                        if(command.getValue() instanceof Double) {
+                            elevatorIntake.setTargetSpeed((Double) command.getValue());
+                        } else if(command.getValue() instanceof Boolean) {
+                            if((boolean) command.getValue()) {
+                                elevatorIntake.closeClaw();
+                            } else {
+                                elevatorIntake.openClaw();
+                            }
+                        }
+
                     } else if (command.getSubsystem() instanceof DrivetrainIntake) {
                         drivetrainIntake.setTargetSpeed((Double) command.getValue());
                     } else if (command.getSubsystem() instanceof Drivetrain) {
@@ -61,7 +78,9 @@ public class SuperAutoController extends AutoController {
                             isStepFinished = isStepFinished && drivetrain.getState() == Drivetrain.DrivetrainState.GYRO_FINISHED;
                         } else {
                             if (motionProfileController.getState() == MotionProfileController.MotionProfileControllerState.EMPTY) {
-                                motionProfileController.loadProfile((Trajectory) command.getValue());
+                                System.out.println("PROFILE EMPTY ##########");
+                                System.out.println("PROFILE: " + ((CustomTrajectory) command.getValue()).getFilename());
+                                motionProfileController.loadProfile((CustomTrajectory) command.getValue());
                                 motionProfileController.startProfile();
                             }
                             motionProfileController.runPeriodic();

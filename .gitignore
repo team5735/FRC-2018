@@ -2,7 +2,9 @@ build/
 dist/
 out/
 res/
+.idea/
 *.DS_Store
+FRC-2018.iml
 *.iml
 .classpath
 .project

@@ -5,13 +5,11 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team5735.constants.RobotConstants;
+import frc.team5735.constants.TrajectoryConstants;
 import frc.team5735.controllers.auto.*;
 import frc.team5735.controllers.teleop.DrivetrainController;
 import frc.team5735.controllers.teleop.SubsystemController;
-import frc.team5735.controllers.teleop.SubsystemController_Original;
 import frc.team5735.subsystems.*;
-import frc.team5735.utils.SimpleNetworkTable;
-
 public class Robot extends TimedRobot {
 
     private Drivetrain drivetrain;
@@ -28,8 +26,11 @@ public class Robot extends TimedRobot {
     public static SendableChooser autoStartPositionChooser;
     public static SendableChooser autoPriorityChooser;
 
+
     @Override
     public void robotInit() {
+        TrajectoryConstants.loadTrajectories();
+
         autoStartPositionChooser = new SendableChooser();
         autoStartPositionChooser.addDefault("Center", GameDataController.StartingPosition.CENTER);
         autoStartPositionChooser.addObject("Left", GameDataController.StartingPosition.LEFT);

@@ -36,7 +36,10 @@ public class RobotConstants {
 
     //Intake Elevator
     public static final int
-            VICTOR_INTAKE_ELEV_ID = 10;
+            VICTOR_INTAKE_ELEV_ID = 10,
+            PCM_ID = 12,
+            INTAKE_SOLENOID_FORWARD_ID = 1,
+            INTAKE_SOLENOID_BACKWARD_ID = 0;
 
 
     // ========== Controllers ==========
@@ -45,5 +48,10 @@ public class RobotConstants {
 
     // ========== Physical Robot Properties ==========
     public static final double WHEEL_DIAMETER = 5.9;  //Inches 5.8
+    public static final double WHEEL_DIAMETER_METERS = 0.14986;
+    public static final double WHEEL_BASE = 2.875;
     public static final double TRACKWIDTH = 24;       //Inches
+
+    // ========== Motion Profiling ============
+    public static final double MAX_VELOCITY = 1.8288; // m/s; =6ft/s
 }

@@ -5,17 +5,17 @@ public class PidConstants {
     //Drivetrain Left - Closed Loop Velocity (Slot 0)
     public static final double
             DT_LEFT_VEL_KF = 0.25 * 1023 / 825,     // 0.212
-            DT_LEFT_VEL_KP = 1.2, // 2.0, 0.7
+            DT_LEFT_VEL_KP = 1.2, // 2.0, 0.7, 1.0
             DT_LEFT_VEL_KI = 0,
-            DT_LEFT_VEL_KD = 1.0;
+            DT_LEFT_VEL_KD = 0; //1.0
     public static final int DT_LEFT_VEL_SLOT_ID = 0;
 
     //Drivetrain Right - Closed Loop Velocity (Slot 0)
     public static final double
             DT_RIGHT_VEL_KF = 0.25 * 1023 / 685,
-            DT_RIGHT_VEL_KP = 1.92, // 1.8 , 0.7
+            DT_RIGHT_VEL_KP = 1.92, // 1.8 , 0.7, 1.92
             DT_RIGHT_VEL_KI = 0,
-            DT_RIGHT_VEL_KD = 1.23;
+            DT_RIGHT_VEL_KD = 0; //1.23
     public static final int DT_RIGHT_VEL_SLOT_ID = 0;
 
     //Wrist - Closed Loop Position (Slot 0)
@@ -33,4 +33,8 @@ public class PidConstants {
             ELEVATOR_POS_KI = 0,
             ELEVATOR_POS_KD = 0.05;
     public static final int ELEVATOR_POS_SLOT_ID = 0;
+
+    //Gyro Turning
+    public static final double TURN_P = 1/80; // use full power (1) when |error| > 80
+    public static final double TURN_LIMIT = 0.3;
 }

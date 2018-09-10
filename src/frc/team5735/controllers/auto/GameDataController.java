@@ -61,25 +61,20 @@ public class GameDataController {
             case LEFT:
 
                 if(priority == Priority.SWITCH) {
-
                     if(homeSwitch == 'L') {
                         commands.addAll(Arrays.asList(Autos.leftToLeftSwitch));
                     } else if(homeSwitch == 'R') {
-                        //TODO Check for scale in the future
                         commands.addAll(Arrays.asList(Autos.moveForward));
                     }
 
                 } else if(priority == Priority.SCALE) {
                     if(scale == 'L') {
-                        commands.addAll(Arrays.asList(Autos.moveForward));	// SCALE
+                        commands.addAll(Arrays.asList(Autos.leftToLeftScale));
                     } else if(scale == 'R') {
-                        if(homeSwitch == 'L') {
-                            commands.addAll(Arrays.asList(Autos.leftToLeftSwitch));
-                        } else if(homeSwitch == 'R') {
-                            //TODO Change to Opposite Side
-                            commands.addAll(Arrays.asList(Autos.moveForward));
-                        }
+                        commands.addAll(Arrays.asList(Autos.leftToRightScale));
                     }
+                } else if(priority == Priority.NONE) {
+                    commands.addAll(Arrays.asList(Autos.moveForward));
                 }
 
                 break;
@@ -87,37 +82,15 @@ public class GameDataController {
             case CENTER:
                 if(homeSwitch == 'L') {
                     commands.addAll(Arrays.asList(Autos.centerToLeftSwitch));
-                    commands.addAll(Arrays.asList(Autos.leftSwitchTwoCube));
                 } else if(homeSwitch == 'R'){
                     commands.addAll(Arrays.asList(Autos.centerToRightSwitch));
-                    commands.addAll(Arrays.asList(Autos.rightSwitchTwoCube));
                 }
-
-                // If we ever need to go to the scale from center... WHY????
-//                if(priority == Priority.SWITCH) {
-//
-//                    if(homeSwitch == 'L') {
-//                        commands.addAll(Arrays.asList(Autos.centerToLeftSwitch));
-//                    } else if(homeSwitch == 'R'){
-//                        commands.addAll(Arrays.asList(Autos.centerToRightSwitch));
-//                    }
-//
-//                } else if(priority == Priority.SCALE) {
-//
-//                    if(scale == 'L') {
-////                        commands.addAll(Arrays.asList(Autos.startCenterToScaleLeft));
-//                    } else if(scale == 'R') {
-////                        commands.addAll(Arrays.asList(Autos.startCenterToScaleRight));
-//                    }
-//
-//                }
-
+//                commands.addAll(Arrays.asList(Autos.gyroTes   t));
                 break;
 
             case RIGHT:
                 if(priority == Priority.SWITCH) {
                     if(homeSwitch == 'L') {
-                        //TODO Check for scale in the future
                         commands.addAll(Arrays.asList(Autos.moveForward));
                     } else if(homeSwitch == 'R'){
                         commands.addAll(Arrays.asList(Autos.rightToRightSwitch));
@@ -125,21 +98,12 @@ public class GameDataController {
 
                 } else if(priority == Priority.SCALE) {
                     if(scale == 'L') {
-                        if(homeSwitch == 'L') {
-                            //TODO Change to Opposite Side
-                            commands.addAll(Arrays.asList(Autos.moveForward));
-                        } else if(homeSwitch == 'R') {
-                            commands.addAll(Arrays.asList(Autos.rightToRightSwitch));
-                        }
-
+                        commands.addAll(Arrays.asList(Autos.rightToLeftScale));
                     } else if(scale == 'R') {
-                        if(homeSwitch == 'R'){
-                            commands.addAll(Arrays.asList(Autos.moveForward));	//TWO CUBE SCALE?
-                        }else {
-                            commands.addAll(Arrays.asList(Autos.moveForward));	//SCALE
-                        }
+                        commands.addAll(Arrays.asList(Autos.rightToRightScale));
                     }
-
+                } else if(priority == Priority.NONE) {
+                    commands.addAll(Arrays.asList(Autos.moveForward));
                 }
 
                 break;
