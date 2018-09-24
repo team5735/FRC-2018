@@ -7,9 +7,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team5735.constants.RobotConstants;
 import frc.team5735.constants.TrajectoryConstants;
 import frc.team5735.controllers.auto.*;
+import frc.team5735.controllers.motionprofiling.Trajectory;
 import frc.team5735.controllers.teleop.DrivetrainController;
 import frc.team5735.controllers.teleop.SubsystemController;
+import frc.team5735.controllers.teleop.SubsystemController_Original;
 import frc.team5735.subsystems.*;
+import frc.team5735.utils.SimpleNetworkTable;
+
 public class Robot extends TimedRobot {
 
     private Drivetrain drivetrain;

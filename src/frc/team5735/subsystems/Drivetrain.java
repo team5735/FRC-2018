@@ -11,15 +11,6 @@ import frc.team5735.constants.RobotConstants;
 import frc.team5735.controllers.motionprofiling.MotionProfile;
 import frc.team5735.utils.SimpleNetworkTable;
 import frc.team5735.utils.units.Degrees;
-import jaci.pathfinder.Pathfinder;
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVPrinter;
-
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
 
 public class Drivetrain implements Subsystem {
 
@@ -47,7 +38,7 @@ public class Drivetrain implements Subsystem {
     private PigeonIMU gyro;
 
     // Gyro Values
-    private double gyroSpeedLimit = 0.65;
+    private double gyroSpeedLimit = 0.50;
     private Degrees gyroMargin = new Degrees(3);
     private double turnSpeedMin = 0.33;
 
@@ -59,7 +50,6 @@ public class Drivetrain implements Subsystem {
     // Info
     private DrivetrainState state;
     private PigeonIMU.GeneralStatus gyroStatus;
-    private ArrayList<Double> voltage, velocity, accel;
 
     // ===== Methods =====
     private Drivetrain() {
@@ -85,15 +75,13 @@ public class Drivetrain implements Subsystem {
         leftFrontMotor.configNominalOutputReverse(-0.0f, 0);
         leftFrontMotor.configPeakOutputForward(+12.0f, 0);
         leftFrontMotor.configPeakOutputReverse(-12.0f, 0);
-        leftFrontMotor.configVoltageCompSaturation(11.8, 0);
-        leftFrontMotor.enableVoltageCompensation(true);
-        leftFrontMotor.configVoltageMeasurementFilter(32, 10);
 
         // Configure PID constants
         leftFrontMotor.config_kF(PidConstants.DT_LEFT_VEL_SLOT_ID, PidConstants.DT_LEFT_VEL_KF, 100);
         leftFrontMotor.config_kP(PidConstants.DT_LEFT_VEL_SLOT_ID, PidConstants.DT_LEFT_VEL_KP, 100);
         leftFrontMotor.config_kI(PidConstants.DT_LEFT_VEL_SLOT_ID, PidConstants.DT_LEFT_VEL_KI, 100);
         leftFrontMotor.config_kD(PidConstants.DT_LEFT_VEL_SLOT_ID, PidConstants.DT_LEFT_VEL_KD, 100);
+
         // ===== LEFT REAR MOTOR SETUP =====
         leftRearMotor = new TalonSRX(RobotConstants.TALON_DT_LEFT_REAR_ID);
         leftRearMotor.set(ControlMode.Follower, 0);
@@ -114,9 +102,6 @@ public class Drivetrain implements Subsystem {
         rightFrontMotor.configNominalOutputReverse(-0.0f, 0);
         rightFrontMotor.configPeakOutputForward(+12.0f, 0);
         rightFrontMotor.configPeakOutputReverse(-12.0f, 0);
-        rightFrontMotor.configVoltageCompSaturation(11.8, 0);
-        rightFrontMotor.enableVoltageCompensation(true);
-        rightFrontMotor.configVoltageMeasurementFilter(32, 10);
 
         // Configure PID constants
         rightFrontMotor.config_kF(PidConstants.DT_RIGHT_VEL_SLOT_ID, PidConstants.DT_RIGHT_VEL_KF, 100);
@@ -133,28 +118,34 @@ public class Drivetrain implements Subsystem {
 
     @Override
     public void runInit() {
-        voltage = new ArrayList<>();
-        velocity = new ArrayList<>();
-        accel = new ArrayList<>();
+
     }
 
     @Override
     public void runPeriodic() {
 //        System.out.println(gyro.getFusedHeading());
         if (state == DrivetrainState.MP) {
-            leftFrontMotor.set(ControlMode.PercentOutput, leftSideMPOutput);
-            rightFrontMotor.set(ControlMode.PercentOutput, rightSideMPOutput);
+            leftFrontMotor.set(ControlMode.MotionProfile, leftSideMPOutput);
+            rightFrontMotor.set(ControlMode.MotionProfile, rightSideMPOutput);
         } else if (state == DrivetrainState.GYRO_STARTED || state == DrivetrainState.GYRO_BUSY) {
             gyro.getGeneralStatus(gyroStatus);
             if ( gyroStatus.state == PigeonIMU.PigeonState.Ready) {
                 if(state == DrivetrainState.GYRO_STARTED) {
+                    gyro.setFusedHeading(0,0);
                     state = DrivetrainState.GYRO_BUSY;
                 } else {
-                    double gyro_heading = gyro.getFusedHeading();
-                    double desired_heading = targetAngle.getValue();
-                    double angleDifference = Pathfinder.boundHalfDegrees(desired_heading - gyro_heading);
-                    double turnSpeed = PidConstants.TURN_LIMIT * PidConstants.TURN_P * angleDifference;
+                    double turnSpeed = (targetAngle.getValue() - gyro.getFusedHeading()) / 180.;
                     turnSpeed = limit(turnSpeed);
+
+                    turnSpeed = turnSpeed * gyroSpeedLimit;
+
+                    if (Math.abs(turnSpeed) < turnSpeedMin) {
+                        if (turnSpeed < 0) {
+                            turnSpeed = -turnSpeedMin;
+                        } else {
+                            turnSpeed = turnSpeedMin;
+                        }
+                    }
 
                     leftFrontMotor.set(ControlMode.PercentOutput, -turnSpeed);
                     rightFrontMotor.set(ControlMode.PercentOutput, turnSpeed);
@@ -171,7 +162,7 @@ public class Drivetrain implements Subsystem {
             leftFrontMotor.set(ControlMode.PercentOutput, leftSideTargetPercent);
             rightFrontMotor.set(ControlMode.PercentOutput, rightSideTargetPercent);
         }
-//        putStatus();
+        //putStatus();
     }
 
     @Override
@@ -183,7 +174,7 @@ public class Drivetrain implements Subsystem {
         return state;
     }
 
-    public void setMotionProfileOutput (double leftOutput, double rightOutput) {
+    public void setMotionProfileOutput (int leftOutput, int rightOutput) {
         leftSideMPOutput = leftOutput;
         rightSideMPOutput = rightOutput;
         state = DrivetrainState.MP;
@@ -201,6 +192,7 @@ public class Drivetrain implements Subsystem {
             this.state = DrivetrainState.GYRO_STARTED;
         }
     }
+
     public void curvatureDrive(double xSpeed, double zRotation, boolean isQuickTurn) {
         xSpeed = limit(xSpeed);
         xSpeed = applyDeadband(xSpeed, m_deadband);
@@ -255,10 +247,10 @@ public class Drivetrain implements Subsystem {
     }
 
     public void clearMotionProfileTrajectories() {
-//        leftFrontMotor.clearMotionProfileTrajectories();
-//        leftRearMotor.clearMotionProfileTrajectories();
-//        rightFrontMotor.clearMotionProfileTrajectories();
-//        rightRearMotor.clearMotionProfileTrajectories();
+        leftFrontMotor.clearMotionProfileTrajectories();
+        leftRearMotor.clearMotionProfileTrajectories();
+        rightFrontMotor.clearMotionProfileTrajectories();
+        rightRearMotor.clearMotionProfileTrajectories();
     }
 
     public void resetGyro(){
@@ -275,10 +267,6 @@ public class Drivetrain implements Subsystem {
 
     public TalonSRX getRightMotor() {
         return rightFrontMotor;
-    }
-
-    public double getGyroHeading() {
-        return gyro.getFusedHeading();
     }
 
     // ===== RobotDriveBase Methods =====
@@ -320,40 +308,6 @@ public class Drivetrain implements Subsystem {
         System.out.println("Right Velocity: " + rightFrontMotor.getSelectedSensorVelocity(0));
         System.out.println("Left Velocity: " + leftFrontMotor.getSelectedSensorVelocity(0));
         System.out.println();
-    }
-
-    public void pushVoltData() {
-        voltage.add(leftFrontMotor.getBusVoltage());
-        velocity.add((double) leftFrontMotor.getSelectedSensorVelocity(0) * 600 / 4096);
-//        gyro.getBiasedAccelerometer();
-    }
-
-    public void writeVoltData() {
-        System.out.println("Voltage, Velocity");
-        for(int i = 0; i < voltage.size(); i++) {
-            System.out.println(voltage.get(i) + "," + velocity.get(0));
-        }
-    }
-
-    public void pushAccelData() {
-        short[] accelData = new short[3];
-        gyro.getBiasedAccelerometer(accelData);
-        double xAccel = (double) accelData[0];
-        accel.add(xAccel);
-        velocity.add((double) leftFrontMotor.getSelectedSensorVelocity(0) * 600 / 4096);
-    }
-
-    public void writeAccelData() {
-        System.out.println("Accel, Velocity");
-        for(int i = 0; i < accel.size(); i++) {
-            System.out.println(accel.get(i) + "," + velocity.get(0));
-        }
-    }
-
-    public void clearData() {
-        voltage.clear();
-        velocity.clear();
-        accel.clear();
     }
 
     public void putStatus() {

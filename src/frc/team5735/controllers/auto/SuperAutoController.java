@@ -1,7 +1,7 @@
 package frc.team5735.controllers.auto;
 
-import frc.team5735.controllers.motionprofiling.CustomTrajectory;
 import frc.team5735.controllers.motionprofiling.MotionProfileController;
+import frc.team5735.controllers.motionprofiling.Trajectory;
 import frc.team5735.subsystems.*;
 import frc.team5735.utils.units.Degrees;
 import frc.team5735.utils.units.Inches;
@@ -63,7 +63,7 @@ public class SuperAutoController extends AutoController {
                         if(command.getValue() instanceof Double) {
                             elevatorIntake.setTargetSpeed((Double) command.getValue());
                         } else if(command.getValue() instanceof Boolean) {
-                            if((boolean) command.getValue()) {
+                            if((Boolean) command.getValue()) {
                                 elevatorIntake.closeClaw();
                             } else {
                                 elevatorIntake.openClaw();
@@ -79,15 +79,15 @@ public class SuperAutoController extends AutoController {
                         } else {
                             if (motionProfileController.getState() == MotionProfileController.MotionProfileControllerState.EMPTY) {
                                 System.out.println("PROFILE EMPTY ##########");
-                                System.out.println("PROFILE: " + ((CustomTrajectory) command.getValue()).getFilename());
-                                motionProfileController.loadProfile((CustomTrajectory) command.getValue());
+                                System.out.println("PROFILE: " + ((Trajectory) command.getValue()).getFilename());
+                                motionProfileController.loadProfile((Trajectory) command.getValue());
                                 motionProfileController.startProfile();
                             }
                             motionProfileController.runPeriodic();
                             isStepFinished = isStepFinished && motionProfileController.getState() == MotionProfileController.MotionProfileControllerState.FINISHED;
                         }
                     } else {
-                        isStepFinished = isStepFinished && delay((int) command.getValue());
+                        isStepFinished = isStepFinished && delay((Integer) command.getValue());
                     }
                 }
 
