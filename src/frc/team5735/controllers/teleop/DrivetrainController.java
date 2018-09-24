@@ -15,10 +15,10 @@ public class DrivetrainController implements Controller {
 
     private Drivetrain drivetrain;
 
-    private final double QUICK_TURN_MAX = 0.6; //0.4
+    private final double QUICK_TURN_MAX = 0.3; //0.4
     private final double Z_ROTATION_MAX = 0.75; //0.5
-    private final double X_SPEED_MAX = 0.6;//0.5
-    private final double TURBO_MAX = 0.95;
+    private final double X_SPEED_MAX = 0.3;//0.5
+    private final double TURBO_MAX = 0.3;
     private final double UNBALANCED_HEIGHT = 40;
     private final double UNBALANCED_SPEED_LIMIT = 0.7;
     private final double UNBALANCED_SPIN_LIMIT = 0.85; //0.8
@@ -47,7 +47,7 @@ public class DrivetrainController implements Controller {
         double leftJoystick = xboxController.getX(GenericHID.Hand.kLeft,0.1),
                 rightJoystick = xboxController.getY(GenericHID.Hand.kRight,0.1),
                 quickTurnTrigger =  xboxController.getTriggerAxis(GenericHID.Hand.kLeft),
-                turboTrigger = xboxController.getTriggerAxis(GenericHID.Hand.kRight),
+                turboTrigger = 0,
                 xSpeedWithTurbo = rightJoystick * (X_SPEED_MAX + turboTrigger * (TURBO_MAX - X_SPEED_MAX));
 
         //OLD ROBOT Compensation

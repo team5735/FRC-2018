@@ -35,7 +35,7 @@ public class Robot extends TimedRobot {
     public void robotInit() {
         TrajectoryConstants.loadTrajectories();
 
-        autoStartPositionChooser = new SendableChooser();
+        /*autoStartPositionChooser = new SendableChooser();
         autoStartPositionChooser.addDefault("Center", GameDataController.StartingPosition.CENTER);
         autoStartPositionChooser.addObject("Left", GameDataController.StartingPosition.LEFT);
         autoStartPositionChooser.addObject("Right", GameDataController.StartingPosition.RIGHT);
@@ -45,9 +45,9 @@ public class Robot extends TimedRobot {
         autoPriorityChooser.addDefault("None", GameDataController.Priority.NONE);
         autoPriorityChooser.addObject("Switch", GameDataController.Priority.SWITCH);
         autoPriorityChooser.addObject("Scale", GameDataController.Priority.SCALE);
-        SmartDashboard.putData("Auto Priority", autoPriorityChooser);
+        SmartDashboard.putData("Auto Priority", autoPriorityChooser);*/
 
-        SmartDashboard.putNumber("Delay", 0);
+//        SmartDashboard.putNumber("Delay", 0);
 
         drivetrain = Drivetrain.getInstance();
         drivetrainIntake = DrivetrainIntake.getInstance();
@@ -66,7 +66,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
-        drivetrain.runInit();
+        /*drivetrain.runInit();
         drivetrainIntake.runInit();
         elevator.runInit();
         elevatorIntake.runInit();
@@ -80,7 +80,7 @@ public class Robot extends TimedRobot {
 //
 //        } else {
 //            System.err.println("Not all necessary autonomous parameters populated yet!");
-//        }
+//        }*/
     }
 
     /**
@@ -88,7 +88,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousPeriodic() {
-        drivetrain.runPeriodic();
+        /*drivetrain.runPeriodic();
         drivetrainIntake.runPeriodic();
         elevator.runPeriodic();
         elevatorIntake.runPeriodic();
@@ -96,7 +96,7 @@ public class Robot extends TimedRobot {
 
         if(autoController != null) {
             autoController.runPeriodic();
-        }
+        }*/
     }
 
     /**
